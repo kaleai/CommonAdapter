@@ -166,7 +166,7 @@ ListView listView = (ListView) findViewById(R.id.listView);
 ## RecyclerView的通用适配器——CommonRcvAdapter 
 
 **使用步骤：**  
-### 1. 让你的List中的model实现`AdapterModel`这个接口（和上面的完全一致）
+### 1. 让你的List中的model实现`AdapterModel`这个接口（同上）
 ### 2. Adapter中的每个Item需要继承`RcvAdapterItem`这个类  
 该类的源码如下：  
 ```java

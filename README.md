@@ -186,7 +186,8 @@ import kale.adapter.AdapterModel;
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class RcvAdapterItem<T extends AdapterModel> extends RecyclerView.ViewHolder {
+public abstract class RcvAdapterItem<T extends AdapterModel> 
+                                                    extends RecyclerView.ViewHolder {
 
     /**
      * 构造方法
@@ -236,8 +237,6 @@ public class RcvButtonItem extends RcvAdapterItem<TestModel>{
 ### 3. 通过继承CommonRcvAdapter来实现适配器  
 
 ```java
-GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new CommonRcvAdapter<TestModel>(data) {
             @NonNull
             @Override

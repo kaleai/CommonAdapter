@@ -7,7 +7,7 @@
 ### Demo  
 Model类：  
 ![image](./demoPic/demo0.png)  
-Adapter中的item：    
+Adapter中的Item：    
 ![image](./demoPic/demo01.png)  
 给ListView/GridView设置简单的适配器：     
 ![image](./demoPic/demo02.png)   

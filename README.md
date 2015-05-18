@@ -135,7 +135,7 @@ public class TextItem implements AdapterItem<TestModel> {
 
 ```  
 
-### 3. 通过继承CommonAdapter来实现适配器  
+### 3. 通过继承`CommonAdapter`来实现适配器  
 现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
 ```java
 ListView listView = (ListView) findViewById(R.id.listView);
@@ -223,7 +223,7 @@ public class RcvButtonItem extends RcvAdapterItem<TestModel>{
 }  
 ```  
 
-### 3. 通过继承CommonRcvAdapter来实现适配器  
+### 3. 通过继承`CommonRcvAdapter`来实现适配器  
 
 ```java
         recyclerView.setAdapter(new CommonRcvAdapter<TestModel>(data) {

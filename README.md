@@ -5,6 +5,8 @@
 --
 ## ListView+GridView的通用适配器——CommonAdapter  
 ### Demo  
+Model类：  
+![image](./demoPic/demo0.png)  
 Adapter中的item：    
 ![image](./demoPic/demo01.png)  
 给ListView/GridView设置简单的适配器：     

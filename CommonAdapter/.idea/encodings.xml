@@ -5,13 +5,8 @@
     <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/base/AdapterItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/base/CommonAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/base/ViewHolder.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/BaseRecyclerAdapter.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/BaseRecyclerAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/BaseRecyclerAdapter.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/CommonRcvAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/CommonRcvAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/ExRecyclerView.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/adapter/src/main/java/kale/adapter/recycler/ExRecyclerView.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/item/ButtonItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/item/ImageItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/item/TextItem.java" charset="UTF-8" />

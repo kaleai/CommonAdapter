@@ -27,3 +27,4 @@ public class TextItem implements AdapterItem<TestModel> {
     }
 
 }
+

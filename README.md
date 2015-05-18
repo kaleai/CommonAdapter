@@ -1,6 +1,6 @@
 # CommonAdapter
 
-通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的adapter  
+通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的Adapter对象。
 
 --
 ## ListView+GridView的通用适配器——CommonAdapter  

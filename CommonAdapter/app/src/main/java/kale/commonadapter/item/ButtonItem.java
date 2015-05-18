@@ -13,7 +13,14 @@ import kale.commonadapter.model.TestModel;
  * @date 2015/5/15
  */
 public class ButtonItem implements AdapterItem<TestModel> {
+
     Button btn;
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.button_adapter_item;
+    }
+
     @Override
     public void initViews(View convertView, TestModel data, int position) {
         btn = ViewHolder.getView(convertView, R.id.button);
@@ -24,9 +31,4 @@ public class ButtonItem implements AdapterItem<TestModel> {
         btn.setText(data.getContent());
     }
 
-    @Override
-    public int getLayoutResId() {
-        return R.layout.button_adapter_item;
-    }
-    
 }

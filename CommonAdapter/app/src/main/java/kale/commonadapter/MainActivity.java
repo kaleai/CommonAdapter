@@ -69,19 +69,9 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        initAdapter(data);
     }
     
-    private void initAdapter(List<TestModel> data) {
-        listView.setAdapter(new CommonAdapter<TestModel>(data) {
 
-            @NonNull
-            @Override
-            protected AdapterItem initItemView(int type) {
-                return new TextItem();
-            }
-        });
-    }
 
     private void addDataToListView(List<TestModel> data) {
         listView.setAdapter(new CommonAdapter<TestModel>(data) {

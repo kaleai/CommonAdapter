@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List data = loadData();
+        List<TestModel> data = loadData();
 
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(new CommonAdapter<TestModel>(data) {
@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * 模拟加载数据的操作
      */
-    private List loadData() {
+    private List<TestModel> loadData() {
         List<TestModel> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             int type = (int) (Math.random() * 3);

@@ -8,7 +8,6 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/item/ButtonItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/item/ImageItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/item/TextItem.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/kale/commonadapter/model/XxxxModel.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/kale.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/button_adapter_item.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/image_adapter_item.xml" charset="UTF-8" />

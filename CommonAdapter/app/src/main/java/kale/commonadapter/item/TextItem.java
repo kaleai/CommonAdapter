@@ -16,14 +16,14 @@ import kale.commonadapter.model.TestModel;
 public class TextItem implements AdapterItem<TestModel> {
 
     @Override
-    public void initViews(View convertView, TestModel data, int position) {
-        TextView textView = ViewHolder.getView(convertView, R.id.textView);
-        textView.setText(data.getContent());
+    public int getLayoutResId() {
+        return R.layout.text_adapter_item;
     }
 
     @Override
-    public int getLayoutResId() {
-        return R.layout.text_adapter_item;
+    public void initViews(View convertView, TestModel data, int position) {
+        TextView textView = ViewHolder.getView(convertView, R.id.textView);
+        textView.setText(data.getContent());
     }
 
 }

@@ -1,18 +1,13 @@
 # CommonAdapter
+
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的adapter  
+
 --
-# ListView+GridView的通用适配器——CommonAdapter  
+## ListView+GridView的通用适配器——CommonAdapter  
 **使用步骤：**  
-## 1. 让你的List中的model实现`AdapterModel`这个接口  
+### 1. 让你的List中的model实现`AdapterModel`这个接口  
 接口的源码如下：  
 ```java 
-package kale.adapter;
-
-/**
- * @author Jack Tony
- * @date 2015/5/16
- * 数据model需要实现此接口，这个mode是在list中的
- */
 public interface AdapterModel {
 
     /**
@@ -29,12 +24,8 @@ public interface AdapterModel {
     public int getDataType();
 }  
 ```  
-举例：  
+例子：  
 ```java
-/**
- * @author Jack Tony
- * @date 2015/5/15
- */
 public class TestModel implements AdapterModel {
 
     /**
@@ -95,7 +86,7 @@ public class TestModel implements AdapterModel {
 
 ```  
   
-## 2. Adapter中的item需要实现`AdapterItem`这个接口  
+### 2. Adapter中的item需要实现`AdapterItem`这个接口  
 接口的源码如下：  
 ```java  
 /**
@@ -144,7 +135,7 @@ public class TextItem implements AdapterItem<TestModel> {
 
 ```  
 
-## 3. 通过继承CommonAdapter来实现适配器  
+### 3. 通过继承CommonAdapter来实现适配器  
 现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
 ```java
 ListView listView = (ListView) findViewById(R.id.listView);
@@ -172,4 +163,4 @@ ListView listView = (ListView) findViewById(R.id.listView);
         });
 ```
 
-# RecyclerView的通用适配器（未完成）
+## RecyclerView的通用适配器（未完成）

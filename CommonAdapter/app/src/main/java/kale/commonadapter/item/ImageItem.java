@@ -3,8 +3,8 @@ package kale.commonadapter.item;
 import android.view.View;
 import android.widget.ImageView;
 
-import kale.adapter.AdapterItem;
-import kale.adapter.ViewHolder;
+import kale.adapter.base.AdapterItem;
+import kale.adapter.base.ViewHolder;
 import kale.commonadapter.R;
 import kale.commonadapter.model.TestModel;
 

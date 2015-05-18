@@ -68,6 +68,19 @@ public class MainActivity extends ActionBarActivity {
                 listView.setVisibility(View.GONE);
             }
         });
+
+        initAdapter(data);
+    }
+    
+    private void initAdapter(List<TestModel> data) {
+        listView.setAdapter(new CommonAdapter<TestModel>(data) {
+
+            @NonNull
+            @Override
+            protected AdapterItem initItemView(int type) {
+                return new TextItem();
+            }
+        });
     }
 
     private void addDataToListView(List<TestModel> data) {

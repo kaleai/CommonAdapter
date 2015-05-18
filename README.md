@@ -4,7 +4,14 @@
 
 --
 ## ListView+GridView的通用适配器——CommonAdapter  
-**使用步骤：**  
+### Demo  
+Adapter中的item：    
+![image](./demoPic/demo01.png)  
+给ListView/GridView设置简单的适配器：     
+![image](./demoPic/demo02.png)   
+
+**使用步骤：**
+-  
 ### 1. 让你的List中的model实现`AdapterModel`这个接口  
 接口的源码如下：  
 ```java 

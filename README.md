@@ -4,7 +4,7 @@
 
 --
 ## ListView+GridView的通用适配器——CommonAdapter  
-### Demo  
+### Demo:  
 Model类：  
 ![image](./demoPic/demo0.png)  
 Adapter中的Item：    
@@ -12,8 +12,7 @@ Adapter中的Item：
 给ListView/GridView设置简单的适配器：     
 ![image](./demoPic/demo02.png)   
 
-**使用步骤：**
--  
+### 使用步骤  
 ### 1. 让你的List中的model实现`AdapterModel`这个接口  
 接口的源码如下：  
 ```java 
@@ -173,8 +172,9 @@ ListView listView = (ListView) findViewById(R.id.listView);
 ```
 
 ## RecyclerView的通用适配器——CommonRcvAdapter 
+### Demo:  
 
-**使用步骤：**  
+### 使用步骤：  
 ### 1. 让你的List中的model实现`AdapterModel`这个接口（同上）
 ### 2. Adapter中的每个Item需要继承`RcvAdapterItem`这个类  
 该类的源码如下：  

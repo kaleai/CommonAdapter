@@ -267,7 +267,7 @@ public class RcvButtonItem extends RcvAdapterItem<TestModel>{
 2. **Adapter**  
 因为adapter原始的代码很多，所以如果你把adapter作为activity的内部类的话很别扭，而且如果adapter中如果有多个类型的Item，你就必须在getView()中写很多if-else语句，而且里面都是一些设置view的方法，很乱，你要更换Item的话还需要去删减代码，而现在我让adapter的代码量减少到一个方法，如果你需要更新item或者添加一个新的item你直接在initItem中返回即可，实现了可插拔化。最关键的是item现在作为一个独立的对象，内部view的设置完全可以和adapter独立出来。  
 
-3. **AdapterItem**
+3. **AdapterItem**  
 和原来方式最为不同的就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView的ViewHolder的设计。把Item作为实体的好处有很多，就不细说了，最关键的是用这种方式我可以让RecyclerView的建立viewHolder和绑定ViewHolder的工作合二为一，还是减少了重复代码。
 
 4. **One more thing**  

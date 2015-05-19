@@ -258,7 +258,24 @@ public class RcvButtonItem extends RcvAdapterItem<TestModel>{
         });
 ```
   
-## 开发者们
+## 设计思路  
+其实现在的效果和原本的adapter差不多，只是做了点小的重构，这种重构最终保持了和原本一样的可扩展性。下面我来分析下具体的细节：  
+
+1. **Model**  
+现在我强制你的model实现了`AdapterModel`这个接口，你可能会说这样会改变model的纯粹性，添加了两个get的方法，让model和业务又了关系。但是，你原本的model不也是用了很多set和get方法么？这些set和get方法在本质上也都是让业务进行调用的，而现在添加的`getDataTypeCount()`和`getDataType()`也和原来一样，就是一个get方法，get的数据也是model中有的，不是因为业务需要而凭空捏造的。我们当然可以把这两个方法放到适配器的初始化中进行设置，但初始化的时候你不还是要看看model有什么类型，然后再进行设置类型总数和类型标识么？而类型这个东西和model中的数据是密切相关的，所以`getDataTypeCount()`和`getDataType()`和model是最有关系的，而且这种用接口的做法没有改变model的其他熟悉，最关键的是可以大大节约adapter的代码量。
+
+2. **Adapter**  
+因为adapter原始的代码很多，所以如果你把adapter作为activity的内部类的话很别扭，而且如果adapter中如果有多个类型的Item，你就必须在getView()中写很多if-else语句，而且里面都是一些设置view的方法，很乱，你要更换Item的话还需要去删减代码，而现在我让adapter的代码量减少到一个方法，如果你需要更新item或者添加一个新的item你直接在initItem中返回即可，实现了可插拔化。最关键的是item现在作为一个独立的对象，内部view的设置完全可以和adapter独立出来。  
+
+3. **AdapterItem**
+和原来方式最为不同的就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView的ViewHolder的设计。把Item作为实体的好处有很多，就不细说了，最关键的是用这种方式我可以让RecyclerView的建立viewHolder和绑定ViewHolder的工作合二为一，还是减少了重复代码。
+
+4. **One more thing**  
+如果你是一个倾向于MVP的开发者，你完全可以把原本项目中独立的adapter变成activity的内部类，这样做增加了adapter和activity的聚合性，同时减少了项目中的众多adapter类。这样的坏处是什么呢？activity现在和adapter的聚合度高了，而现在adapter中仅仅有view，这样activity和view的聚合度也会很高。如果你认为activity是一个controler，那么请千万不要用我的做法，因为这样会让你的项目层次出现混乱。但如果你认为activity就是一个view管理对象，逻辑是写在presenter中的，那么你可以放心的用这种方式。欢迎大家来继续讨论。
+
+
+## 开发者
+![image](./demoPic/kale.png)  
 
 Jack Tony: <developer_kale@.com>  
 

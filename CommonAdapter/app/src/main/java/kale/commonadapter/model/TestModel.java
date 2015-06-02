@@ -1,7 +1,7 @@
 package kale.commonadapter.model;
 
 
-import kale.adapter.AdapterModel;
+import kale.adapter.model.AdapterModel;
 
 /**
  * @author Jack Tony

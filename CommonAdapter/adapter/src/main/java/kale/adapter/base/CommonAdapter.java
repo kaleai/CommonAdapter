@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
-import kale.adapter.AdapterModel;
+import kale.adapter.model.AdapterModel;
 
 /**
  * @author Jack Tony

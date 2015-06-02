@@ -14,7 +14,7 @@ import kale.adapter.model.AdapterModel;
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter{
+public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
 
     protected List<T> mData;
 
@@ -47,6 +47,9 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         adapterItem.setViews(mData.get(position), position);
     }
 
+    /**
+     * 可以被复写用于单条刷新等
+     */
     public void updateData(List<T> data) {
         mData = data;
         notifyDataSetChanged();

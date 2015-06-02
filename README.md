@@ -8,7 +8,7 @@
 
 ## 使用方式  
   
-1. 添加JitPack仓库
+1.添加JitPack仓库
   
 ```  
 repositories {
@@ -18,7 +18,7 @@ repositories {
 	}
 ```   
 
-2. 添加依赖  
+2.添加依赖  
 ```  
 dependencies {
 	        compile 'com.github.tianzhijiexian:CommonAdapter:1.1'

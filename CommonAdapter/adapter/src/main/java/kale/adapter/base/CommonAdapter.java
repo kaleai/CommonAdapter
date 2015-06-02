@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
-import kale.adapter.AdapterModel;
+import kale.adapter.model.AdapterModel;
 
 /**
  * @author Jack Tony
@@ -71,6 +71,9 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
     @NonNull
     AdapterItem initItemView(int type);
 
+    /**
+     * 可以被复写用于单条刷新等
+     */
     public void updateData(List<T> data) {
         mData = data;
         notifyDataSetChanged();

@@ -3,7 +3,7 @@ package kale.adapter.base;
 import android.support.annotation.LayoutRes;
 import android.view.View;
 
-import kale.adapter.AdapterModel;
+import kale.adapter.model.AdapterModel;
 
 /**
  * adapter的所有item必须实现此接口.

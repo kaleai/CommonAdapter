@@ -3,17 +3,18 @@ package kale.adapter.recycler;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
 import java.util.List;
 
-import kale.adapter.AdapterModel;
+import kale.adapter.model.AdapterModel;
 
 
 /**
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T extends AdapterModel> extends BaseRecyclerAdapter {
+public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
 
     protected List<T> mData;
 
@@ -22,18 +23,18 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends BaseRecyc
     }
 
     @Override
-    public int getAdapterItemCount() {
+    public int getItemCount() {
         return mData.size();
     }
 
     @Override
-    public int getAdapterItemType(int position) {
+    public int getItemViewType(int position) {
         return mData.get(position).getDataType();
     }
 
     @Override
-    protected RecyclerView.ViewHolder onCreateItemViewHolder(Context context, int viewType) {
-        return initItemView(context, viewType);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return initItemView(parent.getContext(), viewType);
     }
 
     protected abstract
@@ -41,11 +42,14 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends BaseRecyc
     RcvAdapterItem initItemView(Context context, int type);
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position, boolean nothing) {
-        RcvAdapterItem adapterItem = (RcvAdapterItem) viewHolder;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        RcvAdapterItem adapterItem = (RcvAdapterItem) holder;
         adapterItem.setViews(mData.get(position), position);
     }
 
+    /**
+     * 可以被复写用于单条刷新等
+     */
     public void updateData(List<T> data) {
         mData = data;
         notifyDataSetChanged();

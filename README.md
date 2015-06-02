@@ -4,7 +4,7 @@
 
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的Adapter对象。  
 
---  
+
 
 ## 使用方式  
   

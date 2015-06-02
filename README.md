@@ -277,7 +277,7 @@ public class RcvButtonItem extends RcvAdapterItem<TestModel>{
 
 
 ## 开发者
-![image](./demoPic/kale.png)  
+![](https://avatars3.githubusercontent.com/u/9552155?v=3&s=460)
 
 Jack Tony: <developer_kale@.com>  
 

@@ -3,11 +3,13 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CommonAdapter-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1861)  
 
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的Adapter对象。  
+
 --  
 
 ## 使用方式  
   
-1. 添加JitPack仓库  
+1. 添加JitPack仓库
+  
 ```  
 repositories {
 	    maven {
@@ -15,6 +17,7 @@ repositories {
 	    }
 	}
 ```   
+
 2. 添加依赖  
 ```  
 dependencies {

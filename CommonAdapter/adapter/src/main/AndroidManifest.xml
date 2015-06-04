@@ -1,6 +1,6 @@
-<manifest package="kale.adapter"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kale.adapter">
     <application android:allowBackup="true">
 
     </application>

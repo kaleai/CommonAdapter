@@ -5,8 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import kale.adapter.base.AdapterItem;
 import kale.adapter.model.AdapterModel;
 
 
@@ -17,6 +20,7 @@ import kale.adapter.model.AdapterModel;
 public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
 
     protected List<T> mData;
+    private Map<Integer,AdapterItem> adapterItemMap=new HashMap<>();
 
     protected CommonRcvAdapter(List<T> data) {
         mData = data;
@@ -33,18 +37,29 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return initItemView(parent.getContext(), viewType);
+    public RcvAdapterItem onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new  RcvAdapterItem(parent.getContext(),initItemView(viewType));
     }
 
     protected abstract
     @NonNull
-    RcvAdapterItem initItemView(Context context, int type);
+    AdapterItem initItemView( int type);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         RcvAdapterItem adapterItem = (RcvAdapterItem) holder;
-        adapterItem.setViews(mData.get(position), position);
+        adapterItem.setViews(initAdapterItem(position),mData.get(position), position);
+    }
+
+    private AdapterItem initAdapterItem(int position){
+
+        AdapterItem  item= adapterItemMap.get(getItemViewType(position));
+
+        if(item == null){
+            item = initItemView(getItemViewType(position));
+            adapterItemMap.put(getItemViewType(position),item);
+        }
+        return   item;
     }
 
     /**

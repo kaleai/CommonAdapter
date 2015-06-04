@@ -104,20 +104,20 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setAdapter(new CommonRcvAdapter<TestModel>(data) {
             @NonNull
             @Override
-            protected RcvAdapterItem initItemView(Context context, int type) {
-                RcvAdapterItem item;
+            protected AdapterItem initItemView( int type) {
+                AdapterItem item;
                 switch (type) {
                     case TestModel.TYPE_TEXT:
-                        item = new RcvTextItem(context, R.layout.text_adapter_item);
+                        item = new RcvTextItem( R.layout.text_adapter_item);
                         break;
                     case TestModel.TYPE_BUTTON:
-                        item = new RcvButtonItem(context, R.layout.button_adapter_item);
+                        item = new RcvButtonItem( R.layout.button_adapter_item);
                         break;
                     case TestModel.TYPE_IMAGE:
-                        item = new RcvImageItem(context, R.layout.image_adapter_item);
+                        item = new RcvImageItem( R.layout.image_adapter_item);
                         break;
                     default:
-                        item = new RcvTextItem(context, R.layout.text_adapter_item);
+                        item = new RcvTextItem( R.layout.text_adapter_item);
                 }
                 return item;
             }

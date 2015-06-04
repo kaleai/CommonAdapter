@@ -1,13 +1,19 @@
 package kale.adapter.base;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+import kale.adapter.R;
 import kale.adapter.model.AdapterModel;
 
 /**
@@ -17,6 +23,8 @@ import kale.adapter.model.AdapterModel;
 public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter {
 
     protected List<T> mData;
+
+    private Map<Integer,AdapterItem> adapterItemMap=new HashMap<>();
 
     protected CommonAdapter(List<T> data) {
         mData = data;
@@ -49,22 +57,27 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AdapterItem item = null;
+
+
+        AdapterItem item =initAdapterItem(position);
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            item = initItemView(getItemViewType(position));
-            if (item == null) {
-                throw new RuntimeException(
-                        "The item type { " + getItemViewType(position) + " } is unknown,please ensure you had this type in data list");
-            }
             convertView = inflater.inflate(item.getLayoutResId(), null);
         }
-
-        if (item == null) {
-            item = initItemView(getItemViewType(position));
-        }
-        item.initViews(convertView, mData.get(position), position);
+        item.initViews(ViewHolder.newInstant(convertView),mData.get(position), position);
         return convertView;
+    }
+
+
+    private AdapterItem initAdapterItem(int position){
+
+       AdapterItem  item= adapterItemMap.get(getItemViewType(position));
+
+        if(item == null){
+            item = initItemView(getItemViewType(position));
+            adapterItemMap.put(getItemViewType(position),item);
+        }
+        return   item;
     }
 
     protected abstract

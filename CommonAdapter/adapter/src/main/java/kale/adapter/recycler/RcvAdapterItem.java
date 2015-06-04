@@ -1,11 +1,12 @@
 package kale.adapter.recycler;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 
+import kale.adapter.R;
+import kale.adapter.base.AdapterItem;
+import kale.adapter.base.ViewHolder;
 import kale.adapter.model.AdapterModel;
 
 
@@ -15,7 +16,10 @@ import kale.adapter.model.AdapterModel;
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class RcvAdapterItem<T extends AdapterModel> extends RecyclerView.ViewHolder {
+public class RcvAdapterItem extends RecyclerView.ViewHolder {
+
+
+    private ViewHolder vh;
 
     /**
      * 构造方法
@@ -23,26 +27,23 @@ public abstract class RcvAdapterItem<T extends AdapterModel> extends RecyclerVie
      * @param context     context对象
      * @param layoutResId 这个item布局文件的id
      */
-    public RcvAdapterItem(Context context, @LayoutRes int layoutResId) {
-        super(LayoutInflater.from(context).inflate(layoutResId, null));
+    public RcvAdapterItem(Context context, AdapterItem t) {
+        super((LayoutInflater.from(context).inflate(t.getLayoutResId(), null)));
+        itemView.setTag(t);
+        vh = ViewHolder.newInstant(itemView);
     }
-    
+
+
     /**
      * 设置Item内部view的方法
      *
      * @param data     数据对象
      * @param position 当前item的position
      */
-    public abstract void setViews(T data, int position);
+    public void setViews( AdapterItem t,AdapterModel data, int position) {
 
-    /**
-     * 找到view的方法，等同于findViewById()
-     *
-     * @param id view的id
-     */
-    @SuppressWarnings("unchecked")
-    protected <T extends View> T getView(int id) {
-        return (T) itemView.findViewById(id);
+        t.initViews(vh, data, position);
     }
+
 
 }  

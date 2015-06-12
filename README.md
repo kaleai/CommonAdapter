@@ -12,28 +12,29 @@
   
 ```  
 repositories {
-	    maven {
-	        url "https://jitpack.io"
-	    }
+	maven {
+		url "https://jitpack.io"
 	}
+}
 ```   
 
 2.添加依赖  
 ```  
 dependencies {
-	        compile 'com.github.tianzhijiexian:CommonAdapter:1.（暂时请勿使用，正在修复bug中）'
-	}    
+	compile 'com.github.tianzhijiexian:CommonAdapter:1.（暂时请勿使用，正在修复bug中）'
+}    
 ```
 
-## ListView+GridView的通用适配器——CommonAdapter  
-### Demo:  
+## Demo:  
 Model类：  
 ![image](./demoPic/demo0.png)  
 Adapter中的Item：    
 ![image](./demoPic/demo01.png)  
 给ListView/GridView设置简单的适配器：     
-![image](./demoPic/demo02.png)   
+![image](./demoPic/demo02.png)     
 
+
+## ListView+GridView的通用适配器——CommonAdapter   
 ### 使用步骤  
 ### 1. 让你的List中的model实现`AdapterModel`这个接口  
 接口的源码如下：  
@@ -55,7 +56,7 @@ public interface AdapterModel {
 }  
 ```  
 例子：  
-```java
+```JAVA
 public class TestModel implements AdapterModel {
 
     /**
@@ -118,7 +119,7 @@ public class TestModel implements AdapterModel {
   
 ### 2. Adapter中的每个Item需要实现`AdapterItem`这个接口  
 接口的源码如下：  
-```java  
+```JAVA  
 /**
  * adapter的所有item必须实现此接口.
  * 通过返回layoutResId来自动初始化view，之后在initView中就可以初始化item的内部视图了。<br>
@@ -168,7 +169,7 @@ public class TextItem implements AdapterItem<TestModel> {
 ### 3. 通过继承`CommonAdapter`来实现适配器  
 现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
 ```java
-ListView listView = (ListView) findViewById(R.id.listView);
+		ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(new CommonAdapter<TestModel>(data) {
 
             @NonNull
@@ -194,8 +195,6 @@ ListView listView = (ListView) findViewById(R.id.listView);
 ```
 
 ## RecyclerView的通用适配器——CommonRcvAdapter 
-### Demo:  
-
 ### 使用步骤：  
 ### 1. 让你的List中的model实现`AdapterModel`这个接口（同上）
 ### 2. Adapter中的每个Item需要实现`AdapterItem`这个接口（同上）  

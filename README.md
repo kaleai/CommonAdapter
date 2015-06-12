@@ -21,7 +21,7 @@ repositories {
 2.添加依赖  
 ```  
 dependencies {
-	        compile 'com.github.tianzhijiexian:CommonAdapter:1.1.1'
+	        compile 'com.github.tianzhijiexian:CommonAdapter:1.（暂时请勿使用，正在修复bug中）'
 	}    
 ```
 
@@ -198,87 +198,9 @@ ListView listView = (ListView) findViewById(R.id.listView);
 
 ### 使用步骤：  
 ### 1. 让你的List中的model实现`AdapterModel`这个接口（同上）
-### 2. Adapter中的每个Item需要继承`RcvAdapterItem`这个类  
-该类的源码如下：  
-```java
-/**
- * RecyclerView的Item都需要继承这个类，继承后就可以通过getView来得到Item中的view了
- * @author Jack Tony
- * @date 2015/5/15
- */
-public abstract class RcvAdapterItem<T extends AdapterModel> 
-                                                    extends RecyclerView.ViewHolder {
-
-    /**
-     * 构造方法
-     * @param context context对象
-     * @param layoutResId 这个item布局文件的id
-     */
-    public RcvAdapterItem(Context context, @LayoutRes int layoutResId) {
-        super(LayoutInflater.from(context).inflate(layoutResId, null));
-    }
-
-    /**
-     * 设置Item内部view的方法
-     * @param data 数据对象
-     * @param position 当前item的position
-     */
-    public abstract void setViews(T data, int position);
-
-    /**
-     * 找到view的方法，等同于findViewById()
-     * @param id
-     * @param <T>
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    protected <T extends View> T getView(int id) {
-        return (T) itemView.findViewById(id);
-    }
-
-}   
- ```  
-例子：  
-```java
-public class RcvButtonItem extends RcvAdapterItem<TestModel>{
-
-    public RcvButtonItem(Context context, int layoutResId) {
-        super(context, layoutResId);
-    }
-
-    @Override
-    public void setViews(TestModel data, int position) {
-        Button btn = getView(R.id.button);
-        btn.setText(data.getContent());
-    }
-}  
-```  
-
+### 2. Adapter中的每个Item需要实现`AdapterItem`这个接口（同上）  
 ### 3. 通过继承`CommonRcvAdapter`来实现适配器  
 
-```java
-        recyclerView.setAdapter(new CommonRcvAdapter<TestModel>(data) {
-            @NonNull
-            @Override
-            protected RcvAdapterItem initItemView(Context context, int type) {
-                RcvAdapterItem item;
-                switch (type) {
-                    case TestModel.TYPE_TEXT:
-                        item = new RcvTextItem(context, R.layout.text_adapter_item);
-                        break;
-                    case TestModel.TYPE_BUTTON:
-                        item = new RcvButtonItem(context, R.layout.button_adapter_item);
-                        break;
-                    case TestModel.TYPE_IMAGE:
-                        item = new RcvImageItem(context, R.layout.image_adapter_item);
-                        break;
-                    default:
-                        item = new RcvTextItem(context, R.layout.text_adapter_item);
-                }
-                return item;
-            }
-        });
-```
   
 ## 设计思路  
 其实现在的效果和原本的adapter差不多，只是做了点小的重构，这种重构最终保持了和原本一样的可扩展性。下面我来分析下具体的细节：  

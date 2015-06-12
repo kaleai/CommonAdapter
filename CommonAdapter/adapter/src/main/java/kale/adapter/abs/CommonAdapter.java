@@ -1,6 +1,7 @@
-package kale.adapter.base;
+package kale.adapter.abs;
 
 import android.support.annotation.NonNull;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
-import kale.adapter.model.AdapterModel;
+import kale.adapter.AdapterItem;
+import kale.adapter.ViewHolder;
+import kale.adapter.AdapterModel;
 
 /**
  * @author Jack Tony
@@ -16,8 +19,9 @@ import kale.adapter.model.AdapterModel;
  */
 public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter {
 
-    protected List<T> mData;
-
+    private List<T> mData;
+    private SparseArray<AdapterItem<T>> mAdapterItemSparseArr = new SparseArray<>();
+    
     protected CommonAdapter(List<T> data) {
         mData = data;
     }
@@ -49,27 +53,18 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AdapterItem item = null;
+        AdapterItem<T> item = getItemByType(getItemViewType(position));
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            item = initItemView(getItemViewType(position));
-            if (item == null) {
-                throw new RuntimeException(
-                        "The item type { " + getItemViewType(position) + " } is unknown,please ensure you had this type in data list");
-            }
             convertView = inflater.inflate(item.getLayoutResId(), null);
         }
-
-        if (item == null) {
-            item = initItemView(getItemViewType(position));
-        }
-        item.initViews(convertView, mData.get(position), position);
+        item.initViews(ViewHolder.getInstance(convertView), mData.get(position), position);
         return convertView;
     }
 
     protected abstract
     @NonNull
-    AdapterItem initItemView(int type);
+    AdapterItem<T> initItemView(int type);
 
     /**
      * 可以被复写用于单条刷新等
@@ -77,5 +72,24 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
     public void updateData(List<T> data) {
         mData = data;
         notifyDataSetChanged();
+    }
+
+    public List<T> getData() {
+        return mData;
+    }
+
+    /**
+     * 根据相应的类型得到item对象
+     *
+     * @param type item的类型
+     */
+    private AdapterItem<T> getItemByType(int type) {
+        AdapterItem<T> item = mAdapterItemSparseArr.get(type, null);
+
+        if (item == null) {
+            item = initItemView(type);
+            mAdapterItemSparseArr.put(type, item);
+        }
+        return item;
     }
 }

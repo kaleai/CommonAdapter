@@ -1,4 +1,4 @@
-package kale.adapter.model;
+package kale.adapter;
 
 /**
  * @author Jack Tony

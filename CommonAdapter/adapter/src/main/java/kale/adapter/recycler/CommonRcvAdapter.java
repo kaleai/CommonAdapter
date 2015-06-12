@@ -3,11 +3,15 @@ package kale.adapter.recycler;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import kale.adapter.model.AdapterModel;
+import kale.adapter.AdapterItem;
+import kale.adapter.AdapterModel;
+import kale.adapter.ViewHolder;
 
 
 /**
@@ -16,7 +20,9 @@ import kale.adapter.model.AdapterModel;
  */
 public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
 
-    protected List<T> mData;
+    private List<T> mData;
+
+    private SparseArray<AdapterItem<T>> mAdapterItemSparseArr = new SparseArray<>();
 
     protected CommonRcvAdapter(List<T> data) {
         mData = data;
@@ -34,17 +40,32 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return initItemView(parent.getContext(), viewType);
+        return new RcvAdapterItem(parent.getContext(), initItemView(viewType));
     }
-
-    protected abstract
-    @NonNull
-    RcvAdapterItem initItemView(Context context, int type);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         RcvAdapterItem adapterItem = (RcvAdapterItem) holder;
-        adapterItem.setViews(mData.get(position), position);
+        adapterItem.setViews(getItemByType(getItemViewType(position)), mData.get(position), position);
+    }
+
+    protected abstract
+    @NonNull
+    AdapterItem<T> initItemView(int type);
+
+    /**
+     * 根据相应的类型得到item对象
+     *
+     * @param type item的类型
+     */
+    private AdapterItem<T> getItemByType(int type) {
+        AdapterItem<T> item = mAdapterItemSparseArr.get(type, null);
+
+        if (item == null) {
+            item = initItemView(type);
+            mAdapterItemSparseArr.put(type, item);
+        }
+        return item;
     }
 
     /**
@@ -53,5 +74,26 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     public void updateData(List<T> data) {
         mData = data;
         notifyDataSetChanged();
+    }
+
+    public List<T> getData() {
+        return mData;
+    }
+    
+    private class RcvAdapterItem extends RecyclerView.ViewHolder {
+
+        public RcvAdapterItem(Context context, AdapterItem item) {
+            super(LayoutInflater.from(context).inflate(item.getLayoutResId(), null));
+        }
+
+        /**
+         * 设置Item内部view的方法
+         *
+         * @param model     数据对象
+         * @param position 当前item的position
+         */
+        public void setViews(AdapterItem<T> item, T model, int position){
+            item.initViews(ViewHolder.getInstance(itemView), model, position);
+        }
     }
 }

@@ -1,10 +1,9 @@
 package kale.commonadapter.item;
 
-import android.view.View;
 import android.widget.ImageView;
 
-import kale.adapter.base.AdapterItem;
-import kale.adapter.base.ViewHolder;
+import kale.adapter.AdapterItem;
+import kale.adapter.ViewHolder;
 import kale.commonadapter.R;
 import kale.commonadapter.model.TestModel;
 
@@ -15,15 +14,16 @@ import kale.commonadapter.model.TestModel;
  */
 public class ImageItem implements AdapterItem<TestModel> {
 
-    @Override
-    public void initViews(View convertView, TestModel data, int position) {
-        ImageView imageView = ViewHolder.getView(convertView, R.id.imageView);
-        imageView.setImageResource(Integer.parseInt(data.getContent()));
-    }
 
     @Override
     public int getLayoutResId() {
         return R.layout.image_adapter_item;
+    }
+
+    @Override
+    public void initViews(ViewHolder vh, TestModel model, int position) {
+        ImageView imageView = vh.get(R.id.imageView);
+        imageView.setImageResource(Integer.parseInt(model.getContent()));
     }
 
 }

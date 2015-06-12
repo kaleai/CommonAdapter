@@ -1,11 +1,10 @@
 package kale.commonadapter.item;
 
 
-import android.view.View;
 import android.widget.TextView;
 
-import kale.adapter.base.AdapterItem;
-import kale.adapter.base.ViewHolder;
+import kale.adapter.AdapterItem;
+import kale.adapter.ViewHolder;
 import kale.commonadapter.R;
 import kale.commonadapter.model.TestModel;
 
@@ -21,9 +20,9 @@ public class TextItem implements AdapterItem<TestModel> {
     }
 
     @Override
-    public void initViews(View convertView, TestModel data, int position) {
-        TextView textView = ViewHolder.getView(convertView, R.id.textView);
-        textView.setText(data.getContent());
+    public void initViews(ViewHolder vh, TestModel model, int position) {
+        TextView textView = vh.get(R.id.textView);
+        textView.setText(model.getContent());
     }
 
 }

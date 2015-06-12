@@ -1,6 +1,5 @@
 package kale.commonadapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
@@ -13,15 +12,11 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import kale.adapter.base.AdapterItem;
-import kale.adapter.base.CommonAdapter;
+import kale.adapter.AdapterItem;
+import kale.adapter.abs.CommonAdapter;
 import kale.adapter.recycler.CommonRcvAdapter;
-import kale.adapter.recycler.RcvAdapterItem;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
-import kale.commonadapter.item.RcvButtonItem;
-import kale.commonadapter.item.RcvImageItem;
-import kale.commonadapter.item.RcvTextItem;
 import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.TestModel;
 
@@ -38,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         final List<TestModel> data = loadData();
         getSupportActionBar().setTitle("ListView的效果");
@@ -70,30 +64,14 @@ public class MainActivity extends ActionBarActivity {
         });
 
     }
-    
-
 
     private void addDataToListView(List<TestModel> data) {
         listView.setAdapter(new CommonAdapter<TestModel>(data) {
 
             @NonNull
             @Override
-            protected AdapterItem initItemView(int type) {
-                AdapterItem item;
-                switch (type) {
-                    case TestModel.TYPE_TEXT:
-                        item = new TextItem();
-                        break;
-                    case TestModel.TYPE_BUTTON:
-                        item = new ButtonItem();
-                        break;
-                    case TestModel.TYPE_IMAGE:
-                        item = new ImageItem();
-                        break;
-                    default:
-                        item = new TextItem();
-                }
-                return item;
+            protected AdapterItem<TestModel> initItemView(int type) {
+                return initItem(type);
             }
         });
     }
@@ -102,26 +80,26 @@ public class MainActivity extends ActionBarActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new CommonRcvAdapter<TestModel>(data) {
+
             @NonNull
             @Override
-            protected RcvAdapterItem initItemView(Context context, int type) {
-                RcvAdapterItem item;
-                switch (type) {
-                    case TestModel.TYPE_TEXT:
-                        item = new RcvTextItem(context, R.layout.text_adapter_item);
-                        break;
-                    case TestModel.TYPE_BUTTON:
-                        item = new RcvButtonItem(context, R.layout.button_adapter_item);
-                        break;
-                    case TestModel.TYPE_IMAGE:
-                        item = new RcvImageItem(context, R.layout.image_adapter_item);
-                        break;
-                    default:
-                        item = new RcvTextItem(context, R.layout.text_adapter_item);
-                }
-                return item;
+            protected AdapterItem<TestModel> initItemView(int type) {
+                return initItem(type);
             }
         });
+    }
+
+    private AdapterItem<TestModel> initItem(int type) {
+        switch (type) {
+            case TestModel.TYPE_TEXT:
+                return new TextItem();
+            case TestModel.TYPE_BUTTON:
+                return new ButtonItem();
+            case TestModel.TYPE_IMAGE:
+                return new ImageItem();
+            default:
+                return new TextItem();
+        }
     }
 
 

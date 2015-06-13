@@ -23,7 +23,7 @@ public class ImageItem implements AdapterItem<TestModel> {
     @Override
     public void initViews(ViewHolder vh, TestModel model, int position) {
         ImageView imageView = vh.get(R.id.imageView);
-        imageView.setImageResource(Integer.parseInt(model.getContent()));
+        imageView.setImageResource(Integer.parseInt(model.content));
     }
 
 }

@@ -22,7 +22,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     private List<T> mData;
 
-    private SparseArray<AdapterItem<T>> mAdapterItemSparseArr = new SparseArray<>();
+    private SparseArray<AdapterItem<T>> mItemSparseArr = new SparseArray<>();
 
     protected CommonRcvAdapter(List<T> data) {
         mData = data;
@@ -35,12 +35,12 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position).getDataType();
+        return getItemType(mData.get(position).getDataType());
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), initItemView(viewType));
+        return new RcvAdapterItem(parent.getContext(), initItemView(mTypeArr.valueAt(viewType)));
     }
 
     @Override
@@ -51,19 +51,32 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     protected abstract
     @NonNull
-    AdapterItem<T> initItemView(int type);
+    AdapterItem<T> initItemView(Object type);
 
+    int typeNum = 0;
+    private SparseArray<Object> mTypeArr = new SparseArray<>();
+
+    private int getItemType(Object type) {
+        int index = mTypeArr.indexOfValue(type);
+        if (index == -1) {
+            mTypeArr.put(typeNum, type);
+            index = typeNum;
+            typeNum++;
+        }
+        return index;
+    }
+    
     /**
      * 根据相应的类型得到item对象
      *
      * @param type item的类型
      */
     private AdapterItem<T> getItemByType(int type) {
-        AdapterItem<T> item = mAdapterItemSparseArr.get(type, null);
+        AdapterItem<T> item = mItemSparseArr.get(type, null);
 
         if (item == null) {
-            item = initItemView(type);
-            mAdapterItemSparseArr.put(type, item);
+            item = initItemView(mTypeArr.valueAt(type));
+            mItemSparseArr.put(type, item);
         }
         return item;
     }

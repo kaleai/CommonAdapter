@@ -15,8 +15,6 @@ public interface AdapterModel {
 
     /**
      * 返回每种数据类型的标识.<br>
-     * 需要注意的是：这个的范围只能是[0 , typeCount - 1]
-     * @return 每种数据类型的标识
      */
-    public int getDataType();
+    public Object getDataType();
 }

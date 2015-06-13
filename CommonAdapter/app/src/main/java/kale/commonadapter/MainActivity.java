@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
 
             @NonNull
             @Override
-            protected AdapterItem<TestModel> initItemView(int type) {
+            protected AdapterItem<TestModel> initItemView(Object type) {
                 return initItem(type);
             }
         });
@@ -83,19 +83,19 @@ public class MainActivity extends ActionBarActivity {
 
             @NonNull
             @Override
-            protected AdapterItem<TestModel> initItemView(int type) {
+            protected AdapterItem<TestModel> initItemView(Object type) {
                 return initItem(type);
             }
         });
     }
 
-    private AdapterItem<TestModel> initItem(int type) {
-        switch (type) {
-            case TestModel.TYPE_TEXT:
+    private AdapterItem<TestModel> initItem(Object type) {
+        switch ((String)type) {
+            case "text":
                 return new TextItem();
-            case TestModel.TYPE_BUTTON:
+            case "button":
                 return new ButtonItem();
-            case TestModel.TYPE_IMAGE:
+            case "image":
                 return new ImageItem();
             default:
                 return new TextItem();
@@ -114,16 +114,16 @@ public class MainActivity extends ActionBarActivity {
             TestModel model = new TestModel();
             switch (type) {
                 case 0:
-                    model.setType("text");
-                    model.setContent("第一种布局");
+                    model.type = "text";
+                    model.content = "第一种布局";
                     break;
                 case 1:
-                    model.setType("button");
-                    model.setContent("第二种布局");
+                    model.type = "button";
+                    model.content = "第二种布局";
                     break;
                 case 2:
-                    model.setType("image");
-                    model.setContent(String.valueOf(R.drawable.kale));
+                    model.type = "image";
+                    model.content = String.valueOf(R.drawable.kale);
                     break;
                 default:
             }

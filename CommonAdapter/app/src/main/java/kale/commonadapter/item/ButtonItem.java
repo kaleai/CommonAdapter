@@ -27,7 +27,7 @@ public class ButtonItem implements AdapterItem<TestModel> {
     }
 
     private void setViews(TestModel data) {
-        btn.setText(data.getContent());
+        btn.setText(data.content);
     }
 
 }

@@ -49,8 +49,6 @@ public interface AdapterModel {
 
     /**
      * 返回每种数据类型的标识.<br>
-     * 需要注意的是：这个的范围只能是[0 , typeCount - 1]
-     * @return 每种数据类型的标识
      */
     public int getDataType();
 }  
@@ -59,34 +57,9 @@ public interface AdapterModel {
 ```JAVA
 public class TestModel implements AdapterModel {
 
-    /**
-     * 定义类型标识的时候，必须是从0到type数-1，否则会数组越界.
-     * 这里我们是三种类型，所以类型的标识就是0~2
-     */
-    public static final int TYPE_TEXT = 0;
-    public static final int TYPE_BUTTON = 1;
-    public static final int TYPE_IMAGE = 2;
-    public static final int TYPE_NORMAL = TYPE_TEXT;
+	public String content;
 
-    private String content;
-
-    private String type;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return this.type;
-    }
+    public String type;
 
     /**
      * 返回数据的类型数
@@ -100,19 +73,9 @@ public class TestModel implements AdapterModel {
      * 这个model中决定数据类型的字段
      */
     @Override
-    public int getDataType() {
-        switch (type) {
-            case "button":
-                return TYPE_BUTTON;
-            case "image":
-                return TYPE_IMAGE;
-            case "text":
-                return TYPE_TEXT;
-            default:
-                return TYPE_NORMAL;
-        }
+    public Object getDataType() {
+        return type;
     }
-
 }
 
 ```  
@@ -139,11 +102,11 @@ public interface AdapterItem<T extends AdapterModel> {
     /**
      * 根据数据来初始化item的内部view
      *
-     * @param convertView adapter中复用的view
-     * @param data        数据list内部的model
-     * @param position    当前adapter调用item的位置
+     * @param vh       view holder
+     * @param model    数据list内部的model
+     * @param position 当前adapter调用item的位置
      */
-    public void initViews(View convertView, T data, int position);
+    public void initViews(ViewHolder vh, T model, int position);
 
 }  
 ```  
@@ -151,15 +114,15 @@ public interface AdapterItem<T extends AdapterModel> {
 ```java
 public class TextItem implements AdapterItem<TestModel> {
 
-    @Override
+     @Override
     public int getLayoutResId() {
         return R.layout.text_adapter_item;
     }
 
     @Override
-    public void initViews(View convertView, TestModel data, int position) {
-        TextView textView = ViewHolder.getView(convertView, R.id.textView);
-        textView.setText(data.getContent());
+    public void initViews(ViewHolder vh, TestModel model, int position) {
+        TextView textView = vh.get(R.id.textView);
+        textView.setText(model.content);
     }
 
 }
@@ -174,22 +137,17 @@ public class TextItem implements AdapterItem<TestModel> {
 
             @NonNull
             @Override
-            protected AdapterItem initItemView(int type) {
-                AdapterItem item;
-                switch (type) {
-                    case TestModel.TYPE_TEXT:
-                        item = new TextItem();
-                        break;
-                    case TestModel.TYPE_BUTTON:
-                        item = new ButtonItem();
-                        break;
-                    case TestModel.TYPE_IMAGE:
-                        item = new ImageItem();
-                        break;
-                    default:
-                        item = new TextItem();
-                }
-                return item;
+            protected AdapterItem<TestModel> initItemView(Object type) {
+                 switch ((String)type) {
+            	case "text":
+                	return new TextItem();
+            	case "button":
+                	return new ButtonItem();
+            	case "image":
+                	return new ImageItem();
+            	default:
+                	return new TextItem();
+        		}
             }
         });
 ```

@@ -50,7 +50,7 @@ public interface AdapterModel {
     /**
      * 返回每种数据类型的标识.<br>
      */
-    public int getDataType();
+    public Object getDataType();
 }  
 ```  
 例子：  

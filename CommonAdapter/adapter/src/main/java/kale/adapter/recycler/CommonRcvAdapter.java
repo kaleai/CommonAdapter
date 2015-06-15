@@ -49,8 +49,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        RcvAdapterItem adapterItem = (RcvAdapterItem) holder;
-        adapterItem.setViews(getItemByType(mData.get(position).getDataType()), mData.get(position), position);
+        ((RcvAdapterItem) holder).setViews(getItemByType(mData.get(position).getDataType()), mData.get(position), position);
     }
 
     protected abstract

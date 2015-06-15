@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -60,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 getSupportActionBar().setTitle("RecyclerView的效果");
                 recyclerView.setVisibility(View.VISIBLE);
-                //((CommonRcvAdapter<TestModel>) recyclerView.getAdapter()).updateData(loadData());
+               // ((CommonRcvAdapter<TestModel>) recyclerView.getAdapter()).updateData(loadData());
                 listView.setVisibility(View.GONE);
             }
         });
@@ -85,6 +86,8 @@ public class MainActivity extends ActionBarActivity {
             @NonNull
             @Override
             protected AdapterItem<TestModel> initItemView(Object type) {
+                Log.d(TAG, "type = " + type);
+                
                 return initItem(type);
             }
         });

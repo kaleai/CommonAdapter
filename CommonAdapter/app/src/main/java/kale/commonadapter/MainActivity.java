@@ -49,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 getSupportActionBar().setTitle("ListView的效果");
                 listView.setVisibility(View.VISIBLE);
+                ((CommonAdapter<TestModel>) listView.getAdapter()).updateData(loadData());
                 recyclerView.setVisibility(View.GONE);
             }
         });
@@ -59,12 +60,12 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 getSupportActionBar().setTitle("RecyclerView的效果");
                 recyclerView.setVisibility(View.VISIBLE);
+                //((CommonRcvAdapter<TestModel>) recyclerView.getAdapter()).updateData(loadData());
                 listView.setVisibility(View.GONE);
             }
         });
-
     }
-
+    
     private void addDataToListView(List<TestModel> data) {
         listView.setAdapter(new CommonAdapter<TestModel>(data) {
 
@@ -75,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
-
+    
     private void addDataToRecyclerView(List<TestModel> data) {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -131,5 +132,4 @@ public class MainActivity extends ActionBarActivity {
         }
         return list;
     }
-
 }

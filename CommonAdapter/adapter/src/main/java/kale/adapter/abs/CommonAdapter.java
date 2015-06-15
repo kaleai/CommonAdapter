@@ -1,17 +1,17 @@
 package kale.adapter.abs;
 
 import android.support.annotation.NonNull;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.ViewHolder;
 import kale.adapter.AdapterModel;
+import kale.adapter.ViewHolder;
 
 /**
  * @author Jack Tony
@@ -20,7 +20,6 @@ import kale.adapter.AdapterModel;
 public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter {
 
     private List<T> mData;
-    private SparseArray<AdapterItem<T>> mItemSparseArr = new SparseArray<>();
     
     protected CommonAdapter(List<T> data) {
         mData = data;
@@ -41,11 +40,15 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
         return position;
     }
 
+    /**
+     * instead by getData().get(position).getDataType()
+     */
     @Override
+    @Deprecated
     public int getItemViewType(int position) {
-        return getItemType(mData.get(position).getDataType());
+        return -1;
     }
-
+    
     @Override
     public int getViewTypeCount() {
         return mData.get(0).getDataTypeCount();
@@ -53,7 +56,7 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AdapterItem<T> item = getItemByType(getItemViewType(position));
+        AdapterItem<T> item = getItemByType(mData.get(position).getDataType());
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(item.getLayoutResId(), null);
@@ -78,30 +81,20 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
         return mData;
     }
 
-    int typeNum = 0;
-    private SparseArray<Object> mTypeArr = new SparseArray<>();
 
-    private int getItemType(Object type) {
-        int index = mTypeArr.indexOfValue(type);
-        if (index == -1) {
-            mTypeArr.put(typeNum, type);
-            index = typeNum;
-            typeNum++;
-        }
-        return index;
-    }
-    
+    // (type - item) = (key - value)
+    private HashMap<Object, AdapterItem<T>> mItemMap = new HashMap<>();
+
     /**
      * 根据相应的类型得到item对象
      *
      * @param type item的类型
      */
-    private AdapterItem<T> getItemByType(int type) {
-        AdapterItem<T> item = mItemSparseArr.get(type, null);
-
+    private AdapterItem<T> getItemByType(Object type) {
+        AdapterItem<T> item = mItemMap.get(type);
         if (item == null) {
-            item = initItemView(mTypeArr.valueAt(type));
-            mItemSparseArr.put(type, item);
+            item = initItemView(type);
+            mItemMap.put(type, item);
         }
         return item;
     }

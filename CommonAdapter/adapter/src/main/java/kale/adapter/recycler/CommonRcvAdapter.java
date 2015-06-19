@@ -3,6 +3,7 @@ package kale.adapter.recycler;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -40,7 +41,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     @Override
     public int getItemViewType(int position) {
         mPosition = position;
-        return position;
+        return getRealType(mData.get(position).getDataType());
     }
 
     @Override
@@ -73,6 +74,17 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         }
         return item;
     }
+
+    private SparseArray<Object> mItemTypeSparseArr = new SparseArray<>();
+    private int getRealType(Object type) {
+        int realType = mItemTypeSparseArr.indexOfValue(type);
+        if (realType == -1) {
+            mItemTypeSparseArr.put(mItemTypeSparseArr.size() - 1, type);
+            realType = mItemTypeSparseArr.size() - 1;
+        }
+        return realType;
+    }
+    
 
     /**
      * 可以被复写用于单条刷新等

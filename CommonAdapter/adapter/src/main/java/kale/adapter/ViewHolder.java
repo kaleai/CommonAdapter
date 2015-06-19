@@ -12,25 +12,25 @@ import android.view.View;
  */
 public class ViewHolder {
 
-    private SparseArray<View> viewHolderArr;
+    private SparseArray<View> viewHolderSparseArr;
 
     private View mView;
 
     @SuppressWarnings("unchecked")
     private ViewHolder(View view) {
         mView = view;
-        viewHolderArr = (SparseArray<View>) mView.getTag(R.id.tagViewHolder);
-        if (viewHolderArr == null) {
-            viewHolderArr = new SparseArray<>();
-            mView.setTag(R.id.tagViewHolder, viewHolderArr);
+        viewHolderSparseArr = (SparseArray<View>) mView.getTag(R.id.tag_SparseArray);
+        if (viewHolderSparseArr == null) {
+            viewHolderSparseArr = new SparseArray<>();
+            mView.setTag(R.id.tag_SparseArray, viewHolderSparseArr);
         }
     }
 
     public static ViewHolder getInstance(View view) {
-        ViewHolder instance = (ViewHolder) view.getTag();
+        ViewHolder instance = (ViewHolder) view.getTag(R.id.tag_viewHolder);
         if (instance == null) {
             instance = new ViewHolder(view);
-            view.setTag(instance);
+            view.setTag(R.id.tag_viewHolder, instance);
         }
         return instance;
     }
@@ -38,10 +38,10 @@ public class ViewHolder {
     // I added a generic return type to reduce the casting noise in client code  
     @SuppressWarnings("unchecked")
     public <T extends View> T get(int id) {
-        View childView = viewHolderArr.get(id);
+        View childView = viewHolderSparseArr.get(id);
         if (childView == null) {
             childView = mView.findViewById(id);
-            viewHolderArr.put(id, childView);
+            viewHolderSparseArr.put(id, childView);
         }
         return (T) childView;
     }

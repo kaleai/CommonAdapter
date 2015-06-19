@@ -7,7 +7,7 @@ import kale.adapter.AdapterModel;
  * @author Jack Tony
  * @date 2015/5/15
  */
-public class TestModel implements AdapterModel {
+public class DemoModel implements AdapterModel {
 
     public String content;
 

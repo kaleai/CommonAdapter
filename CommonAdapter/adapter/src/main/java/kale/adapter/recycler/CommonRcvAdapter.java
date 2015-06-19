@@ -20,6 +20,7 @@ import kale.adapter.ViewHolder;
  */
 public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
 
+    protected final String TAG = getClass().getSimpleName();
     private List<T> mData;
     private int mPosition;
 

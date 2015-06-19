@@ -19,7 +19,7 @@ import kale.adapter.recycler.CommonRcvAdapter;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
 import kale.commonadapter.item.TextItem;
-import kale.commonadapter.model.TestModel;
+import kale.commonadapter.model.DemoModel;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -33,9 +33,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.demo_activity_main);
 
-        final List<TestModel> data = loadData();
+        final List<DemoModel> data = loadData();
         getSupportActionBar().setTitle("ListView的效果");
 
         listView = (ListView) findViewById(R.id.listView);
@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 getSupportActionBar().setTitle("ListView的效果");
                 listView.setVisibility(View.VISIBLE);
-                ((CommonAdapter<TestModel>) listView.getAdapter()).updateData(loadData());
+                ((CommonAdapter<DemoModel>) listView.getAdapter()).updateData(loadData());
                 recyclerView.setVisibility(View.GONE);
             }
         });
@@ -61,31 +61,31 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 getSupportActionBar().setTitle("RecyclerView的效果");
                 recyclerView.setVisibility(View.VISIBLE);
-               // ((CommonRcvAdapter<TestModel>) recyclerView.getAdapter()).updateData(loadData());
+                ((CommonRcvAdapter<DemoModel>) recyclerView.getAdapter()).updateData(loadData());
                 listView.setVisibility(View.GONE);
             }
         });
     }
     
-    private void addDataToListView(List<TestModel> data) {
-        listView.setAdapter(new CommonAdapter<TestModel>(data) {
+    private void addDataToListView(List<DemoModel> data) {
+        listView.setAdapter(new CommonAdapter<DemoModel>(data) {
 
             @NonNull
             @Override
-            protected AdapterItem<TestModel> initItemView(Object type) {
+            protected AdapterItem<DemoModel> initItemView(Object type) {
                 return initItem(type);
             }
         });
     }
     
-    private void addDataToRecyclerView(List<TestModel> data) {
+    private void addDataToRecyclerView(List<DemoModel> data) {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommonRcvAdapter<TestModel>(data) {
+        recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
 
             @NonNull
             @Override
-            protected AdapterItem<TestModel> initItemView(Object type) {
+            protected AdapterItem<DemoModel> initItemView(Object type) {
                 Log.d(TAG, "type = " + type);
                 
                 return initItem(type);
@@ -93,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private AdapterItem<TestModel> initItem(Object type) {
+    private AdapterItem<DemoModel> initItem(Object type) {
         switch ((String)type) {
             case "text":
                 return new TextItem();
@@ -102,6 +102,7 @@ public class MainActivity extends ActionBarActivity {
             case "image":
                 return new ImageItem();
             default:
+                Log.d(TAG, "default-----------");
                 return new TextItem();
         }
     }
@@ -110,12 +111,12 @@ public class MainActivity extends ActionBarActivity {
     /**
      * 模拟加载数据的操作
      */
-    private List<TestModel> loadData() {
-        List<TestModel> list = new ArrayList<>();
+    private List<DemoModel> loadData() {
+        List<DemoModel> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             int type = (int) (Math.random() * 3);
             //Log.d(TAG, "type = " + type);
-            TestModel model = new TestModel();
+            DemoModel model = new DemoModel();
             switch (type) {
                 case 0:
                     model.type = "text";

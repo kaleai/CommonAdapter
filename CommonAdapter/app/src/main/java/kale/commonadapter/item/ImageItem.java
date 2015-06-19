@@ -1,28 +1,35 @@
 package kale.commonadapter.item;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import kale.adapter.AdapterItem;
 import kale.adapter.ViewHolder;
 import kale.commonadapter.R;
-import kale.commonadapter.model.TestModel;
+import kale.commonadapter.model.DemoModel;
 
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public class ImageItem implements AdapterItem<TestModel> {
+public class ImageItem implements AdapterItem<DemoModel> {
 
 
     @Override
     public int getLayoutResId() {
-        return R.layout.image_adapter_item;
+        return R.layout.demo_item_image;
     }
 
     @Override
-    public void initViews(ViewHolder vh, TestModel model, int position) {
+    public void initViews(ViewHolder vh, DemoModel model, int position) {
+        Log.d("item", "pos = " + position);
         ImageView imageView = vh.get(R.id.imageView);
+        if (imageView == null) {
+            Log.d("item", "imageView is null");
+        } else {
+            Log.d("item", "imageView not null");
+        }
         imageView.setImageResource(Integer.parseInt(model.content));
     }
 

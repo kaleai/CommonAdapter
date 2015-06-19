@@ -21,7 +21,7 @@ repositories {
 2.添加依赖  
 ```  
 dependencies {
-	compile 'com.github.tianzhijiexian:CommonAdapter:1.（暂时请勿使用，正在修复bug中）'
+	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.3'
 }    
 ```
 

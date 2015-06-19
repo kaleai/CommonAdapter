@@ -1,7 +1,6 @@
 package kale.commonadapter.item;
 
 
-import android.util.Log;
 import android.widget.TextView;
 
 import kale.adapter.AdapterItem;
@@ -22,15 +21,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 
     @Override
     public void initViews(ViewHolder vh, DemoModel model, int position) {
-        Log.d("item", "pos = " + position);
-         
         TextView textView = vh.get(R.id.textView);
-
-        if (textView == null) {
-            Log.d("item", "textView is null");
-        } else {
-            Log.d("item", "textView not null");
-        }
         textView.setText(model.content);
     }
 

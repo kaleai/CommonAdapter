@@ -1,6 +1,5 @@
 package kale.commonadapter.item;
 
-import android.util.Log;
 import android.widget.Button;
 
 import kale.adapter.AdapterItem;
@@ -23,12 +22,6 @@ public class ButtonItem implements AdapterItem<DemoModel> {
 
     @Override
     public void initViews(ViewHolder vh, DemoModel model, int position) {
-        Log.d("item", "pos = " + position);
-        if (btn == null) {
-            Log.d("item", "btn is null");
-        } else {
-            Log.d("item", "btn not null");
-        }
         btn = vh.get(R.id.button);
         setViews(model);
     }

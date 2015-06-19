@@ -1,6 +1,5 @@
 package kale.commonadapter.item;
 
-import android.util.Log;
 import android.widget.ImageView;
 
 import kale.adapter.AdapterItem;
@@ -23,13 +22,7 @@ public class ImageItem implements AdapterItem<DemoModel> {
 
     @Override
     public void initViews(ViewHolder vh, DemoModel model, int position) {
-        Log.d("item", "pos = " + position);
         ImageView imageView = vh.get(R.id.imageView);
-        if (imageView == null) {
-            Log.d("item", "imageView is null");
-        } else {
-            Log.d("item", "imageView not null");
-        }
         imageView.setImageResource(Integer.parseInt(model.content));
     }
 

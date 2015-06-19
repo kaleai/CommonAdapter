@@ -86,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
             @NonNull
             @Override
             protected AdapterItem<DemoModel> initItemView(Object type) {
-                Log.d(TAG, "type = " + type);
+               // Log.d(TAG, "type = " + type);
                 
                 return initItem(type);
             }
@@ -134,6 +134,11 @@ public class MainActivity extends ActionBarActivity {
             }
             list.add(model);
         }
+
+        for (DemoModel tempModel : list) {
+            Log.d(TAG, "type = " + tempModel.type);
+        }
+        
         return list;
     }
 }

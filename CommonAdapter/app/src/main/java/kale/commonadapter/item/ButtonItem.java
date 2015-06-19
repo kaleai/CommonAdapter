@@ -22,7 +22,7 @@ public class ButtonItem implements AdapterItem<DemoModel> {
 
     @Override
     public void initViews(ViewHolder vh, DemoModel model, int position) {
-        btn = vh.get(R.id.button);
+        btn = vh.getView(R.id.button);
         setViews(model);
     }
 

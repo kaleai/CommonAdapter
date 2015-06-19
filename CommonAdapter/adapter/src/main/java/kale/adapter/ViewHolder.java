@@ -37,7 +37,7 @@ public class ViewHolder {
 
     // I added a generic return type to reduce the casting noise in client code  
     @SuppressWarnings("unchecked")
-    public <T extends View> T get(int id) {
+    public <T extends View> T getView(int id) {
         View childView = viewHolderSparseArr.get(id);
         if (childView == null) {
             childView = mView.findViewById(id);

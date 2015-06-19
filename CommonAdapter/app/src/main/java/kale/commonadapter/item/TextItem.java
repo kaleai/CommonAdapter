@@ -21,7 +21,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 
     @Override
     public void initViews(ViewHolder vh, DemoModel model, int position) {
-        TextView textView = vh.get(R.id.textView);
+        TextView textView = vh.getView(R.id.textView);
         textView.setText(model.content);
     }
 

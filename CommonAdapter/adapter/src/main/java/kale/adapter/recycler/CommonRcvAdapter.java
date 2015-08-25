@@ -46,7 +46,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), initItemView(mData.get(mPosition).getDataType()));
+        return new RcvAdapterItem(parent.getContext(), parent, initItemView(mData.get(mPosition).getDataType()));
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     // (type - item) = (key - value)
     private HashMap<Object, AdapterItem<T>> mItemMap = new HashMap<>();
-    
+
     /**
      * 根据相应的类型得到item对象
      *
@@ -84,7 +84,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         }
         return realType;
     }
-    
+
 
     /**
      * 可以被复写用于单条刷新等
@@ -97,11 +97,11 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     public List<T> getData() {
         return mData;
     }
-    
+
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
-        public RcvAdapterItem(Context context, AdapterItem item) {
-            super(LayoutInflater.from(context).inflate(item.getLayoutResId(), null));
+        public RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
+            super(LayoutInflater.from(context).inflate(item.getLayoutResId(),parent,false));
         }
 
         /**

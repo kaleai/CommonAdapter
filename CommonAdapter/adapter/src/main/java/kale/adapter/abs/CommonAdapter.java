@@ -59,7 +59,7 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
         AdapterItem<T> item = getItemByType(mData.get(position).getDataType());
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(item.getLayoutResId(), null);
+            convertView = inflater.inflate(item.getLayoutResId(), parent,false);
         }
         item.initViews(ViewHolder.getInstance(convertView), mData.get(position), position);
         return convertView;

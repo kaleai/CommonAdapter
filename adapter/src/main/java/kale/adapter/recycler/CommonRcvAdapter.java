@@ -46,7 +46,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), initItemView(mData.get(mPosition).getDataType()));
+        return new RcvAdapterItem(parent.getContext(), parent, initItemView(mData.get(mPosition).getDataType()));
     }
 
     @Override
@@ -100,8 +100,8 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
-        public RcvAdapterItem(Context context, AdapterItem item) {
-            super(LayoutInflater.from(context).inflate(item.getLayoutResId(), null));
+        public RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
+            super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
         }
 
         /**

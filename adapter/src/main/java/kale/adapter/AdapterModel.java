@@ -11,10 +11,10 @@ public interface AdapterModel {
      * 得到数据的类型数
      * @return 有多少种数据的类型（item的类型）
      */
-    public int getDataTypeCount();
+    int getDataTypeCount();
 
     /**
      * 返回每种数据类型的标识.<br>
      */
-    public Object getDataType();
+    Object getDataType();
 }

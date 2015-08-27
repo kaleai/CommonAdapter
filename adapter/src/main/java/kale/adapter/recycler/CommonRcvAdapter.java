@@ -23,7 +23,9 @@ import kale.adapter.ViewHolder;
 public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
 
     protected final String TAG = getClass().getSimpleName();
+
     private List<T> mData;
+
     private int mPosition;
 
     protected CommonRcvAdapter(List<T> data) {
@@ -52,22 +54,16 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        AdapterItem<T> adapterItem = getItemByType(mData.get(position).getDataType());
+        if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = 
+                    (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            if (adapterItem instanceof FullSpan) {
+                layoutParams.setFullSpan(true);
+            }
+        }
 
-	    AdapterItem adapterItem = getItemByType(mData.get(position).getDataType());
-	    if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
-		    StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView
-			    .getLayoutParams();
-		    if (adapterItem instanceof IStaggeredGridLayoutManagerHelper) {
-			    layoutParams.setFullSpan(
-				    ((IStaggeredGridLayoutManagerHelper) adapterItem).isFullSpan());
-		    }
-		    else {
-			    layoutParams.setFullSpan(false);
-		    }
-
-	    }
-
-	    ((RcvAdapterItem) holder).setViews(adapterItem, mData.get(position), position);
+        ((RcvAdapterItem) holder).setViews(adapterItem, mData.get(position), position);
     }
 
     protected abstract
@@ -92,6 +88,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     }
 
     private SparseArray<Object> mItemTypeSparseArr = new SparseArray<>();
+
     private int getRealType(Object type) {
         int realType = mItemTypeSparseArr.indexOfValue(type);
         if (realType == -1) {
@@ -123,10 +120,10 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         /**
          * 设置Item内部view的方法
          *
-         * @param model     数据对象
+         * @param model    数据对象
          * @param position 当前item的position
          */
-        public void setViews(AdapterItem<T> item, T model, int position){
+        public void setViews(AdapterItem<T> item, T model, int position) {
             item.initViews(ViewHolder.getInstance(itemView), model, position);
         }
     }

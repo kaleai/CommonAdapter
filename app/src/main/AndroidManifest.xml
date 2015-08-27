@@ -16,9 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-	    <activity android:name=".ListviewActivity"/>
-	    <activity android:name=".RecyclerviewActivity"/>
-	    <activity android:name=".StaggeredGridActivity"/>
     </application>
 
 </manifest>

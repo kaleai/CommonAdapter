@@ -17,7 +17,7 @@ public interface AdapterItem<T extends AdapterModel> {
      * @return layout的id
      */
     @LayoutRes
-    public int getLayoutResId();
+    int getLayoutResId();
 
     /**
      * 根据数据来初始化item的内部view
@@ -26,6 +26,6 @@ public interface AdapterItem<T extends AdapterModel> {
      * @param model    数据list内部的model
      * @param position 当前adapter调用item的位置
      */
-    public void initViews(ViewHolder vh, T model, int position);
+    void initViews(ViewHolder vh, T model, int position);
 
 }  

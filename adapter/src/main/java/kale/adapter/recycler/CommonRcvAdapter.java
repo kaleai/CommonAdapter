@@ -3,6 +3,7 @@ package kale.adapter.recycler;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -51,7 +52,22 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RcvAdapterItem) holder).setViews(getItemByType(mData.get(position).getDataType()), mData.get(position), position);
+
+	    AdapterItem adapterItem = getItemByType(mData.get(position).getDataType());
+	    if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
+		    StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView
+			    .getLayoutParams();
+		    if (adapterItem instanceof IStaggeredGridLayoutManagerHelper) {
+			    layoutParams.setFullSpan(
+				    ((IStaggeredGridLayoutManagerHelper) adapterItem).isFullSpan());
+		    }
+		    else {
+			    layoutParams.setFullSpan(false);
+		    }
+
+	    }
+
+	    ((RcvAdapterItem) holder).setViews(adapterItem, mData.get(position), position);
     }
 
     protected abstract
@@ -60,7 +76,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
 
     // (type - item) = (key - value)
     private HashMap<Object, AdapterItem<T>> mItemMap = new HashMap<>();
-    
+
     /**
      * 根据相应的类型得到item对象
      *
@@ -84,7 +100,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         }
         return realType;
     }
-    
+
 
     /**
      * 可以被复写用于单条刷新等
@@ -97,7 +113,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
     public List<T> getData() {
         return mData;
     }
-    
+
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         public RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {

@@ -9,7 +9,7 @@ import android.support.annotation.LayoutRes;
  * @author Jack Tony
  * @date 2015/5/15
  */
-public interface AdapterItem<T extends AdapterModel> {
+public interface AdapterItem<T> {
 
     /**
      * 返回item的布局文件id

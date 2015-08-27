@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.AdapterModel;
 import kale.adapter.ViewHolder;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter {
+public abstract class CommonAdapter<T> extends BaseAdapter {
 
     private List<T> mData;
     
@@ -41,22 +40,22 @@ public abstract class CommonAdapter<T extends AdapterModel> extends BaseAdapter 
     }
 
     /**
-     * instead by getData().get(position).getDataType()
+     * instead by Object getItemViewType()
      */
     @Override
     @Deprecated
     public int getItemViewType(int position) {
         return -1;
     }
+
+    public abstract Object getItemViewType(T item);
     
-    @Override
-    public int getViewTypeCount() {
-        return mData.get(0).getDataTypeCount();
-    }
+   /* @Override
+    public abstract int getViewTypeCount();*/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AdapterItem<T> item = getItemByType(mData.get(position).getDataType());
+        AdapterItem<T> item = getItemByType(getItemViewType(mData.get(position)));
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(item.getLayoutResId(), parent, false);

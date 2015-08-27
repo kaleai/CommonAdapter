@@ -2,7 +2,7 @@ package kale.commonadapter;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -22,7 +22,7 @@ import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.DemoModel;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity {
                 getSupportActionBar().setTitle("ListView的效果");
                 listView.setVisibility(View.VISIBLE);
                 ((CommonAdapter<DemoModel>) listView.getAdapter()).updateData(loadData());
-                recyclerView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -62,13 +62,18 @@ public class MainActivity extends ActionBarActivity {
                 getSupportActionBar().setTitle("RecyclerView的效果");
                 recyclerView.setVisibility(View.VISIBLE);
                 ((CommonRcvAdapter<DemoModel>) recyclerView.getAdapter()).updateData(loadData());
-                listView.setVisibility(View.GONE);
+                listView.setVisibility(View.INVISIBLE);
             }
         });
     }
 
     private void addDataToListView(List<DemoModel> data) {
         listView.setAdapter(new CommonAdapter<DemoModel>(data) {
+
+            @Override
+            public Object getItemViewType(DemoModel item) {
+                return item.getDataType();
+            }
 
             @NonNull
             @Override
@@ -85,17 +90,21 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
 
+            @Override
+            public Object getItemViewType(DemoModel item) {
+                return item.getDataType();
+            }
+
             @NonNull
             @Override
             protected AdapterItem<DemoModel> initItemView(Object type) {
-                // Log.d(TAG, "type = " + type);
-
                 return initItem(type);
             }
         });
     }
 
     private AdapterItem<DemoModel> initItem(Object type) {
+        Log.d(TAG, "type = " + type);
         switch ((String) type) {
             case "text":
                 return new TextItem();
@@ -104,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
             case "image":
                 return new ImageItem();
             default:
-                Log.d(TAG, "default-----------");
+                Log.e(TAG, "No default item");
                 return new TextItem();
         }
     }
@@ -115,7 +124,7 @@ public class MainActivity extends ActionBarActivity {
      */
     private List<DemoModel> loadData() {
         List<DemoModel> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             int type = (int) (Math.random() * 3);
             //Log.d(TAG, "type = " + type);
             DemoModel model = new DemoModel();
@@ -140,7 +149,6 @@ public class MainActivity extends ActionBarActivity {
         for (DemoModel tempModel : list) {
             Log.d(TAG, "type = " + tempModel.type);
         }
-
         return list;
     }
 }

@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.AdapterModel;
 import kale.adapter.ViewHolder;
 
 
@@ -20,7 +19,7 @@ import kale.adapter.ViewHolder;
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerView.Adapter {
+public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -37,32 +36,43 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         return mData.size();
     }
 
+    public List<T> getData() {
+        return mData;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     /**
-     * instead by getData().get(position).getDataType()
+     * instead by {@link kale.adapter.recycler.CommonRcvAdapter} Object getItemViewType
      */
     @Deprecated
     @Override
     public int getItemViewType(int position) {
         mPosition = position;
-        return getRealType(mData.get(position).getDataType());
+        return getRealType(getItemViewType(mData.get(position)));
     }
+
+    public abstract Object getItemViewType(T item);
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, initItemView(mData.get(mPosition).getDataType()));
+        return new RcvAdapterItem(parent.getContext(), parent, initItemView(getItemViewType(mData.get(mPosition))));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        AdapterItem<T> adapterItem = getItemByType(mData.get(position).getDataType());
+        AdapterItem<T> adapterItem = getItemByType(getItemViewType(mData.get(position)));
         if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
-            StaggeredGridLayoutManager.LayoutParams layoutParams = 
-                    (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             if (adapterItem instanceof FullSpan) {
                 layoutParams.setFullSpan(true);
+            } else {
+                layoutParams.setFullSpan(false);
             }
         }
-
         ((RcvAdapterItem) holder).setViews(adapterItem, mData.get(position), position);
     }
 
@@ -87,6 +97,7 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         return item;
     }
 
+
     private SparseArray<Object> mItemTypeSparseArr = new SparseArray<>();
 
     private int getRealType(Object type) {
@@ -98,7 +109,6 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         return realType;
     }
 
-
     /**
      * 可以被复写用于单条刷新等
      */
@@ -107,16 +117,11 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         notifyDataSetChanged();
     }
 
-    public List<T> getData() {
-        return mData;
-    }
-
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         public RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
         }
-
         /**
          * 设置Item内部view的方法
          *
@@ -126,5 +131,6 @@ public abstract class CommonRcvAdapter<T extends AdapterModel> extends RecyclerV
         public void setViews(AdapterItem<T> item, T model, int position) {
             item.initViews(ViewHolder.getInstance(itemView), model, position);
         }
+
     }
 }

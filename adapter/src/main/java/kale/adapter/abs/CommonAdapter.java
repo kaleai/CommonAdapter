@@ -72,7 +72,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     }
 
     public Object getItemViewType(T t){
-        return "type";
+        return null;
     }
 
     @Override
@@ -93,9 +93,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             item.findViews(convertView);
-            convertView.setBackgroundColor(0xffff0000);
-        } else {
-            convertView.setBackgroundColor(0xff00ff00);
         }
         
         item.setViews(mDataList.get(position), position);

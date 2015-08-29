@@ -3,7 +3,7 @@ package kale.commonadapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 return initItem(type);
             }
         });
-        /*listView.setAdapter(new CommonSingleAdapter<DemoModel>(data) {
+        /*listView.setAdapter(new CommonAdapter<DemoModel>(data) {
             @NonNull
             @Override
             protected AdapterItem<DemoModel> getItemView(Object type) {
@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addDataToRecyclerView(List<DemoModel> data) {
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
-        //LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
+        //GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         //StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
@@ -111,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
                 return initItem(type);
             }
         });
+       /* recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
+            @NonNull
+            @Override
+            protected AdapterItem<DemoModel> getItemView(Object type) {
+                return new TextItem();
+            }
+        });*/
     }
 
     private AdapterItem<DemoModel> initItem(Object type) {

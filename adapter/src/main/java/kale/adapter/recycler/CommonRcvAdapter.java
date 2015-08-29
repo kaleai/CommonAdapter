@@ -3,7 +3,6 @@ package kale.adapter.recycler;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -66,24 +65,18 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         return util.getRealType(type);
     }
 
-    public abstract Object getItemViewType(T t);
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("ddd", "onCreateViewHolder 新的,type = " + viewType);
-        return new RcvAdapterItem(parent.getContext(), parent, mAdapterItem);
+    public Object getItemViewType(T t){
+        return null;
     }
 
     @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new RcvAdapterItem(parent.getContext(), parent, mAdapterItem);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        /*if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            if (adapterItem instanceof FullSpan) {
-                layoutParams.setFullSpan(true);
-            } else {
-                layoutParams.setFullSpan(false);
-            }
-        }*/
         ((RcvAdapterItem) holder).getItem().setViews(mDataList.get(position), position);
     }
 

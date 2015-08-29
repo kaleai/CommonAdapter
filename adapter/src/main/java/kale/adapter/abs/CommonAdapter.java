@@ -6,32 +6,50 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.ViewHolder;
+import kale.adapter.util.AdapterItemUtil;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
 public abstract class CommonAdapter<T> extends BaseAdapter {
-
-    private List<T> mData;
     
+    private List<T> mDataList;
+    
+    private int mViewTypeCount;
+
     protected CommonAdapter(List<T> data) {
-        mData = data;
+        this(data, 1);
+    }
+    
+    protected CommonAdapter(List<T> data, int viewTypeCount) {
+        mDataList = data;
+        mViewTypeCount = viewTypeCount;
     }
 
     @Override
     public int getCount() {
-        return mData.size();
+        return mDataList.size();
     }
 
     @Override
     public T getItem(int position) {
-        return mData.get(position);
+        return mDataList.get(position);
+    }
+
+    /**
+     * 可以被复写用于单条刷新等
+     */
+    public void updateData(List<T> data) {
+        mDataList = data;
+        notifyDataSetChanged();
+    }
+
+    public List<T> getDataList() {
+        return mDataList;
     }
 
     @Override
@@ -39,62 +57,53 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         return position;
     }
 
+    AdapterItemUtil<T> util = new AdapterItemUtil<>();
+    
     /**
-     * instead by Object getItemViewType()
+     * instead by
+     * 
+     * @see #getItemViewType(Object) 
      */
     @Override
     @Deprecated
     public int getItemViewType(int position) {
-        return -1;
+        // 如果不写这个方法，会让listView更换dataList后无法刷新数据
+        return util.getRealType(getItemViewType(mDataList.get(position)));
     }
 
-    public abstract Object getItemViewType(T item);
-    
-   /* @Override
-    public abstract int getViewTypeCount();*/
+    public Object getItemViewType(T t){
+        return "type";
+    }
+
+    @Override
+    public int getViewTypeCount(){
+        return mViewTypeCount;
+    }
+
+    LayoutInflater mInflater;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AdapterItem<T> item = getItemByType(getItemViewType(mData.get(position)));
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(item.getLayoutResId(), parent, false);
+        if (mInflater == null) {
+            mInflater = LayoutInflater.from(parent.getContext());
         }
-        item.initViews(ViewHolder.getInstance(convertView), mData.get(position), position);
+        // 通过类型得到item对象
+        Object type = getItemViewType(mDataList.get(position));
+        AdapterItem<T> item = util.getItemByType(type, getItemView(type));
+        if (convertView == null) {
+            convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
+            item.findViews(convertView);
+            convertView.setBackgroundColor(0xffff0000);
+        } else {
+            convertView.setBackgroundColor(0xff00ff00);
+        }
+        
+        item.setViews(mDataList.get(position), position);
         return convertView;
     }
 
     protected abstract
     @NonNull
-    AdapterItem<T> initItemView(Object type);
-
-    /**
-     * 可以被复写用于单条刷新等
-     */
-    public void updateData(List<T> data) {
-        mData = data;
-        notifyDataSetChanged();
-    }
-
-    public List<T> getData() {
-        return mData;
-    }
-
-
-    // (type - item) = (key - value)
-    private HashMap<Object, AdapterItem<T>> mItemMap = new HashMap<>();
-
-    /**
-     * 根据相应的类型得到item对象
-     *
-     * @param type item的类型
-     */
-    private AdapterItem<T> getItemByType(Object type) {
-        AdapterItem<T> item = mItemMap.get(type);
-        if (item == null) {
-            item = initItemView(type);
-            mItemMap.put(type, item);
-        }
-        return item;
-    }
+    AdapterItem<T> getItemView(Object type);
+    
 }

@@ -1,9 +1,9 @@
 package kale.commonadapter.item;
 
+import android.view.View;
 import android.widget.Button;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.ViewHolder;
 import kale.commonadapter.R;
 import kale.commonadapter.model.DemoModel;
 
@@ -21,13 +21,14 @@ public class ButtonItem implements AdapterItem<DemoModel> {
     }
 
     @Override
-    public void initViews(ViewHolder vh, DemoModel model, int position) {
-        btn = vh.getView(R.id.button);
-        setViews(model);
+    public void findViews(View root) {
+        btn = (Button) root.findViewById(R.id.button);
     }
 
-    private void setViews(DemoModel data) {
-        btn.setText(data.content);
+
+    @Override
+    public void setViews(DemoModel model, int position) {
+        btn.setText(model.content);
     }
 
 }

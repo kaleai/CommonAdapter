@@ -1,6 +1,7 @@
 package kale.adapter;
 
 import android.support.annotation.LayoutRes;
+import android.view.View;
 
 /**
  * adapter的所有item必须实现此接口.
@@ -12,20 +13,22 @@ import android.support.annotation.LayoutRes;
 public interface AdapterItem<T> {
 
     /**
-     * 返回item的布局文件id
-     *
-     * @return layout的id
+     * @return item布局文件的layoutId
      */
     @LayoutRes
     int getLayoutResId();
 
     /**
-     * 根据数据来初始化item的内部view
+     * 初始化views
+     */
+    void findViews(View root);
+
+    /**
+     * 根据数据来设置item的内部views
      *
-     * @param vh       view holder
      * @param model    数据list内部的model
      * @param position 当前adapter调用item的位置
      */
-    void initViews(ViewHolder vh, T model, int position);
+    void setViews(T model, int position);
 
 }  

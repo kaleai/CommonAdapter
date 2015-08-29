@@ -3,8 +3,8 @@ package kale.commonadapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -68,25 +68,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addDataToListView(List<DemoModel> data) {
-        listView.setAdapter(new CommonAdapter<DemoModel>(data) {
+        listView.setAdapter(new CommonAdapter<DemoModel>(data, 3) {
 
             @Override
-            public Object getItemViewType(DemoModel item) {
-                return item.getDataType();
+            public Object getItemViewType(DemoModel demoModel) {
+                return demoModel.getDataType();
             }
 
             @NonNull
             @Override
-            protected AdapterItem<DemoModel> initItemView(Object type) {
+            protected AdapterItem<DemoModel> getItemView(Object type) {
+                //Log.d(TAG, "type = " + type);
+                // 每个item只会被初始化一次，之后均是复用
                 return initItem(type);
             }
         });
+        /*listView.setAdapter(new CommonSingleAdapter<DemoModel>(data) {
+            @NonNull
+            @Override
+            protected AdapterItem<DemoModel> getItemView(Object type) {
+                return new TextItem();
+            }
+        });*/
     }
 
     private void addDataToRecyclerView(List<DemoModel> data) {
-        // GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
-        // LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        //LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
+        //StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
 
@@ -97,14 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
             @NonNull
             @Override
-            protected AdapterItem<DemoModel> initItemView(Object type) {
+            protected AdapterItem<DemoModel> getItemView(Object type) {
+                Log.d(TAG, "type = " + type);
                 return initItem(type);
             }
         });
     }
 
     private AdapterItem<DemoModel> initItem(Object type) {
-        Log.d(TAG, "type = " + type);
         switch ((String) type) {
             case "text":
                 return new TextItem();
@@ -147,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (DemoModel tempModel : list) {
-            Log.d(TAG, "type = " + tempModel.type);
+            //Log.d(TAG, "type = " + tempModel.type);
         }
         return list;
     }

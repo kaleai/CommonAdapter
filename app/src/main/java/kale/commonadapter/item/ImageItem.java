@@ -1,9 +1,9 @@
 package kale.commonadapter.item;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.ViewHolder;
 import kale.commonadapter.R;
 import kale.commonadapter.model.DemoModel;
 
@@ -14,6 +14,7 @@ import kale.commonadapter.model.DemoModel;
  */
 public class ImageItem implements AdapterItem<DemoModel> {
 
+    ImageView imageView;
 
     @Override
     public int getLayoutResId() {
@@ -21,8 +22,12 @@ public class ImageItem implements AdapterItem<DemoModel> {
     }
 
     @Override
-    public void initViews(ViewHolder vh, DemoModel model, int position) {
-        ImageView imageView = vh.getView(R.id.imageView);
+    public void findViews(View root) {
+        imageView = (ImageView) root.findViewById(R.id.imageView);
+    }
+
+    @Override
+    public void setViews(DemoModel model, int position) {
         imageView.setImageResource(Integer.parseInt(model.content));
     }
 

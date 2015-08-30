@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
+import kale.adapter.base.BaseCommonAdapter;
 import kale.adapter.util.AdapterItemUtil;
 
 
@@ -16,7 +17,7 @@ import kale.adapter.util.AdapterItemUtil;
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
+public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements BaseCommonAdapter<T>{
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -61,7 +62,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         Object type = getItemViewType(mDataList.get(position));
-        mAdapterItem = util.getItemByType(type, getItemView(type));
+        mAdapterItem = util.getItemByType(type, this);
         return util.getRealType(type);
     }
 
@@ -80,7 +81,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         ((RcvAdapterItem) holder).getItem().setViews(mDataList.get(position), position);
     }
 
-    protected abstract
+    public abstract
     @NonNull
     AdapterItem<T> getItemView(Object type);
 

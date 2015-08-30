@@ -11,6 +11,7 @@
 		android:layout_height="match_parent"
 		android:layout_above="@+id/showListView_button"
 		android:visibility="visible"
+		tools:listitem="@layout/demo_item_text"
 		/>
 
 	<android.support.v7.widget.RecyclerView

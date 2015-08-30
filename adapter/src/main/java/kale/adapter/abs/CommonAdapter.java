@@ -9,13 +9,14 @@ import android.widget.BaseAdapter;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
+import kale.adapter.base.BaseCommonAdapter;
 import kale.adapter.util.AdapterItemUtil;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class CommonAdapter<T> extends BaseAdapter {
+public abstract class CommonAdapter<T> extends BaseAdapter implements BaseCommonAdapter<T>{
     
     private List<T> mDataList;
     
@@ -89,7 +90,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         }
         // 通过类型得到item对象
         Object type = getItemViewType(mDataList.get(position));
-        AdapterItem<T> item = util.getItemByType(type, getItemView(type));
+        AdapterItem<T> item = util.getItemByType(type, this);
         if (convertView == null) {
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             item.findViews(convertView);
@@ -99,7 +100,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
-    protected abstract
+    public abstract
     @NonNull
     AdapterItem<T> getItemView(Object type);
     

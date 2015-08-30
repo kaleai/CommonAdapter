@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import kale.adapter.AdapterItem;
+import kale.adapter.base.BaseCommonAdapter;
 
 /**
  * @author Jack Tony
@@ -19,10 +20,10 @@ public class AdapterItemUtil<T> {
      *
      * @param type item的类型
      */
-    public AdapterItem<T> getItemByType(Object type,AdapterItem<T> defaultItem) {
+    public AdapterItem<T> getItemByType(Object type,BaseCommonAdapter<T> adapter) {
         AdapterItem<T> item = mItemMap.get(type);
         if (item == null) {
-            item = defaultItem;
+            item = adapter.getItemView(type);
             mItemMap.put(type, item);
         }
         return item;

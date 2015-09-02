@@ -83,6 +83,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     public abstract
     @NonNull
+    @Override
     AdapterItem<T> getItemView(Object type);
 
     private class RcvAdapterItem extends RecyclerView.ViewHolder {

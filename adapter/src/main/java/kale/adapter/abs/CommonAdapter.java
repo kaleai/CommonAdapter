@@ -1,6 +1,7 @@
 package kale.adapter.abs;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,13 +96,14 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements BaseCommon
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             item.findViews(convertView);
         }
-        
+        Log.d("ddd", "getView");
         item.setViews(mDataList.get(position), position);
         return convertView;
     }
 
     public abstract
     @NonNull
+    @Override
     AdapterItem<T> getItemView(Object type);
     
 }

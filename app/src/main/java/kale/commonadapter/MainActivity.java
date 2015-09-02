@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             @NonNull
             @Override
-            protected AdapterItem<DemoModel> getItemView(Object type) {
+            public AdapterItem<DemoModel> getItemView(Object type) {
                 //Log.d(TAG, "type = " + type);
                 // 每个item只会被初始化一次，之后均是复用
                 return initItem(type);
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
             @NonNull
             @Override
-            protected AdapterItem<DemoModel> getItemView(Object type) {
+            public AdapterItem<DemoModel> getItemView(Object type) {
                 Log.d(TAG, "type = " + type);
                 return initItem(type);
             }
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
      * 模拟加载数据的操作
      */
     private List<DemoModel> loadData() {
+        List<String> originList = Arrays.asList(getResources().getStringArray(R.array.country_names));
         List<DemoModel> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             int type = (int) (Math.random() * 3);
@@ -147,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
             switch (type) {
                 case 0:
                     model.type = "text";
-                    model.content = "第一种布局";
+                    model.content = originList.get(i);
                     break;
                 case 1:
                     model.type = "button";
-                    model.content = "第二种布局";
+                    model.content = originList.get(i);
                     break;
                 case 2:
                     model.type = "image";

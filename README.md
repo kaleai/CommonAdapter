@@ -137,7 +137,7 @@ public class TextItem implements AdapterItem<TestModel> {
 
             @NonNull
             @Override
-            protected AdapterItem<TestModel> initItemView(Object type) {
+            protected AdapterItem<TestModel> getItemView(Object type) {
                  switch ((String)type) {
             	case "text":
                 	return new TextItem();

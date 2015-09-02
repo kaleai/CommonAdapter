@@ -73,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Object getItemViewType(DemoModel demoModel) {
+               // Log.d(TAG, "getItemViewType = " + demoModel.getDataType());
                 return demoModel.getDataType();
             }
 
             @NonNull
             @Override
             public AdapterItem<DemoModel> getItemView(Object type) {
-                //Log.d(TAG, "type = " + type);
-                // 每个item只会被初始化一次，之后均是复用
+                Log.d(TAG, "getItem " + type + " view");
                 return initItem(type);
             }
         });
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull
             @Override
             public AdapterItem<DemoModel> getItemView(Object type) {
-                Log.d(TAG, "type = " + type);
+                Log.d(TAG, "getItem " + type + " view");
                 return initItem(type);
             }
         });

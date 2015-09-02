@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.base.BaseCommonAdapter;
 import kale.adapter.util.AdapterItemUtil;
 
 
@@ -17,7 +16,7 @@ import kale.adapter.util.AdapterItemUtil;
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements BaseCommonAdapter<T>{
+public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -49,30 +48,30 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
         return position;
     }
 
-    AdapterItemUtil<T> util = new AdapterItemUtil<>();
-    
-    AdapterItem<T> mAdapterItem;
-    
+    AdapterItemUtil<T> mUtil = new AdapterItemUtil<>();
+
+    Object mItemType;
+
     /**
      * instead by
-     * 
-     * @see #getItemViewType(Object) 
+     *
+     * @see #getItemViewType(Object)
      */
     @Deprecated
     @Override
     public int getItemViewType(int position) {
-        Object type = getItemViewType(mDataList.get(position));
-        mAdapterItem = util.getItemByType(type, this);
-        return util.getRealType(type);
+        mItemType = getItemViewType(mDataList.get(position));
+        //Log.d("ddd", "getType = " + mUtil.getIntType(mItemType));
+        return mUtil.getIntType(mItemType);
     }
 
-    public Object getItemViewType(T t){
+    public Object getItemViewType(T t) {
         return null;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, mAdapterItem);
+        return new RcvAdapterItem(parent.getContext(), parent, getItemView(mItemType));
     }
 
     @SuppressWarnings("unchecked")
@@ -83,13 +82,12 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     public abstract
     @NonNull
-    @Override
     AdapterItem<T> getItemView(Object type);
 
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         private AdapterItem<T> mItem;
-        
+
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem<T> item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             mItem = item;
@@ -99,7 +97,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
         protected AdapterItem<T> getItem() {
             return mItem;
         }
-        
+
     }
-    
+
 }

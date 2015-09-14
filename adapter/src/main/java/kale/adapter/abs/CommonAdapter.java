@@ -63,9 +63,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     Object mType;
 
     /**
-     * instead by
-     *
-     * @see #getItemViewType(Object)
+     * instead by{@link #getItemViewType(Object)}
      */
     @Override
     @Deprecated

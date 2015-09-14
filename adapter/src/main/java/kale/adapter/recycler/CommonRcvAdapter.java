@@ -11,7 +11,6 @@ import java.util.List;
 import kale.adapter.AdapterItem;
 import kale.adapter.util.AdapterItemUtil;
 
-
 /**
  * @author Jack Tony
  * @date 2015/5/17
@@ -53,9 +52,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     Object mItemType;
 
     /**
-     * instead by
-     *
-     * @see #getItemViewType(Object)
+     * instead by{@link #getItemViewType(Object)}
      */
     @Deprecated
     @Override

@@ -21,7 +21,12 @@ public interface AdapterItem<T> {
     /**
      * 初始化views
      */
-    void findViews(View root);
+    void bindViews(final View root);
+
+    /**
+     * 设置view的参数
+     */
+    void setViews();
 
     /**
      * 根据数据来设置item的内部views
@@ -29,6 +34,6 @@ public interface AdapterItem<T> {
      * @param model    数据list内部的model
      * @param position 当前adapter调用item的位置
      */
-    void setViews(T model, int position);
+    void updateViews(T model, int position);
 
 }  

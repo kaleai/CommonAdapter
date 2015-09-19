@@ -1,6 +1,7 @@
 package kale.commonadapter.item;
 
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,12 +24,17 @@ public class TextItem implements AdapterItem<DemoModel> ,FullSpan{
     TextView textView;
 
     @Override
-    public void findViews(View root) {
+    public void bindViews(View root) {
         textView = (TextView) root.findViewById(R.id.textView);
     }
 
     @Override
-    public void setViews(DemoModel model, int position) {
+    public void setViews() {
+        Log.d(TextItem.class.getSimpleName(), "setViews--------->");
+    }
+
+    @Override
+    public void updateViews(DemoModel model, int position) {
         textView.setText(model.content);
     }
 

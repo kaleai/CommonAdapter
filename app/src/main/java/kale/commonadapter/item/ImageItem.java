@@ -1,10 +1,12 @@
 package kale.commonadapter.item;
 
+import android.databinding.DataBindingUtil;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import kale.adapter.AdapterItem;
 import kale.commonadapter.R;
+import kale.commonadapter.databinding.DemoItemImageBinding;
 import kale.commonadapter.model.DemoModel;
 
 
@@ -14,21 +16,26 @@ import kale.commonadapter.model.DemoModel;
  */
 public class ImageItem implements AdapterItem<DemoModel> {
 
-    ImageView imageView;
-
     @Override
     public int getLayoutResId() {
         return R.layout.demo_item_image;
     }
 
+    private DemoItemImageBinding b;
+    
     @Override
-    public void findViews(View root) {
-        imageView = (ImageView) root.findViewById(R.id.imageView);
+    public void bindViews(View root) {
+        b = DataBindingUtil.bind(root);
     }
 
     @Override
-    public void setViews(DemoModel model, int position) {
-        imageView.setImageResource(Integer.parseInt(model.content));
+    public void setViews() {
+        Log.d(ImageItem.class.getSimpleName(), "setViews--------->");
+    }
+
+    @Override
+    public void updateViews(DemoModel model, int position) {
+        b.imageView.setImageResource(Integer.parseInt(model.content));
     }
 
 }

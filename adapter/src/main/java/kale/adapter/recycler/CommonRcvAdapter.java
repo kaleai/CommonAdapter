@@ -17,8 +17,8 @@ import kale.adapter.util.AdapterItemUtil;
  */
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
 
-    protected final String TAG = getClass().getSimpleName();
-
+    private final boolean DEBUG = true;
+    
     private List<T> mDataList;
 
     protected CommonRcvAdapter(List<T> data) {
@@ -74,7 +74,12 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RcvAdapterItem) holder).getItem().setViews(mDataList.get(position), position);
+        if (DEBUG) {
+            RcvAdapterItem item = (RcvAdapterItem) holder;
+            item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
+            item.isNew = false;
+        }
+        ((RcvAdapterItem) holder).getItem().updateViews(mDataList.get(position), position);
     }
 
     public abstract
@@ -84,17 +89,20 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         private AdapterItem<T> mItem;
-
+        
+        public boolean isNew = true;
+        
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem<T> item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             mItem = item;
-            mItem.findViews(itemView);
+            mItem.bindViews(itemView);
+            mItem.setViews();
         }
 
         protected AdapterItem<T> getItem() {
             return mItem;
         }
-
+        
     }
 
 }

@@ -1,3 +1,7 @@
+/**
+ * @author Jack Tony
+ * @date 2015/5/15
+ */
 package kale.commonadapter.item;
 
 import android.databinding.DataBindingUtil;
@@ -11,8 +15,8 @@ import kale.commonadapter.databinding.DemoItemButtonBinding;
 import kale.commonadapter.model.DemoModel;
 
 /**
- * @author Jack Tony
- * @date 2015/5/15
+ * @tips
+ * 优化小技巧：这个就等于一个viewHolder，用于复用，所以不会重复建立对象
  */
 public class ButtonItem implements AdapterItem<DemoModel> {
 

@@ -32,10 +32,27 @@ public class ImageItem implements AdapterItem<DemoModel> {
     public void setViews() {
         Log.d(ImageItem.class.getSimpleName(), "setViews--------->");
     }
+    
+    private int mOldImageUrl = 0;
+    private int mImageUrl;
 
+    /**
+     * @tips 优化小技巧：对于图片这样的对象，我们先判断要加载的图片是不是之前的图片，如果是就不重复加载了
+     * 这里为了演示方便没从网络加图，所以url是用int标识的，一般情况下都是用string标识
+     */
     @Override
     public void updateViews(DemoModel model, int position) {
-        b.imageView.setImageResource(Integer.parseInt(model.content));
+        if (b.imageView.getTag() != null) {
+            mOldImageUrl = (int) b.imageView.getTag();
+        }
+        mImageUrl = Integer.parseInt(model.content);
+        
+        if (mOldImageUrl == 0 && mOldImageUrl != mImageUrl) {
+            Log.d(ImageItem.class.getSimpleName(), "update image--------->");
+            b.imageView.setTag(mImageUrl);
+            
+            b.imageView.setImageResource(mImageUrl); // load image
+        }
     }
 
 }

@@ -26,8 +26,6 @@ dependencies {
 
 ## ListView+GridView的通用适配器——CommonAdapter    
 
-### 使用步骤   
-
 ### 1. Adapter中的Item实现`AdapterItem`这个接口    
 
 接口的源码如下：  
@@ -94,7 +92,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 }
 ```  
 
-### 3. 通过继承`CommonAdapter`来实现适配器  
+### 2. 通过继承`CommonAdapter`来实现适配器  
 现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
 ```java
 listView.setAdapter(new CommonAdapter<DemoModel>(data) {
@@ -106,10 +104,8 @@ listView.setAdapter(new CommonAdapter<DemoModel>(data) {
 ```
 
 ## RecyclerView的通用适配器——CommonRcvAdapter 
-### 使用步骤：  
-### 1. 让你的List中的model实现`AdapterModel`这个接口（同上）
-### 2. Adapter中的每个Item需要实现`AdapterItem`这个接口（同上）  
-### 3. 通过继承`CommonRcvAdapter`来实现适配器  
+### 1. Adapter中的每个Item需要实现`AdapterItem`这个接口（同上）  
+### 32. 通过继承`CommonRcvAdapter`来实现适配器  
 
   
 ## 设计思路  

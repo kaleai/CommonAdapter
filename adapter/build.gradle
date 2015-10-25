@@ -7,13 +7,13 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 6
+        versionCode 7
         versionName "1.1.4"
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:support-annotations:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
 }

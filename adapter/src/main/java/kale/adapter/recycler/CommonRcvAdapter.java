@@ -17,9 +17,13 @@ import kale.adapter.util.AdapterItemUtil;
  */
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     
     private List<T> mDataList;
+
+    private Object mItemType;
+
+    private AdapterItemUtil mUtil = new AdapterItemUtil();
 
     protected CommonRcvAdapter(List<T> data) {
         mDataList = data;
@@ -37,7 +41,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     /**
      * 可以被复写用于单条刷新等
      */
-    public void updateData(List<T> data) {
+    public void updateData(@NonNull List<T> data) {
         mDataList = data;
         notifyDataSetChanged();
     }
@@ -47,10 +51,6 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         return position;
     }
 
-    AdapterItemUtil<T> mUtil = new AdapterItemUtil<>();
-
-    Object mItemType;
-
     /**
      * instead by{@link #getItemViewType(Object)}
      */
@@ -58,7 +58,6 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         mItemType = getItemViewType(mDataList.get(position));
-        //Log.d("ddd", "getType = " + mUtil.getIntType(mItemType));
         return mUtil.getIntType(mItemType);
     }
 
@@ -79,7 +78,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
             item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
             item.isNew = false;
         }
-        ((RcvAdapterItem) holder).getItem().updateViews(mDataList.get(position), position);
+        ((RcvAdapterItem) holder).getItem().onUpdateViews(mDataList.get(position), position);
     }
 
     public abstract
@@ -90,13 +89,13 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
 
         private AdapterItem<T> mItem;
         
-        public boolean isNew = true;
+        public boolean isNew = true; // debug中才用到
         
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem<T> item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             mItem = item;
-            mItem.bindViews(itemView);
-            mItem.setViews();
+            mItem.onBindViews(itemView);
+            mItem.onSetViews();
         }
 
         protected AdapterItem<T> getItem() {
@@ -104,5 +103,5 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         }
         
     }
-
+    
 }

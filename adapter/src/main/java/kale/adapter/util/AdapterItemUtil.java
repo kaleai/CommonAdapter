@@ -6,7 +6,7 @@ import android.util.SparseArray;
  * @author Jack Tony
  * @date 2015/8/29
  */
-public class AdapterItemUtil<T> {
+public class AdapterItemUtil {
 
     private SparseArray<Object> typeSArr = new SparseArray<>();
     

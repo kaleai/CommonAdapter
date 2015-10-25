@@ -18,17 +18,23 @@ import kale.adapter.util.AdapterItemUtil;
  */
 public abstract class CommonAdapter<T> extends BaseAdapter {
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     
     private List<T> mDataList;
 
     private int mViewTypeCount;
 
-    protected CommonAdapter(List<T> data) {
+    private Object mType;
+
+    private LayoutInflater mInflater;
+
+    private AdapterItemUtil util = new AdapterItemUtil();
+
+    protected CommonAdapter(@NonNull List<T> data) {
         this(data, 1);
     }
 
-    protected CommonAdapter(List<T> data, int viewTypeCount) {
+    protected CommonAdapter(@NonNull List<T> data, int viewTypeCount) {
         mDataList = data;
         mViewTypeCount = viewTypeCount;
     }
@@ -60,10 +66,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         return position;
     }
 
-    AdapterItemUtil<T> util = new AdapterItemUtil<>();
-    
-    Object mType;
-
     /**
      * instead by{@link #getItemViewType(Object)}
      */
@@ -85,12 +87,9 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         return mViewTypeCount;
     }
 
-    LayoutInflater mInflater;
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
        // Log.d("ddd", "getView");
-
         if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }
@@ -100,14 +99,14 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
             item = getItemView(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             convertView.setTag(R.id.tag_item, item);
-            item.bindViews(convertView);
-            item.setViews();
+            item.onBindViews(convertView);
+            item.onSetViews();
             if (DEBUG) convertView.setBackgroundColor(0xffff0000);
         } else {
             item = (AdapterItem<T>) convertView.getTag(R.id.tag_item);
             if (DEBUG) convertView.setBackgroundColor(0xff00ff00);
         }
-        item.updateViews(mDataList.get(position), position);
+        item.onUpdateViews(mDataList.get(position), position);
         return convertView;
     }
 

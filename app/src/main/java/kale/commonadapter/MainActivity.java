@@ -90,13 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 return initItem(type);
             }
         });
-        /*listView.setAdapter(new CommonAdapter<DemoModel>(data) {
-            @NonNull
-            @Override
-            protected AdapterItem<DemoModel> getItemView(Object type) {
-                return new TextItem();
-            }
-        });*/
     }
 
     private void addDataToRecyclerView(List<DemoModel> data) {
@@ -119,20 +112,10 @@ public class MainActivity extends AppCompatActivity {
                 return initItem(type);
             }
         });
-       /* recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
-            @NonNull
-            @Override
-            protected AdapterItem<DemoModel> getItemView(Object type) {
-                return new TextItem();
-            }
-        });*/
     }
     
-    
-    
-
     private AdapterItem<DemoModel> initItem(Object type) {
-        switch ((String) type) {
+       switch ((String) type) {
             case "text":
                 return new TextItem();
             case "button":
@@ -144,5 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 return new TextItem();
         }
     }
+    
     
 }

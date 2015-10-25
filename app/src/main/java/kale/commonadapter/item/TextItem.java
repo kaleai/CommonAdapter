@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.recycler.FullSpan;
 import kale.commonadapter.R;
 import kale.commonadapter.model.DemoModel;
 
@@ -14,7 +13,7 @@ import kale.commonadapter.model.DemoModel;
  * @author Jack Tony
  * @date 2015/5/15
  */
-public class TextItem implements AdapterItem<DemoModel> ,FullSpan{
+public class TextItem implements AdapterItem<DemoModel> {
 
     @Override
     public int getLayoutResId() {
@@ -24,17 +23,17 @@ public class TextItem implements AdapterItem<DemoModel> ,FullSpan{
     TextView textView;
 
     @Override
-    public void bindViews(View root) {
+    public void onBindViews(View root) {
         textView = (TextView) root.findViewById(R.id.textView);
     }
 
     @Override
-    public void setViews() {
-        Log.d(TextItem.class.getSimpleName(), "setViews--------->");
+    public void onSetViews() {
+        Log.d(TextItem.class.getSimpleName(), "onSetViews--------->");
     }
 
     @Override
-    public void updateViews(DemoModel model, int position) {
+    public void onUpdateViews(DemoModel model, int position) {
         textView.setText(model.content);
     }
 

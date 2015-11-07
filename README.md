@@ -5,7 +5,7 @@
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的Adapter对象。  
 
 
-## 添加依赖  
+### 添加依赖  
 1.在项目外层的build.gradle中添加JitPack仓库
   
 ```  
@@ -21,10 +21,10 @@ dependencies {
 	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.4'
 }    
 ```
-## 示例     
+### 示例     
 ![](./demo/demo.png)
 
-## ListView+GridView的通用适配器——CommonAdapter    
+### ListView+GridView的通用适配器——CommonAdapter    
 
 **1. Adapter中的Item实现`AdapterItem`这个接口**    
 
@@ -89,7 +89,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 }
 ```  
 
-### 2. 通过继承`CommonAdapter`来实现适配器  
+**2. 通过继承`CommonAdapter`来实现适配器**  
 现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
 ```java
 listView.setAdapter(new CommonAdapter<DemoModel>(data) {
@@ -100,12 +100,12 @@ listView.setAdapter(new CommonAdapter<DemoModel>(data) {
 });
 ```
 
-## RecyclerView的通用适配器——CommonRcvAdapter 
+### RecyclerView的通用适配器——CommonRcvAdapter 
 1. Adapter中的每个Item需要实现`AdapterItem`这个接口（同上）  
 2. 通过继承`CommonRcvAdapter`来实现适配器  
 
   
-## 设计思路  
+### 设计思路  
 其实现在的效果和原本的adapter差不多，只是做了点小的重构，这种重构最终保持了和原本一样的可扩展性。下面我来分析下具体的细节：  
 
 **1. Adapter**  
@@ -116,6 +116,7 @@ listView.setAdapter(new CommonAdapter<DemoModel>(data) {
 
 **3. One more thing**  
 如果你是一个倾向于MVP的开发者，你完全可以把原本项目中独立的adapter变成activity的内部类，这样做增加了adapter和activity的聚合性，同时减少了项目中的众多adapter类。这样的坏处是什么呢？activity现在和adapter的聚合度高了，而现在adapter中仅仅有view，这样activity和view的聚合度也会很高。如果你认为activity是一个controler，那么请千万不要用我的做法，因为这样会让你的项目层次出现混乱。但如果你认为activity就是一个view管理对象，逻辑是写在presenter中的，那么你可以放心的用这种方式。欢迎大家来继续讨论。
+
 
 
 ## 开发者

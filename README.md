@@ -94,7 +94,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 ```java
 listView.setAdapter(new CommonAdapter<DemoModel>(data) {
     @Override
-    public AdapterItem<DemoModel> getItemView(Object type) {
+    public AdapterItem<DemoModel> getAdapterItem(Object type) {
         return new TextItem();
     }
 });

@@ -10,30 +10,23 @@ import java.util.List;
 
 import kale.adapter.AdapterItem;
 import kale.adapter.R;
-import kale.adapter.util.AdapterItemUtil;
+import kale.adapter.util.BaseModel;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class CommonAdapter<T> extends BaseAdapter {
+public abstract class CommonAdapter<T extends BaseModel> extends BaseAdapter {
 
     private final boolean DEBUG = false;
-    
     private List<T> mDataList;
-
     private int mViewTypeCount;
-
     private Object mType;
-
     private LayoutInflater mInflater;
-
-    private AdapterItemUtil util = new AdapterItemUtil();
 
     protected CommonAdapter(@NonNull List<T> data) {
         this(data, 1);
     }
-
     protected CommonAdapter(@NonNull List<T> data, int viewTypeCount) {
         mDataList = data;
         mViewTypeCount = viewTypeCount;
@@ -49,25 +42,13 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         return mDataList.get(position);
     }
 
-    /**
-     * 可以被复写用于单条刷新等
-     */
-    public void updateData(List<T> data) {
-        mDataList = data;
-        notifyDataSetChanged();
-    }
-
-    public List<T> getDataList() {
-        return mDataList;
-    }
-
     @Override
     public long getItemId(int position) {
         return position;
     }
 
     /**
-     * instead by{@link #getItemViewType(Object)}
+     * instead by{@link #getItemViewType(T)}
      */
     @Override
     @Deprecated
@@ -75,11 +56,11 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         mType = getItemViewType(mDataList.get(position));
         //Log.d("ddd", "getType = " + util.getIntType(mType));
         // 如果不写这个方法，会让listView更换dataList后无法刷新数据
-        return util.getIntType(mType);
+        return mType.hashCode();
     }
 
     public Object getItemViewType(T t) {
-        return null;
+        return t.itemType;
     }
 
     @Override
@@ -108,6 +89,18 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         }
         item.onUpdateViews(mDataList.get(position), position);
         return convertView;
+    }
+
+    /**
+     * 可以被复写用于单条刷新等
+     */
+    public void updateData(List<T> data) {
+        mDataList = data;
+        notifyDataSetChanged();
+    }
+
+    public List<T> getDataList() {
+        return mDataList;
     }
 
     public abstract

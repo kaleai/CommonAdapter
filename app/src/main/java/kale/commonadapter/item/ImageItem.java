@@ -1,38 +1,49 @@
 package kale.commonadapter.item;
 
-import android.databinding.DataBindingUtil;
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import kale.adapter.AdapterItem;
 import kale.commonadapter.R;
-import kale.commonadapter.databinding.DemoItemImageBinding;
-import kale.commonadapter.model.DemoModel;
-
+import kale.commonadapter.model.ImageModel;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public class ImageItem implements AdapterItem<DemoModel> {
+public class ImageItem implements AdapterItem<ImageModel> {
+    private Context mContext;
+    private ImageView mIcon;
+    private int mPosition;
 
-    private int mOldImageUrl = 0;
+    public ImageItem(Context context) {
+        mContext = context;
+    }
 
     @Override
     public int getLayoutResId() {
         return R.layout.demo_item_image;
     }
 
-    private DemoItemImageBinding b;
-
     @Override
     public void onBindViews(View root) {
-        b = DataBindingUtil.bind(root);
+        mIcon = (ImageView) root;
     }
 
     @Override
     public void onSetViews() {
         Log.d(ImageItem.class.getSimpleName(), "onSetViews--------->");
+        mIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "ImageItem pos = " + mPosition, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -42,19 +53,14 @@ public class ImageItem implements AdapterItem<DemoModel> {
      * 这里仅仅是用图片做个说明，你完全可以在textview显示文字前判断一下要显示的文字和已经显示的文字是否不同
      */
     @Override
-    public void onUpdateViews(DemoModel model, int position) {
-        if (b.imageView.getTag() != null) {
-            mOldImageUrl = (int) b.imageView.getTag();
-        }
-        int imageUrl = Integer.parseInt(model.content);
-        
-        if (mOldImageUrl == 0 && mOldImageUrl != imageUrl) {
-            Log.d(ImageItem.class.getSimpleName(), "update image--------->");
-            b.imageView.setTag(imageUrl);
-            
-            b.imageView.setImageResource(imageUrl); // load image
-        }
+    public void onUpdateViews(ImageModel model, int position) {
+        mPosition = position;
+        Glide.with(mContext)
+                .load(model.imgUrl)
+                .centerCrop()
+                .placeholder(android.R.drawable.sym_call_incoming)
+                .crossFade()
+                .into(mIcon);
     }
-
 
 }

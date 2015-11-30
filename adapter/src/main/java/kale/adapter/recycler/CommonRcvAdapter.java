@@ -1,6 +1,7 @@
 package kale.adapter.recycler;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,21 +10,17 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.util.AdapterItemUtil;
+import kale.adapter.util.BaseModel;
 
 /**
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
+public abstract class CommonRcvAdapter<T extends BaseModel> extends RecyclerView.Adapter {
 
-    private final boolean DEBUG = false;
-    
+    private boolean DEBUG;
     private List<T> mDataList;
-
     private Object mItemType;
-
-    private AdapterItemUtil mUtil = new AdapterItemUtil();
 
     protected CommonRcvAdapter(List<T> data) {
         mDataList = data;
@@ -32,6 +29,41 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return mDataList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    /**
+     * instead by{@link #getItemViewType(T)}
+     */
+    @Deprecated
+    @Override
+    public int getItemViewType(int position) {
+        mItemType = getItemViewType(mDataList.get(position));
+        return mItemType.hashCode();
+    }
+
+    public Object getItemViewType(T t) {
+        return t.itemType;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new RcvAdapterItem(parent.getContext(), parent, getAdapterItem(mItemType));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (DEBUG) {
+            RcvAdapterItem item = (RcvAdapterItem) holder;
+            item.itemView.setBackgroundColor(item.isNew ? Color.GREEN : Color.GRAY);
+            item.isNew = false;
+        }
+        ((RcvAdapterItem) holder).getItem().onUpdateViews(mDataList.get(position), position);
     }
 
     public List<T> getDataList() {
@@ -46,44 +78,9 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    /**
-     * instead by{@link #getItemViewType(Object)}
-     */
-    @Deprecated
-    @Override
-    public int getItemViewType(int position) {
-        mItemType = getItemViewType(mDataList.get(position));
-        return mUtil.getIntType(mItemType);
-    }
-
-    public Object getItemViewType(T t) {
-        return null;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, getItemView(mItemType));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (DEBUG) {
-            RcvAdapterItem item = (RcvAdapterItem) holder;
-            item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
-            item.isNew = false;
-        }
-        ((RcvAdapterItem) holder).getItem().onUpdateViews(mDataList.get(position), position);
-    }
-
     public abstract
     @NonNull
-    AdapterItem<T> getItemView(Object type);
+    AdapterItem<T> getAdapterItem(Object type);
 
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
@@ -101,7 +98,6 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         protected AdapterItem<T> getItem() {
             return mItem;
         }
-        
     }
     
 }

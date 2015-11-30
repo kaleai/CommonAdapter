@@ -15,19 +15,16 @@ import java.util.List;
 import kale.adapter.AdapterItem;
 import kale.adapter.abs.CommonAdapter;
 import kale.adapter.recycler.CommonRcvAdapter;
+import kale.adapter.util.BaseModel;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
 import kale.commonadapter.item.TextItem;
-import kale.commonadapter.model.DemoModel;
 import kale.commonadapter.util.DataManager;
-
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = getClass().getSimpleName();
-
     private ListView listView;
-
     private RecyclerView recyclerView;
 
     @Override
@@ -67,66 +64,52 @@ public class MainActivity extends AppCompatActivity {
                     addDataToRecyclerView(DataManager.loadData(getBaseContext()));
                 } else {
                     if (recyclerView.getAdapter() instanceof CommonRcvAdapter) {
-                        ((CommonRcvAdapter<DemoModel>) recyclerView.getAdapter()).updateData(DataManager.loadData(getBaseContext()));
+                        ((CommonRcvAdapter<BaseModel>) recyclerView.getAdapter()).updateData(DataManager.loadData(getBaseContext()));
                     }
                 }
             }
         });
     }
 
-    private void addDataToListView(List<DemoModel> data) {
-        listView.setAdapter(new CommonAdapter<DemoModel>(data, 3) {
-
-            @Override
-            public Object getItemViewType(DemoModel demoModel) {
-               // Log.d(TAG, "getItemViewType = " + demoModel.getDataType());
-                return demoModel.getDataType();
-            }
-
+    private void addDataToListView(List<BaseModel> data) {
+        listView.setAdapter(new CommonAdapter<BaseModel>(data, 3) {
             @NonNull
             @Override
-            public AdapterItem<DemoModel> getItemView(Object type) {
+            public AdapterItem<BaseModel> getItemView(Object type) {
                 Log.d(TAG, "getItem " + type + " view");
                 return initItem(type);
             }
         });
     }
 
-    private void addDataToRecyclerView(List<DemoModel> data) {
+    private void addDataToRecyclerView(List<BaseModel> data) {
         //GridLayoutManager layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         //StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setRecycleChildrenOnDetach(true);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
-
-            @Override
-            public Object getItemViewType(DemoModel item) {
-                return item.getDataType();
-            }
-
+        recyclerView.setAdapter(new CommonRcvAdapter<BaseModel>(data) {
             @NonNull
             @Override
-            public AdapterItem<DemoModel> getItemView(Object type) {
+            public AdapterItem<BaseModel> getAdapterItem(Object type) {
                 Log.d(TAG, "getItem " + type + " view");
                 return initItem(type);
             }
         });
     }
     
-    private AdapterItem<DemoModel> initItem(Object type) {
-       switch ((String) type) {
-            case "text":
+    private AdapterItem initItem(Object type) {
+       switch (type.toString()) {
+            case "TextModel":
                 return new TextItem();
-            case "button":
+            case "ButtonModel":
                 return new ButtonItem();
-            case "image":
-                return new ImageItem();
+            case "ImageModel":
+                return new ImageItem(getBaseContext());
             default:
                 Log.e(TAG, "No default item");
                 return new TextItem();
         }
     }
-    
     
 }

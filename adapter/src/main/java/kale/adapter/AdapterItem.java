@@ -3,6 +3,8 @@ package kale.adapter;
 import android.support.annotation.LayoutRes;
 import android.view.View;
 
+import kale.adapter.util.BaseModel;
+
 /**
  * adapter的所有item必须实现此接口.
  * 通过返回{@link #getLayoutResId()}来自动初始化view，之后在{@link #onBindViews(View)}中就可以初始化item的内部视图了。<br>
@@ -10,7 +12,7 @@ import android.view.View;
  * @author Jack Tony
  * @date 2015/5/15
  */
-public interface AdapterItem<T> {
+public interface AdapterItem<T extends BaseModel> {
 
     /**
      * @return item布局文件的layoutId
@@ -36,4 +38,4 @@ public interface AdapterItem<T> {
      */
     void onUpdateViews(T model, int position);
 
-}  
+}

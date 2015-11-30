@@ -1,4 +1,4 @@
-package kale.adapter.abs;
+package kale.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -8,15 +8,14 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
-import kale.adapter.AdapterItem;
-import kale.adapter.R;
+import kale.adapter.item.AdapterItem;
 import kale.adapter.util.AdapterItemUtil;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class CommonAdapter<T> extends BaseAdapter {
+public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T> {
 
     private final boolean DEBUG = false;
     
@@ -28,7 +27,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
 
     private LayoutInflater mInflater;
 
-    private AdapterItemUtil util = new AdapterItemUtil();
+    private AdapterItemUtil util;
 
     protected CommonAdapter(@NonNull List<T> data) {
         this(data, 1);
@@ -37,6 +36,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     protected CommonAdapter(@NonNull List<T> data, int viewTypeCount) {
         mDataList = data;
         mViewTypeCount = viewTypeCount;
+        util = new AdapterItemUtil();
     }
 
     @Override
@@ -52,12 +52,13 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     /**
      * 可以被复写用于单条刷新等
      */
-    public void updateData(List<T> data) {
+    @Override
+    public void setData(@NonNull List<T> data) {
         mDataList = data;
-        notifyDataSetChanged();
     }
 
-    public List<T> getDataList() {
+    @Override
+    public List<T> getData() {
         return mDataList;
     }
 
@@ -67,21 +68,21 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     }
 
     /**
-     * instead by{@link #getItemViewType(Object)}
+     * instead by{@link #getItemType(Object)}
      */
     @Override
     @Deprecated
     public int getItemViewType(int position) {
-        mType = getItemViewType(mDataList.get(position));
-        //Log.d("ddd", "getType = " + util.getIntType(mType));
+        mType = getItemType(mDataList.get(position));
         // 如果不写这个方法，会让listView更换dataList后无法刷新数据
         return util.getIntType(mType);
     }
 
-    public Object getItemViewType(T t) {
-        return null;
+    @Override
+    public Object getItemType(T t) {
+        return -1; // default
     }
-
+    
     @Override
     public int getViewTypeCount() {
         return mViewTypeCount;
@@ -89,14 +90,14 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       // Log.d("ddd", "getView");
+        // Log.d("ddd", "getView");
         if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }
         
         AdapterItem<T> item;
         if (convertView == null) {
-            item = getItemView(mType);
+            item = onCreateItem(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             convertView.setTag(R.id.tag_item, item);
             item.onBindViews(convertView);
@@ -109,9 +110,5 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         item.onUpdateViews(mDataList.get(position), position);
         return convertView;
     }
-
-    public abstract
-    @NonNull
-    AdapterItem<T> getItemView(Object type);
 
 }

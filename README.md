@@ -7,7 +7,7 @@
 
 ### 添加依赖  
 1.在项目外层的build.gradle中添加JitPack仓库
-  
+
 ```  
 repositories {
 	maven {
@@ -15,7 +15,8 @@ repositories {
 	}
 }
 ```    
-2.在用到的项目中添加依赖
+2.在用到的项目中添加依赖  
+
 ```  
 dependencies {
 	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.4'
@@ -29,6 +30,7 @@ dependencies {
 **1. Adapter中的Item实现`AdapterItem`这个接口**    
 
 接口的源码如下：  
+
 ```JAVA  
 /**
  * adapter的所有item必须实现此接口.
@@ -62,7 +64,9 @@ public interface AdapterItem<T> {
 
 }  
 ```  
-例子：
+ 
+例子：  
+
 ```java
 public class TextItem implements AdapterItem<DemoModel> {
 
@@ -91,10 +95,11 @@ public class TextItem implements AdapterItem<DemoModel> {
 
 **2. 通过继承`CommonAdapter`来实现适配器**  
 现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
+
 ```java
 listView.setAdapter(new CommonAdapter<DemoModel>(data) {
     @Override
-    public AdapterItem<DemoModel> getItemView(Object type) {
+    public AdapterItem<DemoModel> onCreateItem(Object type) {
         return new TextItem();
     }
 });

@@ -12,9 +12,9 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import kale.adapter.AdapterItem;
-import kale.adapter.abs.CommonAdapter;
-import kale.adapter.recycler.CommonRcvAdapter;
+import kale.adapter.CommonAdapter;
+import kale.adapter.CommonRcvAdapter;
+import kale.adapter.item.AdapterItem;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
 import kale.commonadapter.item.TextItem;
@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 if (listView.getAdapter() == null) {
                     addDataToListView(DataManager.loadData(getBaseContext()));
                 } else {
-                    ((CommonAdapter) listView.getAdapter()).updateData(DataManager.loadData(getBaseContext()));
+                    ((CommonAdapter) listView.getAdapter()).setData(DataManager.loadData(getBaseContext()));
+                    ((CommonAdapter) listView.getAdapter()).notifyDataSetChanged();
                 } 
             }
         });
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
                     addDataToRecyclerView(DataManager.loadData(getBaseContext()));
                 } else {
                     if (recyclerView.getAdapter() instanceof CommonRcvAdapter) {
-                        ((CommonRcvAdapter<DemoModel>) recyclerView.getAdapter()).updateData(DataManager.loadData(getBaseContext()));
+                        ((CommonRcvAdapter<DemoModel>) recyclerView.getAdapter()).setData(DataManager.loadData(getBaseContext()));
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
             }
@@ -78,15 +80,15 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(new CommonAdapter<DemoModel>(data, 3) {
 
             @Override
-            public Object getItemViewType(DemoModel demoModel) {
-               // Log.d(TAG, "getItemViewType = " + demoModel.getDataType());
+            public Object getItemType(DemoModel demoModel) {
+               // Log.d(TAG, "getItemType = " + demoModel.getDataType());
                 return demoModel.getDataType();
             }
 
             @NonNull
             @Override
-            public AdapterItem<DemoModel> getItemView(Object type) {
-                Log.d(TAG, "getItem " + type + " view");
+            public AdapterItem<DemoModel> onCreateItem(Object type) {
+                Log.d(TAG, "onCreateItem " + type + " view");
                 return initItem(type);
             }
         });
@@ -101,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(new CommonRcvAdapter<DemoModel>(data) {
 
             @Override
-            public Object getItemViewType(DemoModel item) {
+            public Object getItemType(DemoModel item) {
                 return item.getDataType();
             }
 
             @NonNull
             @Override
-            public AdapterItem<DemoModel> getItemView(Object type) {
-                Log.d(TAG, "getItem " + type + " view");
+            public AdapterItem<DemoModel> onCreateItem(Object type) {
+                Log.d(TAG, "onCreateItem " + type + " view");
                 return initItem(type);
             }
         });

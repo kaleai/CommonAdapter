@@ -4,7 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.util.Log;
 import android.view.View;
 
-import kale.adapter.AdapterItem;
+import kale.adapter.item.AdapterItem;
 import kale.commonadapter.R;
 import kale.commonadapter.databinding.DemoItemImageBinding;
 import kale.commonadapter.model.DemoModel;

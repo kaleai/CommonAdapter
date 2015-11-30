@@ -1,4 +1,4 @@
-package kale.adapter;
+package kale.adapter.item;
 
 import android.support.annotation.LayoutRes;
 import android.view.View;

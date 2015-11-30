@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import kale.adapter.AdapterItem;
+import kale.adapter.item.AdapterItem;
 import kale.commonadapter.R;
 import kale.commonadapter.databinding.DemoItemButtonBinding;
 import kale.commonadapter.model.DemoModel;

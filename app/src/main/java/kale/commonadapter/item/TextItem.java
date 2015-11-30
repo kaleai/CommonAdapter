@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import kale.adapter.AdapterItem;
+import kale.adapter.item.AdapterItem;
 import kale.commonadapter.R;
 import kale.commonadapter.model.DemoModel;
 

@@ -1,4 +1,4 @@
-package kale.adapter.recycler;
+package kale.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import kale.adapter.AdapterItem;
+import kale.adapter.item.AdapterItem;
 import kale.adapter.util.AdapterItemUtil;
 
 /**
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
+public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T>{
 
     private final boolean DEBUG = false;
     
@@ -34,16 +34,19 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         return mDataList.size();
     }
 
-    public List<T> getDataList() {
-        return mDataList;
+    @Override
+    public T getItem(int position) {
+        return mDataList.get(position);
+    }
+    
+    @Override
+    public void setData(@NonNull List<T> data) {
+        mDataList = data;
     }
 
-    /**
-     * 可以被复写用于单条刷新等
-     */
-    public void updateData(@NonNull List<T> data) {
-        mDataList = data;
-        notifyDataSetChanged();
+    @Override
+    public List<T> getData() {
+        return mDataList;
     }
 
     @Override
@@ -52,22 +55,23 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
     }
 
     /**
-     * instead by{@link #getItemViewType(Object)}
+     * instead by{@link #getItemType(Object)}
      */
     @Deprecated
     @Override
     public int getItemViewType(int position) {
-        mItemType = getItemViewType(mDataList.get(position));
+        mItemType = getItemType(mDataList.get(position));
         return mUtil.getIntType(mItemType);
     }
 
-    public Object getItemViewType(T t) {
-        return null;
+    @Override
+    public Object getItemType(T t) {
+        return -1; // default
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, getItemView(mItemType));
+        return new RcvAdapterItem(parent.getContext(), parent, onCreateItem(mItemType));
     }
 
     @SuppressWarnings("unchecked")
@@ -81,10 +85,11 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter {
         ((RcvAdapterItem) holder).getItem().onUpdateViews(mDataList.get(position), position);
     }
 
-    public abstract
-    @NonNull
-    AdapterItem<T> getItemView(Object type);
-
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // 内部用到的viewhold
+    ///////////////////////////////////////////////////////////////////////////
+    
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         private AdapterItem<T> mItem;

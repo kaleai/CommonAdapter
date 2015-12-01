@@ -10,14 +10,9 @@ public class DemoModel {
 
     public String content;
 
-    public String type;
-
-
     /**
      * 这个model中决定数据类型的字段
      */
-    public Object getDataType() {
-        return type;
-    }
+    public String type;
 
 }

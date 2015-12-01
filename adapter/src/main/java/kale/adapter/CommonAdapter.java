@@ -49,9 +49,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         return mDataList.get(position);
     }
 
-    /**
-     * 可以被复写用于单条刷新等
-     */
     @Override
     public void setData(@NonNull List<T> data) {
         mDataList = data;
@@ -78,6 +75,9 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         return util.getIntType(mType);
     }
 
+    /**
+     * 强烈建议返回string,int,bool类似的基础对象做type
+     */
     @Override
     public Object getItemType(T t) {
         return -1; // default

@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Object getItemType(DemoModel demoModel) {
-               // Log.d(TAG, "getItemType = " + demoModel.getDataType());
-                return demoModel.getDataType();
+                // Log.d(TAG, "getItemType = " + demoModel.getDataType());
+                return demoModel.type;
             }
 
             @NonNull
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Object getItemType(DemoModel item) {
-                return item.getDataType();
+                return item.type;
             }
 
             @NonNull

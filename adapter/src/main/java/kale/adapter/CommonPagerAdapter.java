@@ -59,12 +59,15 @@ public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePage
         }
         AdapterItem<T> item = onCreateItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
-        view.setTag(R.id.tag_item, item);
+        view.setTag(R.id.tag_item, item); // 万一你要用到这个item可以通过这个tag拿到
         item.onBindViews(view);
         item.onSetViews();
         return view;
     }
 
+    /**
+     * 强烈建议返回string,int,bool类似的基础对象做type
+     */
     @Override
     public Object getItemType(int position) {
         return getItemType(mData.get(position));

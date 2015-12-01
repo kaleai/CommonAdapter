@@ -13,7 +13,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import kale.adapter.AdapterItem;
-import kale.adapter.abs.CommonAdapter;
+import kale.adapter.DefaultItem;
+import kale.adapter.abs.CommonLvAdapter;
 import kale.adapter.recycler.CommonRcvAdapter;
 import kale.adapter.util.BaseModel;
 import kale.commonadapter.item.ButtonItem;
@@ -22,8 +23,8 @@ import kale.commonadapter.item.TextItem;
 import kale.commonadapter.util.DataManager;
 
 public class MainActivity extends AppCompatActivity {
-
     private String TAG = getClass().getSimpleName();
+
     private ListView listView;
     private RecyclerView recyclerView;
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 if (listView.getAdapter() == null) {
                     addDataToListView(DataManager.loadData(getBaseContext()));
                 } else {
-                    ((CommonAdapter) listView.getAdapter()).updateData(DataManager.loadData(getBaseContext()));
+                    ((CommonLvAdapter) listView.getAdapter()).updateData(DataManager.loadData(getBaseContext()));
                 } 
             }
         });
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addDataToListView(List<BaseModel> data) {
-        listView.setAdapter(new CommonAdapter<BaseModel>(data, 3) {
+        listView.setAdapter(new CommonLvAdapter<BaseModel>(data, 3) {
             @NonNull
             @Override
             public AdapterItem<BaseModel> getItemView(Object type) {
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 return new ImageItem(getBaseContext());
             default:
                 Log.e(TAG, "No default item");
-                return new TextItem();
+                return new DefaultItem();
         }
     }
     

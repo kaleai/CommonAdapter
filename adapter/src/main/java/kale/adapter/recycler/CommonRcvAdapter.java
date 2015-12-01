@@ -12,13 +12,13 @@ import java.util.List;
 import kale.adapter.AdapterItem;
 import kale.adapter.util.AdapterItemHelper;
 import kale.adapter.util.BaseModel;
+import kale.adapter.util.DebugUtil;
 
 /**
  * @author Jack Tony
  * @date 2015/5/17
  */
 public abstract class CommonRcvAdapter<T extends BaseModel> extends RecyclerView.Adapter {
-    private static final boolean DEBUG = false;
 
     private AdapterItemHelper mAdapterItemHelper = new AdapterItemHelper();
     private List<T> mDataList;
@@ -30,7 +30,7 @@ public abstract class CommonRcvAdapter<T extends BaseModel> extends RecyclerView
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return null == mDataList ? 0 : mDataList.size();
     }
 
     @Override
@@ -60,16 +60,12 @@ public abstract class CommonRcvAdapter<T extends BaseModel> extends RecyclerView
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (DEBUG) {
+        if (DebugUtil.DEBUG) {
             RcvAdapterItem item = (RcvAdapterItem) holder;
-            item.itemView.setBackgroundColor(item.isNew ? Color.GREEN : Color.GRAY);
+            item.itemView.setBackgroundColor(item.isNew ? DebugUtil.NOT_REUSE_COLOR : DebugUtil.REUSE_COLOR);
             item.isNew = false;
         }
         ((RcvAdapterItem) holder).getItem().onUpdateViews(mDataList.get(position), position);
-    }
-
-    public List<T> getDataList() {
-        return mDataList;
     }
 
     /**
@@ -80,14 +76,16 @@ public abstract class CommonRcvAdapter<T extends BaseModel> extends RecyclerView
         notifyDataSetChanged();
     }
 
+    public List<T> getDataList() {
+        return mDataList;
+    }
+
     public abstract
     @NonNull
     AdapterItem<T> getAdapterItem(Object type);
 
     private class RcvAdapterItem extends RecyclerView.ViewHolder {
-
         private AdapterItem<T> mItem;
-        
         public boolean isNew = true; // debug中才用到
         
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem<T> item) {

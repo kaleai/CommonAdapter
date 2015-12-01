@@ -1,5 +1,6 @@
 package kale.adapter.abs;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,31 +11,34 @@ import java.util.List;
 
 import kale.adapter.AdapterItem;
 import kale.adapter.R;
+import kale.adapter.util.AdapterItemHelper;
 import kale.adapter.util.BaseModel;
+import kale.adapter.util.DebugUtil;
 
 /**
  * @author Jack Tony
  * @date 2015/5/15
  */
-public abstract class CommonAdapter<T extends BaseModel> extends BaseAdapter {
+public abstract class CommonLvAdapter<T extends BaseModel> extends BaseAdapter {
+    private static final boolean DEBUG = false;
 
-    private final boolean DEBUG = false;
+    private AdapterItemHelper mAdapterItemHelper = new AdapterItemHelper();
     private List<T> mDataList;
     private int mViewTypeCount;
     private Object mType;
     private LayoutInflater mInflater;
 
-    protected CommonAdapter(@NonNull List<T> data) {
+    protected CommonLvAdapter(@NonNull List<T> data) {
         this(data, 1);
     }
-    protected CommonAdapter(@NonNull List<T> data, int viewTypeCount) {
+    protected CommonLvAdapter(@NonNull List<T> data, int viewTypeCount) {
         mDataList = data;
         mViewTypeCount = viewTypeCount;
     }
 
     @Override
     public int getCount() {
-        return mDataList.size();
+        return null == mDataList ? 0 : mDataList.size();
     }
 
     @Override
@@ -56,7 +60,7 @@ public abstract class CommonAdapter<T extends BaseModel> extends BaseAdapter {
         mType = getItemViewType(mDataList.get(position));
         //Log.d("ddd", "getType = " + util.getIntType(mType));
         // 如果不写这个方法，会让listView更换dataList后无法刷新数据
-        return mType.hashCode();
+        return mAdapterItemHelper.getIntType(mType);
     }
 
     public Object getItemViewType(T t) {
@@ -82,10 +86,10 @@ public abstract class CommonAdapter<T extends BaseModel> extends BaseAdapter {
             convertView.setTag(R.id.tag_item, item);
             item.onBindViews(convertView);
             item.onSetViews();
-            if (DEBUG) convertView.setBackgroundColor(0xffff0000);
+            if (DebugUtil.DEBUG) convertView.setBackgroundColor(DebugUtil.NOT_REUSE_COLOR);
         } else {
             item = (AdapterItem<T>) convertView.getTag(R.id.tag_item);
-            if (DEBUG) convertView.setBackgroundColor(0xff00ff00);
+            if (DebugUtil.DEBUG) convertView.setBackgroundColor(DebugUtil.REUSE_COLOR);
         }
         item.onUpdateViews(mDataList.get(position), position);
         return convertView;

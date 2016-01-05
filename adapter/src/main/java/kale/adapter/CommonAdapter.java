@@ -90,7 +90,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Log.d("ddd", "getView");
         if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }

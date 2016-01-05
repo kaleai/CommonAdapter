@@ -1,7 +1,3 @@
-/**
- * @author Jack Tony
- * @date 2015/5/15
- */
 package kale.commonadapter.item;
 
 import android.databinding.DataBindingUtil;
@@ -22,16 +18,18 @@ public class ButtonItem implements AdapterItem<DemoModel> {
 
     private int mPosition;
 
+    private DemoItemButtonBinding b;
+    
     @Override
     public int getLayoutResId() {
         return R.layout.demo_item_button;
     }
-    
-    private DemoItemButtonBinding b;
 
     @Override
     public void onBindViews(final View root) {
         b = DataBindingUtil.bind(root);
+        b.setVm(new ButtonViewModel());
+        //b.executePendingBindings(); // 不知这个方法是否需要
     }
 
     /**
@@ -55,7 +53,8 @@ public class ButtonItem implements AdapterItem<DemoModel> {
     public void onUpdateViews(DemoModel model, int position) {
         // 在每次适配器getView的时候就会触发，这里避免做耗时的操作
         mPosition = position;
-        b.button.setText(model.content);
+        
+        b.getVm().setText(model.content); // 直接操作的是vm
     }
 
 }

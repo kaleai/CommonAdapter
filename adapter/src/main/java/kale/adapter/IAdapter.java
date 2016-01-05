@@ -9,7 +9,7 @@ import kale.adapter.item.AdapterItem;
 /**
  * @author Jack Tony
  * @date 2015/11/29
- * 通用的adapter必须实现的接口
+ * 通用的adapter必须实现的接口，作为方法名统一的一个规范
  */
 interface IAdapter<T> {
 

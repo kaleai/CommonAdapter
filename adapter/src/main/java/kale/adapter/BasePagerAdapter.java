@@ -55,8 +55,8 @@ abstract class BasePagerAdapter<T> extends PagerAdapter {
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
-        if (object != currentItem) { 
-        // 可能是currentItem不等于null，可能是二者不同
+        if (object != currentItem) {
+            // 可能是currentItem不等于null，可能是二者不同
             currentItem = (T) object;
         }
     }
@@ -85,7 +85,7 @@ abstract class BasePagerAdapter<T> extends PagerAdapter {
         super.notifyDataSetChanged();
     }
 
-    public Object getItemType(int position){
+    public Object getItemType(int position) {
         return -1; // default
     }
 
@@ -118,9 +118,6 @@ abstract class BasePagerAdapter<T> extends PagerAdapter {
      * 当缓存中无法得到所需item时才会调用
      */
     protected abstract T onCreateItem(ViewGroup container, int position);
-
-
-
 
     ///////////////////////////////////////////////////////////////////////////
     // 缓存类

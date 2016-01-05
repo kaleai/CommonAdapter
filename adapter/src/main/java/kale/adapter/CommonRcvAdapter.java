@@ -71,7 +71,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, onCreateItem(mItemType));
+        return new RcvAdapterItem<>(parent.getContext(), parent, onCreateItem(mItemType));
     }
 
     @SuppressWarnings("unchecked")
@@ -87,10 +87,10 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     
     ///////////////////////////////////////////////////////////////////////////
-    // 内部用到的viewhold
+    // 内部用到的viewHold
     ///////////////////////////////////////////////////////////////////////////
     
-    private class RcvAdapterItem extends RecyclerView.ViewHolder {
+    private static class RcvAdapterItem<T> extends RecyclerView.ViewHolder {
 
         private AdapterItem<T> mItem;
         

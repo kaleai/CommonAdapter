@@ -19,7 +19,7 @@ repositories {
 
 ```  
 dependencies {
-	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.4'
+	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.5'
 }    
 ```
 ### 示例     
@@ -29,12 +29,18 @@ dependencies {
 
 **1. Adapter中的Item实现`AdapterItem`这个接口**    
 
-接口的源码如下：  
+接口的源码如下：   
 
-```JAVA  
+```java   
 /**
- * adapter的所有item必须实现此接口.
- * 通过返回{@link #getLayoutResId()}来自动初始化view，之后在{@link #onBindViews(View)}中就可以初始化item的内部视图了。<br>
+ * Adapter的所有item必须实现的接口.<br>
+ * 
+ * 通过{@link #getLayoutResId()}初始化view;<br>
+ * 在{@link #bindViews(View)}中就初始化item的内部视图<br>
+ * 在{@link #handleData(Object, int)}中处理每一行的数据<p>
+ * 
+ * @author Jack Tony
+ * @date 2015/5/15
  */
 public interface AdapterItem<T> {
 
@@ -47,12 +53,12 @@ public interface AdapterItem<T> {
     /**
      * 初始化views
      */
-    void onBindViews(final View root);
+    void bindViews(final View root);
 
     /**
      * 设置view的参数
      */
-    void onSetViews();
+    void setViews();
 
     /**
      * 根据数据来设置item的内部views
@@ -60,14 +66,14 @@ public interface AdapterItem<T> {
      * @param model    数据list内部的model
      * @param position 当前adapter调用item的位置
      */
-    void onUpdateViews(T model, int position);
+    void handleData(T model, int position);
 
 }  
 ```  
  
 例子：  
 
-```java
+```java   
 public class TextItem implements AdapterItem<DemoModel> {
 
     @Override
@@ -78,15 +84,15 @@ public class TextItem implements AdapterItem<DemoModel> {
     TextView textView;
 
     @Override
-    public void onBindViews(View root) {
+    public void bindViews(View root) {
         textView = (TextView) root.findViewById(R.id.textView);
     }
 
     @Override
-    public void onSetViews() { }
+    public void setViews() { }
 
     @Override
-    public void onUpdateViews(DemoModel model, int position) {
+    public void handleData(DemoModel model, int position) {
         textView.setText(model.content);
     }
 
@@ -99,7 +105,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 ```java
 listView.setAdapter(new CommonAdapter<DemoModel>(data) {
     @Override
-    public AdapterItem<DemoModel> onCreateItem(Object type) {
+    public AdapterItem<DemoModel> createItem(Object type) {
         return new TextItem();
     }
 });
@@ -127,7 +133,7 @@ listView.setAdapter(new CommonAdapter<DemoModel>(data) {
 ## 开发者
 ![](https://avatars3.githubusercontent.com/u/9552155?v=3&s=460)
 
-Jack Tony: <developer_kale@qq.com>  
+Jack Tony: <developer_kale@foxmail.com>  
 
 
 ## License

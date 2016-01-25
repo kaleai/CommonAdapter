@@ -1,19 +1,22 @@
-package kale.adapter;
+package kale.adapter.viewpager;
 
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import kale.adapter.IAdapter;
+import kale.adapter.R;
 import kale.adapter.item.AdapterItem;
 
 /**
  * @author Jack Tony
  * @date 2015/11/29
  */
-public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePagerAdapter<View> implements IAdapter<T>{
+public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePagerAdapter<View> implements IAdapter<T> {
 
     private List<T> mData;
 
@@ -47,28 +50,27 @@ public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePage
     public void setPrimaryItem(ViewGroup container, int position, @NonNull Object object) {
         // 这里应该放置数据更新的操作
         if (object != currentItem) {
-            ((AdapterItem<T>) ((View) object).getTag(R.id.tag_item)).onUpdateViews(mData.get(position), position);
+            ((AdapterItem<T>) ((View) object).getTag(R.id.tag_item)).handleData(mData.get(position), position);
         }
         super.setPrimaryItem(container, position, object);
     }
 
     @Override
-    protected View onCreateItem(ViewGroup container, int position) {
+    protected View createItem(ViewPager viewPager, int position) {
         if (mInflater == null) {
-            mInflater = LayoutInflater.from(container.getContext());
+            mInflater = LayoutInflater.from(viewPager.getContext());
         }
-        AdapterItem<T> item = onCreateItem(getItemType(position));
+        AdapterItem<T> item = createItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
         view.setTag(R.id.tag_item, item); // 万一你要用到这个item可以通过这个tag拿到
-        item.onBindViews(view);
-        item.onSetViews();
+        item.bindViews(view);
+        item.setViews();
         return view;
     }
 
     /**
      * 强烈建议返回string,int,bool类似的基础对象做type
      */
-    @Override
     public Object getItemType(int position) {
         return getItemType(mData.get(position));
     }

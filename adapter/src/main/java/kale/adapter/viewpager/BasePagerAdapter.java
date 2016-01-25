@@ -1,4 +1,4 @@
-package kale.adapter;
+package kale.adapter.viewpager;
 
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
@@ -17,7 +17,7 @@ import java.util.Queue;
  * 如果调用{@link #notifyDataSetChanged()}来更新，
  * 它会自动调用{@link #instantiateItem(ViewGroup, int)}重新new出需要的item，算是完全初始化一次。
  */
-abstract class BasePagerAdapter<T> extends PagerAdapter {
+public abstract class BasePagerAdapter<T> extends PagerAdapter {
 
     public static final String TAG = "BasePagerAdapter";
 
@@ -26,7 +26,7 @@ abstract class BasePagerAdapter<T> extends PagerAdapter {
     protected T currentItem;
 
     /**
-     * 这的cache的最大大小是：type x pageSize
+     * 这的cache的最大大小是：type * pageSize
      */
     private final PagerCache<T> mCache;
 
@@ -46,9 +46,13 @@ abstract class BasePagerAdapter<T> extends PagerAdapter {
     public T instantiateItem(ViewGroup container, int position) {
         T item = mCache.getItem(getItemType(position));
         if (item == null) {
-            item = onCreateItem(container, position);
+            item = createItem((ViewPager) container, position);
         }
-        container.addView(getWillBeAddedView(item, position));
+        View view = getWillBeAddedView(item, position);
+        if (view.getParent() != null) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
+        container.addView(view);
         return item;
     }
 
@@ -115,9 +119,9 @@ abstract class BasePagerAdapter<T> extends PagerAdapter {
     protected abstract View getWillBeDestroyedView(T item, int position);
 
     /**
-     * 当缓存中无法得到所需item时才会调用
+     * 当缓存中无法得到所需item时才会调用，这返回需要放入容器的view。
      */
-    protected abstract T onCreateItem(ViewGroup container, int position);
+    protected abstract T createItem(ViewPager viewPager, int position);
 
     ///////////////////////////////////////////////////////////////////////////
     // 缓存类

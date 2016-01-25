@@ -11,7 +11,7 @@ import kale.adapter.item.AdapterItem;
  * @date 2015/11/29
  * 通用的adapter必须实现的接口，作为方法名统一的一个规范
  */
-interface IAdapter<T> {
+public interface IAdapter<T> {
 
     void setData(@NonNull List<T> data);
 
@@ -25,5 +25,5 @@ interface IAdapter<T> {
      * 当缓存中无法得到所需item时才会调用
      */
     @NonNull
-    AdapterItem<T> onCreateItem(Object type);
+    AdapterItem<T> createItem(Object type);
 }

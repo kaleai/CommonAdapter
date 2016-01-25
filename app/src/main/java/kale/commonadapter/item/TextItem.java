@@ -23,17 +23,17 @@ public class TextItem implements AdapterItem<DemoModel> {
     TextView textView;
 
     @Override
-    public void onBindViews(View root) {
+    public void bindViews(View root) {
         textView = (TextView) root.findViewById(R.id.textView);
     }
 
     @Override
-    public void onSetViews() {
-        Log.d(TextItem.class.getSimpleName(), "onSetViews--------->");
+    public void setViews() {
+        Log.d(TextItem.class.getSimpleName(), "setViews--------->");
     }
 
     @Override
-    public void onUpdateViews(DemoModel model, int position) {
+    public void handleData(DemoModel model, int position) {
         textView.setText(model.content);
     }
 

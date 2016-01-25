@@ -21,7 +21,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
     
     private List<T> mDataList;
 
-    private int mViewTypeCount;
+    private int mViewTypeCount = 1;
 
     private Object mType;
 
@@ -96,17 +96,17 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         
         AdapterItem<T> item;
         if (convertView == null) {
-            item = onCreateItem(mType);
+            item = createItem(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             convertView.setTag(R.id.tag_item, item);
-            item.onBindViews(convertView);
-            item.onSetViews();
+            item.bindViews(convertView);
+            item.setViews();
             if (DEBUG) convertView.setBackgroundColor(0xffff0000);
         } else {
             item = (AdapterItem<T>) convertView.getTag(R.id.tag_item);
             if (DEBUG) convertView.setBackgroundColor(0xff00ff00);
         }
-        item.onUpdateViews(mDataList.get(position), position);
+        item.handleData(mDataList.get(position), position);
         return convertView;
     }
 

@@ -26,20 +26,19 @@ public class ButtonItem implements AdapterItem<DemoModel> {
     }
 
     @Override
-    public void onBindViews(final View root) {
+    public void bindViews(final View root) {
         b = DataBindingUtil.bind(root);
         b.setVm(new ButtonViewModel());
         //b.executePendingBindings(); // 不知这个方法是否需要
     }
 
     /**
-     * @tips
      * 优化小技巧：在这里直接设置按钮的监听器。
      * 因为这个方法仅仅在item建立时才调用，所以不会重复建立监听器。
      */
     @Override
-    public void onSetViews() {
-        Log.d(ButtonItem.class.getSimpleName(), "onSetViews--------->");
+    public void setViews() {
+        Log.d(ButtonItem.class.getSimpleName(), "setViews--------->");
         // 这个方法仅仅在item构建时才会触发，所以在这里也仅仅建立一次监听器，不会重复建立
         b.button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +49,7 @@ public class ButtonItem implements AdapterItem<DemoModel> {
     }
 
     @Override
-    public void onUpdateViews(DemoModel model, int position) {
+    public void handleData(DemoModel model, int position) {
         // 在每次适配器getView的时候就会触发，这里避免做耗时的操作
         mPosition = position;
         

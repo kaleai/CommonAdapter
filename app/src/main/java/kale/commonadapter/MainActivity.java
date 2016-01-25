@@ -13,7 +13,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import kale.adapter.CommonAdapter;
-import kale.adapter.CommonRcvAdapter;
+import kale.adapter.recyclerview.CommonRcvAdapter;
 import kale.adapter.item.AdapterItem;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
             @NonNull
             @Override
-            public AdapterItem<DemoModel> onCreateItem(Object type) {
-                Log.d(TAG, "onCreateItem " + type + " view");
+            public AdapterItem<DemoModel> createItem(Object type) {
+                Log.d(TAG, "createItem " + type + " view");
                 return initItem(type);
             }
         });
@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
             @NonNull
             @Override
-            public AdapterItem<DemoModel> onCreateItem(Object type) {
-                Log.d(TAG, "onCreateItem " + type + " view");
+            public AdapterItem<DemoModel> createItem(Object type) {
+                Log.d(TAG, "createItem " + type + " view");
                 return initItem(type);
             }
         });

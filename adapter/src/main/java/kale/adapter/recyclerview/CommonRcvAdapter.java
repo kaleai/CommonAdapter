@@ -1,4 +1,4 @@
-package kale.adapter;
+package kale.adapter.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import kale.adapter.IAdapter;
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.AdapterItemUtil;
 
@@ -15,7 +16,7 @@ import kale.adapter.util.AdapterItemUtil;
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T>{
+public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T> {
 
     private final boolean DEBUG = false;
     
@@ -25,7 +26,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     private AdapterItemUtil mUtil = new AdapterItemUtil();
 
-    protected CommonRcvAdapter(List<T> data) {
+    protected CommonRcvAdapter(@NonNull List<T> data) {
         mDataList = data;
     }
 
@@ -71,7 +72,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem<>(parent.getContext(), parent, onCreateItem(mItemType));
+        return new RcvAdapterItem<>(parent.getContext(), parent, createItem(mItemType));
     }
 
     @SuppressWarnings("unchecked")
@@ -82,7 +83,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
             item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
             item.isNew = false;
         }
-        ((RcvAdapterItem) holder).getItem().onUpdateViews(mDataList.get(position), position);
+        ((RcvAdapterItem) holder).getItem().handleData(mDataList.get(position), position);
     }
 
     
@@ -99,8 +100,8 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem<T> item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             mItem = item;
-            mItem.onBindViews(itemView);
-            mItem.onSetViews();
+            mItem.bindViews(itemView);
+            mItem.setViews();
         }
 
         protected AdapterItem<T> getItem() {

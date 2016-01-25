@@ -26,13 +26,13 @@ public class ImageItem implements AdapterItem<DemoModel> {
     private DemoItemImageBinding b;
 
     @Override
-    public void onBindViews(View root) {
+    public void bindViews(View root) {
         b = DataBindingUtil.bind(root);
     }
 
     @Override
-    public void onSetViews() {
-        Log.d(ImageItem.class.getSimpleName(), "onSetViews--------->");
+    public void setViews() {
+        Log.d(ImageItem.class.getSimpleName(), "setViews--------->");
     }
 
     /**
@@ -42,7 +42,7 @@ public class ImageItem implements AdapterItem<DemoModel> {
      * 这里仅仅是用图片做个说明，你完全可以在textview显示文字前判断一下要显示的文字和已经显示的文字是否不同
      */
     @Override
-    public void onUpdateViews(DemoModel model, int position) {
+    public void handleData(DemoModel model, int position) {
         if (b.imageView.getTag() != null) {
             mOldImageUrl = (int) b.imageView.getTag();
         }

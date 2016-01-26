@@ -60,7 +60,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         if (mInflater == null) {
             mInflater = LayoutInflater.from(viewPager.getContext());
         }
-        AdapterItem item = createItem(getItemType(position));
+        AdapterItem item = onCreateItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
         view.setTag(R.id.tag_item, item); // 万一你要用到这个item可以通过这个tag拿到
         item.bindViews(view);

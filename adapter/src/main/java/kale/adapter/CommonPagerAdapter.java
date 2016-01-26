@@ -1,4 +1,4 @@
-package kale.adapter.viewpager;
+package kale.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -8,27 +8,26 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import kale.adapter.IAdapter;
-import kale.adapter.R;
 import kale.adapter.item.AdapterItem;
+import kale.adapter.util.IAdapter;
 
 /**
  * @author Jack Tony
  * @date 2015/11/29
  */
-public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePagerAdapter<View> implements IAdapter<T> {
+public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> implements IAdapter<T> {
 
-    private List<T> mData;
+    private List<T> mDataList;
 
     LayoutInflater mInflater;
 
     public CommonPagerAdapter(List<T> data) {
-        mData = data;
+        mDataList = data;
     }
 
     @Override
     public int getCount() {
-        return mData.size();
+        return mDataList.size();
     }
 
     @Override
@@ -50,7 +49,8 @@ public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePage
     public void setPrimaryItem(ViewGroup container, int position, @NonNull Object object) {
         // 这里应该放置数据更新的操作
         if (object != currentItem) {
-            ((AdapterItem<T>) ((View) object).getTag(R.id.tag_item)).handleData(mData.get(position), position);
+            AdapterItem item = (AdapterItem) ((View) object).getTag(R.id.tag_item);
+            item.handleData(convertData(mDataList.get(position)), position);
         }
         super.setPrimaryItem(container, position, object);
     }
@@ -60,7 +60,7 @@ public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePage
         if (mInflater == null) {
             mInflater = LayoutInflater.from(viewPager.getContext());
         }
-        AdapterItem<T> item = createItem(getItemType(position));
+        AdapterItem item = createItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
         view.setTag(R.id.tag_item, item); // 万一你要用到这个item可以通过这个tag拿到
         item.bindViews(view);
@@ -68,11 +68,17 @@ public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePage
         return view;
     }
 
+    @NonNull
+    @Override
+    public Object convertData(T data) {
+        return data;
+    }
+
     /**
      * 强烈建议返回string,int,bool类似的基础对象做type
      */
     public Object getItemType(int position) {
-        return getItemType(mData.get(position));
+        return getItemType(mDataList.get(position));
     }
 
     @Override
@@ -82,17 +88,17 @@ public abstract class CommonPagerAdapter<T extends AdapterItem> extends BasePage
 
     @Override
     public void setData(@NonNull List<T> data) {
-        mData = data;
+        mDataList = data;
     }
 
     @Override
     public List<T> getData() {
-        return mData;
+        return mDataList;
     }
 
     @Override
     public T getItem(int position) {
-        return mData.get(position);
+        return mDataList.get(position);
     }
 
 }

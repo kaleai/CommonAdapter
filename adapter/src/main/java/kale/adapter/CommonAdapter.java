@@ -10,6 +10,7 @@ import java.util.List;
 
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.AdapterItemUtil;
+import kale.adapter.util.IAdapter;
 
 /**
  * @author Jack Tony
@@ -94,7 +95,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
             mInflater = LayoutInflater.from(parent.getContext());
         }
         
-        AdapterItem<T> item;
+        AdapterItem item;
         if (convertView == null) {
             item = createItem(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
@@ -103,11 +104,16 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
             item.setViews();
             if (DEBUG) convertView.setBackgroundColor(0xffff0000);
         } else {
-            item = (AdapterItem<T>) convertView.getTag(R.id.tag_item);
+            item = (AdapterItem) convertView.getTag(R.id.tag_item);
             if (DEBUG) convertView.setBackgroundColor(0xff00ff00);
         }
-        item.handleData(mDataList.get(position), position);
+        item.handleData(convertData(mDataList.get(position)), position);
         return convertView;
     }
 
+    @NonNull
+    @Override
+    public Object convertData(T data) {
+        return data;
+    }
 }

@@ -1,4 +1,4 @@
-package kale.adapter;
+package kale.adapter.util;
 
 import android.support.annotation.NonNull;
 
@@ -25,5 +25,12 @@ public interface IAdapter<T> {
      * 当缓存中无法得到所需item时才会调用
      */
     @NonNull
-    AdapterItem<T> createItem(Object type);
+    AdapterItem createItem(Object type);
+
+    /**
+     * @param data 从原始的list中取得得数据
+     * @return 放入adapterItem的最终数据
+     */
+    @NonNull
+    Object convertData(T data);
 }

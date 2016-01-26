@@ -13,7 +13,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import kale.adapter.CommonAdapter;
-import kale.adapter.recyclerview.CommonRcvAdapter;
+import kale.adapter.CommonRcvAdapter;
 import kale.adapter.item.AdapterItem;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;

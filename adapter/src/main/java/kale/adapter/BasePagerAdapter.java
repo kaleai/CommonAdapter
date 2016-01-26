@@ -1,4 +1,4 @@
-package kale.adapter.viewpager;
+package kale.adapter;
 
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;

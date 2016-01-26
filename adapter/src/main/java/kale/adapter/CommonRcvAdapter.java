@@ -1,4 +1,4 @@
-package kale.adapter.recyclerview;
+package kale.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import kale.adapter.IAdapter;
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.AdapterItemUtil;
+import kale.adapter.util.IAdapter;
 
 /**
  * @author Jack Tony
@@ -72,7 +72,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem<>(parent.getContext(), parent, createItem(mItemType));
+        return new RcvAdapterItem(parent.getContext(), parent, createItem(mItemType));
     }
 
     @SuppressWarnings("unchecked")
@@ -83,31 +83,31 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
             item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
             item.isNew = false;
         }
-        ((RcvAdapterItem) holder).getItem().handleData(mDataList.get(position), position);
+        ((RcvAdapterItem) holder).item.handleData(convertData(mDataList.get(position)), position);
     }
 
-    
+    @NonNull
+    @Override
+    public Object convertData(T data) {
+        return data;
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // 内部用到的viewHold
     ///////////////////////////////////////////////////////////////////////////
     
-    private static class RcvAdapterItem<T> extends RecyclerView.ViewHolder {
+    private static class RcvAdapterItem extends RecyclerView.ViewHolder {
 
-        private AdapterItem<T> mItem;
+        protected AdapterItem item;
         
         public boolean isNew = true; // debug中才用到
         
-        protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem<T> item) {
+        protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
-            mItem = item;
-            mItem.bindViews(itemView);
-            mItem.setViews();
+            this.item = item;
+            this.item.bindViews(itemView);
+            this.item.setViews();
         }
-
-        protected AdapterItem<T> getItem() {
-            return mItem;
-        }
-        
     }
     
 }

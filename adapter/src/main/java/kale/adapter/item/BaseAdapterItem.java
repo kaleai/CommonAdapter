@@ -11,8 +11,6 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
 
     protected View root;
     
-    protected int currentPos;
-    
     @Override
     public void bindViews(View root) {
         this.root = root;
@@ -23,15 +21,6 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
      * 方法中可以使用{@link #getView(int)}来代替{@link View#findViewById(int)}
      */
     protected abstract void bindViews();
-
-    @Override
-    public void handleData(T model, int position) {
-        currentPos = position;
-    }
-
-    public int getCurrentPosition() {
-        return currentPos;
-    }
 
     public final <E extends View> E getView(int id) {
         try {

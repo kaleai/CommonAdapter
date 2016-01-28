@@ -6,8 +6,14 @@ import android.util.SparseArray;
  * @author Jack Tony
  * @date 2015/8/29
  */
-public class AdapterItemUtil {
+public class ItemTypeUtil {
 
+    /**
+     * [int,obj]
+     * 
+     * int : 最终的type
+     * obj : 传入的type
+     */
     private SparseArray<Object> typeSArr = new SparseArray<>();
     
     /**

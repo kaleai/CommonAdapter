@@ -127,7 +127,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
     // 缓存类
     ///////////////////////////////////////////////////////////////////////////
 
-    public static class PagerCache<T> {
+    private static class PagerCache<T> {
 
         private Map<Object, Queue<T>> mCacheMap;
 
@@ -135,20 +135,28 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
             mCacheMap = new ArrayMap<>();
         }
 
-        public T getItem(Object key) {
+        /**
+         * @param type item type
+         * @return
+         */
+        public T getItem(Object type) {
             Queue<T> queue;
-            if ((queue = mCacheMap.get(key)) != null) {
+            if ((queue = mCacheMap.get(type)) != null) {
                 return queue.poll(); // 如果拿不到也会返回null
             } else {
                 return null;
             }
         }
 
-        public void putItem(Object key, T item) {
+        /**
+         * @param type item type
+         * @param item item
+         */
+        public void putItem(Object type, T item) {
             Queue<T> queue;
-            if ((queue = mCacheMap.get(key)) == null) {
+            if ((queue = mCacheMap.get(type)) == null) {
                 queue = new LinkedList<>();
-                mCacheMap.put(key, queue);
+                mCacheMap.put(type, queue);
             }
             queue.offer(item);
         }

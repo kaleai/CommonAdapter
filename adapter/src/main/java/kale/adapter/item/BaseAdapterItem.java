@@ -22,6 +22,10 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
      */
     protected abstract void bindViews();
 
+    public View getRoot() {
+        return root;
+    }
+
     public final <E extends View> E getView(int id) {
         try {
             return (E) root.findViewById(id);

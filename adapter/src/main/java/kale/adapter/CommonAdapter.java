@@ -1,15 +1,17 @@
 package kale.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
-import kale.adapter.util.AdapterItemUtil;
+import kale.adapter.util.ItemTypeUtil;
 import kale.adapter.util.IAdapter;
 
 /**
@@ -18,36 +20,35 @@ import kale.adapter.util.IAdapter;
  */
 public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T> {
 
-    private final boolean DEBUG = false;
-    
     private List<T> mDataList;
 
     private int mViewTypeCount = 1;
 
+    /**
+     * 每个item的类型，会根据每一条数据进行产生
+     */
     private Object mType;
 
     private LayoutInflater mInflater;
 
-    private AdapterItemUtil util;
+    private ItemTypeUtil util;
 
-    protected CommonAdapter(@NonNull List<T> data) {
+    protected CommonAdapter(@Nullable List<T> data) {
         this(data, 1);
     }
 
-    protected CommonAdapter(@NonNull List<T> data, int viewTypeCount) {
+    protected CommonAdapter(@Nullable List<T> data, int viewTypeCount) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
         mDataList = data;
         mViewTypeCount = viewTypeCount;
-        util = new AdapterItemUtil();
+        util = new ItemTypeUtil();
     }
 
     @Override
     public int getCount() {
         return mDataList.size();
-    }
-
-    @Override
-    public T getItem(int position) {
-        return mDataList.get(position);
     }
 
     @Override
@@ -66,6 +67,9 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
     }
 
     /**
+     * 通过数据得到obj的类型的type
+     * 然后，通过{@link ItemTypeUtil}来转换位int类型的type
+     * 
      * instead by{@link #getItemType(Object)}
      */
     @Override
@@ -76,9 +80,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         return util.getIntType(mType);
     }
 
-    /**
-     * 强烈建议返回string,int,bool类似的基础对象做type
-     */
     @Override
     public Object getItemType(T t) {
         return -1; // default
@@ -99,21 +100,26 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         if (convertView == null) {
             item = createItem(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
-            convertView.setTag(R.id.tag_item, item);
+            convertView.setTag(R.id.tag_item, item); // get item
+            
             item.bindViews(convertView);
             item.setViews();
-            if (DEBUG) convertView.setBackgroundColor(0xffff0000);
         } else {
-            item = (AdapterItem) convertView.getTag(R.id.tag_item);
-            if (DEBUG) convertView.setBackgroundColor(0xff00ff00);
+            item = (AdapterItem) convertView.getTag(R.id.tag_item); // save item
         }
-        item.handleData(convertData(mDataList.get(position)), position);
+        item.handleData(getConvertedData(mDataList.get(position), mType), position);
         return convertView;
     }
 
     @NonNull
     @Override
-    public Object convertData(T data) {
+    public Object getConvertedData(T data, Object type) {
         return data;
     }
+
+    @Override
+    public Object getItem(int position) {
+        return mDataList.get(position);
+    }
+
 }

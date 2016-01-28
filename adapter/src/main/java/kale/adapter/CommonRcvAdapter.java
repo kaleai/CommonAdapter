@@ -2,14 +2,16 @@ package kale.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
-import kale.adapter.util.AdapterItemUtil;
+import kale.adapter.util.ItemTypeUtil;
 import kale.adapter.util.IAdapter;
 
 /**
@@ -18,15 +20,16 @@ import kale.adapter.util.IAdapter;
  */
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T> {
 
-    private final boolean DEBUG = false;
-    
     private List<T> mDataList;
 
     private Object mItemType;
 
-    private AdapterItemUtil mUtil = new AdapterItemUtil();
+    private ItemTypeUtil mUtil = new ItemTypeUtil();
 
-    protected CommonRcvAdapter(@NonNull List<T> data) {
+    protected CommonRcvAdapter(@Nullable List<T> data) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
         mDataList = data;
     }
 
@@ -35,11 +38,6 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
         return mDataList.size();
     }
 
-    @Override
-    public T getItem(int position) {
-        return mDataList.get(position);
-    }
-    
     @Override
     public void setData(@NonNull List<T> data) {
         mDataList = data;
@@ -57,6 +55,9 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     /**
      * instead by{@link #getItemType(Object)}
+     *
+     * 通过数据得到obj的类型的type
+     * 然后，通过{@link ItemTypeUtil}来转换位int类型的type
      */
     @Deprecated
     @Override
@@ -78,17 +79,13 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (DEBUG) {
-            RcvAdapterItem item = (RcvAdapterItem) holder;
-            item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
-            item.isNew = false;
-        }
-        ((RcvAdapterItem) holder).item.handleData(convertData(mDataList.get(position)), position);
+        debug((RcvAdapterItem) holder);
+        ((RcvAdapterItem) holder).item.handleData(getConvertedData(mDataList.get(position), mItemType), position);
     }
 
     @NonNull
     @Override
-    public Object convertData(T data) {
+    public Object getConvertedData(T data, Object type) {
         return data;
     }
 
@@ -107,6 +104,20 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
             this.item = item;
             this.item.bindViews(itemView);
             this.item.setViews();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // For debug
+    ///////////////////////////////////////////////////////////////////////////
+
+    private final boolean DEBUG = false;
+
+    private void debug(RcvAdapterItem holder) {
+        if (DEBUG) {
+            RcvAdapterItem item = holder;
+            item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
+            item.isNew = false;
         }
     }
     

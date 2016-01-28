@@ -1,11 +1,13 @@
 package kale.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
@@ -21,7 +23,10 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
 
     LayoutInflater mInflater;
 
-    public CommonPagerAdapter(List<T> data) {
+    public CommonPagerAdapter(@Nullable List<T> data) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
         mDataList = data;
     }
 
@@ -50,7 +55,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         // 这里应该放置数据更新的操作
         if (object != currentItem) {
             AdapterItem item = (AdapterItem) ((View) object).getTag(R.id.tag_item);
-            item.handleData(convertData(mDataList.get(position)), position);
+            item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
         }
         super.setPrimaryItem(container, position, object);
     }
@@ -70,7 +75,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
 
     @NonNull
     @Override
-    public Object convertData(T data) {
+    public Object getConvertedData(T data, Object type) {
         return data;
     }
 
@@ -95,10 +100,4 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     public List<T> getData() {
         return mDataList;
     }
-
-    @Override
-    public T getItem(int position) {
-        return mDataList.get(position);
-    }
-
 }

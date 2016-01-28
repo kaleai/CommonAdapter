@@ -21,7 +21,7 @@ public class DataManager {
     public static List<DemoModel> loadData(Context context) {
         List<String> originList = Arrays.asList(context.getResources().getStringArray(R.array.country_names));
         List<DemoModel> list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             int type = (int) (Math.random() * 3);
             //Log.d(TAG, "type = " + type);
             DemoModel model = new DemoModel();

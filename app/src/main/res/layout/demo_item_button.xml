@@ -5,13 +5,14 @@
 
         <variable
             name="vm"
-            type="kale.commonadapter.item.ButtonViewModel"
+            type="kale.commonadapter.item.ButtonViewData"
             />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
         >
 

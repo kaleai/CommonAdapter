@@ -111,13 +111,11 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     // For debug
     ///////////////////////////////////////////////////////////////////////////
 
-    private final boolean DEBUG = false;
-
     private void debug(RcvAdapterItem holder) {
-        if (DEBUG) {
-            RcvAdapterItem item = holder;
-            item.itemView.setBackgroundColor(item.isNew ? 0xffff0000 : 0xff00ff00);
-            item.isNew = false;
+        boolean debug = false;
+        if (debug) {
+            holder.itemView.setBackgroundColor(holder.isNew ? 0xffff0000 : 0xff00ff00);
+            holder.isNew = false;
         }
     }
     

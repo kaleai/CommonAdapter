@@ -106,9 +106,9 @@ public class ListViewTestActivity extends AppCompatActivity{
             @NonNull
             @Override
             public AdapterItem createItem(Object type) {
-                return new ImageItem2(ListViewTestActivity.this, new View.OnClickListener() {
+                return new ImageItem2(ListViewTestActivity.this, new ImageItem2.ImageItemCallback(){
                     @Override
-                    public void onClick(View v) {
+                    public void onImageClick(View view) {
                         Toast.makeText(ListViewTestActivity.this, "click", Toast.LENGTH_SHORT).show();
                     }
                 });

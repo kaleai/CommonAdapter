@@ -21,13 +21,20 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
 
     private List<T> mDataList;
 
-    LayoutInflater mInflater;
+    private LayoutInflater mInflater;
+
+    private boolean mIsLazy = false;
 
     public CommonPagerAdapter(@Nullable List<T> data) {
+        this(data, false);
+    }
+
+    public CommonPagerAdapter(@Nullable List<T> data, boolean isLazy) {
         if (data == null) {
             data = new ArrayList<>();
         }
         mDataList = data;
+        mIsLazy = isLazy;
     }
 
     @Override
@@ -35,25 +42,27 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         return mDataList.size();
     }
 
+    @NonNull
     @Override
-    protected View getViewFromItem(View item) {
+    protected View getViewFromItem(View item, int pos) {
         return item;
     }
 
     @Override
-    protected View getWillBeAddedView(View item, int position) {
-        return item;
-    }
-
-    @Override
-    protected View getWillBeDestroyedView(View item, int position) {
-        return item;
+    public View instantiateItem(ViewGroup container, int position) {
+        View view = super.instantiateItem(container, position);
+        if (!mIsLazy) {
+            AdapterItem item = (AdapterItem) view.getTag(R.id.tag_item);
+            // 如果不是懒加载，那么在初始化时就做数据的处理
+            item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
+        }
+        return view;
     }
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, @NonNull Object object) {
-        // 这里应该放置数据更新的操作
-        if (object != currentItem) {
+        if (mIsLazy && object != currentItem) {
+            // 如果是懒加载，那么这里应该放置数据更新的操作
             AdapterItem item = (AdapterItem) ((View) object).getTag(R.id.tag_item);
             item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
         }
@@ -67,10 +76,14 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         }
         AdapterItem item = createItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
-        view.setTag(R.id.tag_item, item); // 万一你要用到这个item可以通过这个tag拿到
+        view.setTag(R.id.tag_item, item);
         item.bindViews(view);
         item.setViews();
         return view;
+    }
+
+    public void setIsLazy(boolean isLazy) {
+        mIsLazy = isLazy;
     }
 
     @NonNull

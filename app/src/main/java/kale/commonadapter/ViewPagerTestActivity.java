@@ -22,11 +22,11 @@ import kale.commonadapter.util.DataManager;
  *
  * 这里演示的是viewpager的适配器.
  * 有懒加载和正常加载两种的情况.
+ *
+ * 正常加载：是在viewpager初始化item的时候就进行数据的更新操作；
+ * 懒加载：指当一页真正出现在用户眼前时才做数据的更新操作
  */
-@Deprecated
 public class ViewPagerTestActivity extends AppCompatActivity {
-
-    // TODO: 2016/1/28 这里还有一些问题，正在处理。目前不推荐用viewpager的适配器。 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +40,11 @@ public class ViewPagerTestActivity extends AppCompatActivity {
         setContentView(viewPager);
 
         final List<DemoModel> data = DataManager.loadData(getBaseContext());
-
         viewPager.setAdapter(test01(data));
     }
 
     /**
-     * 懒加载
+     * 正常加载
      */
     private CommonPagerAdapter<DemoModel> test01(List<DemoModel> data) {
         return new CommonPagerAdapter<DemoModel>(data) {
@@ -73,10 +72,31 @@ public class ViewPagerTestActivity extends AppCompatActivity {
     }
 
     /**
-     * 正常加载
+     * 懒加载
      */
     private CommonPagerAdapter<DemoModel> test02(List<DemoModel> data) {
-        return null;
+        return new CommonPagerAdapter<DemoModel>(data, true) {
+
+            @Override
+            public Object getItemType(DemoModel demoModel) {
+                return demoModel.type;
+            }
+
+            @NonNull
+            @Override
+            public AdapterItem createItem(Object type) {
+                switch (((String) type)) {
+                    case "text":
+                        return new TextItem();
+                    case "button":
+                        return new ButtonItem();
+                    case "image":
+                        return new ImageItem();
+                    default:
+                        throw new IllegalArgumentException("不合法的type");
+                }
+            }
+        };
     }
 
 }

@@ -20,7 +20,7 @@ repositories {
 
 ```
 dependencies {
-	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.5'
+	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.6'
 }    
 ```
 
@@ -109,7 +109,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 
 ### 一、ListView+GridView的通用适配器——CommonAdapter
 
-只需继承CommonAdapter便可实现适配器：  
+只需继承`CommonAdapter`便可实现适配器：  
 ```java
 listView.setAdapter(new CommonAdapter<DemoModel>(data) {
     public AdapterItem<DemoModel> createItem(Object type) {

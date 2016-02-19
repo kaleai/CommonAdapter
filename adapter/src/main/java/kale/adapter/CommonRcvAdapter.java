@@ -1,6 +1,8 @@
 package kale.adapter;
 
 import android.content.Context;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,40 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
             data = new ArrayList<>();
         }
         mDataList = data;
+    }
+
+    protected CommonRcvAdapter(@Nullable ObservableList<T> data) {
+        this(((List<T>) data));
+        if (data == null) {
+            data = new ObservableArrayList<>();
+            setData(data);
+        }
+        data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+            @Override
+            public void onChanged(ObservableList<T> sender) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyItemRangeChanged(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyItemRangeInserted(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyItemRangeRemoved(positionStart, itemCount);
+            }
+        });
     }
 
     @Override

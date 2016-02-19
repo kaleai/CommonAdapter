@@ -1,5 +1,7 @@
 package kale.adapter;
 
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -44,6 +46,40 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         mDataList = data;
         mViewTypeCount = viewTypeCount;
         util = new ItemTypeUtil();
+    }
+
+    protected CommonAdapter(@Nullable ObservableList<T> data, int viewTypeCount) {
+        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()), viewTypeCount);
+    }
+
+    protected CommonAdapter(@Nullable ObservableList<T> data) {
+        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()));
+        data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+            @Override
+            public void onChanged(ObservableList<T> sender) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

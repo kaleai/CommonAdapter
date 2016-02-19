@@ -38,7 +38,9 @@ dependencies {
 - [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
 - [x] 支持viewpager的正常加载模式和懒加载
 - [x] 支持快速将listview的适配器切换为recyclerView的适配器
-- [ ] 支持recyclerView的添加头部和底部（下个版本支持）
+- [x] viewpager的notifyDataSetChanged可以正常更新所有数据了
+- [x] 支持recyclerView的添加头部和底部
+- [x] 支持适配器的数据自动绑定
 
 ### 示例
 

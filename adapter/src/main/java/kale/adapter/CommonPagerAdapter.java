@@ -1,5 +1,7 @@
 package kale.adapter;
 
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -37,6 +39,40 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         mIsLazy = isLazy;
     }
 
+    protected CommonPagerAdapter(@Nullable ObservableList<T> data) {
+        this(data != null ? (List<T>) data : new ObservableArrayList<T>());
+    }
+
+    protected CommonPagerAdapter(@Nullable ObservableList<T> data, boolean isLazy) {
+        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()), isLazy);
+        data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+            @Override
+            public void onChanged(ObservableList<T> sender) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+                notifyDataSetChanged();
+            }
+        });
+    }
+
     @Override
     public int getCount() {
         return mDataList.size();
@@ -52,9 +88,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     public View instantiateItem(ViewGroup container, int position) {
         View view = super.instantiateItem(container, position);
         if (!mIsLazy) {
-            AdapterItem item = (AdapterItem) view.getTag(R.id.tag_item);
-            // 如果不是懒加载，那么在初始化时就做数据的处理
-            item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
+            initItem(position, view);
         }
         return view;
     }
@@ -62,11 +96,14 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     @Override
     public void setPrimaryItem(ViewGroup container, int position, @NonNull Object object) {
         if (mIsLazy && object != currentItem) {
-            // 如果是懒加载，那么这里应该放置数据更新的操作
-            AdapterItem item = (AdapterItem) ((View) object).getTag(R.id.tag_item);
-            item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
+            initItem(position, ((View) object));
         }
         super.setPrimaryItem(container, position, object);
+    }
+
+    private void initItem(int position, View view) {
+        AdapterItem item = (AdapterItem) view.getTag(R.id.tag_item);
+        item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
     }
 
     @Override

@@ -36,11 +36,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     }
 
     protected CommonRcvAdapter(@Nullable ObservableList<T> data) {
-        this(((List<T>) data));
-        if (data == null) {
-            data = new ObservableArrayList<>();
-            setData(data);
-        }
+        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()));
         data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
             @Override
             public void onChanged(ObservableList<T> sender) {
@@ -59,6 +55,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
             @Override
             public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                // TODO: 2016/2/19 未支持一次性移动多个的情况 
                 notifyItemMoved(fromPosition, toPosition);
             }
 

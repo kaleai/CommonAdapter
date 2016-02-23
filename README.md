@@ -20,7 +20,7 @@ repositories {
 
 ```
 dependencies {
-	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.6'
+	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.7'
 }    
 ```
 
@@ -40,7 +40,7 @@ dependencies {
 - [x] 支持快速将listview的适配器切换为recyclerView的适配器
 - [x] viewpager的notifyDataSetChanged可以正常更新所有数据了
 - [x] 支持recyclerView的添加头部和底部
-- [x] 支持适配器的数据自动绑定
+- [x] 支持适配器的数据自动绑定，只用操作数据便可自动notify界面
 
 ### 示例
 

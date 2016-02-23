@@ -12,8 +12,9 @@
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:background="#a8b6d8"
         android:text="@{vm.text}"
         />
 </layout>

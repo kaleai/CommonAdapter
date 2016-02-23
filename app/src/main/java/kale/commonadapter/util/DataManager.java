@@ -15,13 +15,17 @@ import kale.commonadapter.model.DemoModel;
  */
 public class DataManager {
 
+    public static List<DemoModel> loadData(Context context) {
+        return loadData(context, 200);
+    }
+
     /**
      * 模拟加载数据的操作
      */
-    public static List<DemoModel> loadData(Context context) {
+    public static List<DemoModel> loadData(Context context, int num) {
         List<String> originList = Arrays.asList(context.getResources().getStringArray(R.array.country_names));
         List<DemoModel> list = new ArrayList<>();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < num; i++) {
             int type = (int) (Math.random() * 3);
             //Log.d(TAG, "type = " + type);
             DemoModel model = new DemoModel();

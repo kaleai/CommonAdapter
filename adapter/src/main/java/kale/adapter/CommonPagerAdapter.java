@@ -31,16 +31,8 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         this(data, false);
     }
 
-    public CommonPagerAdapter(@Nullable List<T> data, boolean isLazy) {
-        if (data == null) {
-            data = new ArrayList<>();
-        }
-        mDataList = data;
-        mIsLazy = isLazy;
-    }
-
     protected CommonPagerAdapter(@Nullable ObservableList<T> data) {
-        this(data != null ? (List<T>) data : new ObservableArrayList<T>());
+        this(data, false);
     }
 
     protected CommonPagerAdapter(@Nullable ObservableList<T> data, boolean isLazy) {
@@ -71,6 +63,14 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
                 notifyDataSetChanged();
             }
         });
+    }
+
+    public CommonPagerAdapter(@Nullable List<T> data, boolean isLazy) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
+        mDataList = data;
+        mIsLazy = isLazy;
     }
 
     @Override
@@ -133,7 +133,11 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
      * 强烈建议返回string,int,bool类似的基础对象做type
      */
     public Object getItemType(int position) {
-        return getItemType(mDataList.get(position));
+        if (position < mDataList.size()) {
+            return getItemType(mDataList.get(position));
+        } else {
+            return null;
+        }
     }
 
     @Override

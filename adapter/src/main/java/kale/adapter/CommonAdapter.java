@@ -39,21 +39,12 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         this(data, 1);
     }
 
-    protected CommonAdapter(@Nullable List<T> data, int viewTypeCount) {
-        if (data == null) {
-            data = new ArrayList<>();
-        }
-        mDataList = data;
-        mViewTypeCount = viewTypeCount;
-        util = new ItemTypeUtil();
+    protected CommonAdapter(@Nullable ObservableList<T> data) {
+        this(data, 1);
     }
 
     protected CommonAdapter(@Nullable ObservableList<T> data, int viewTypeCount) {
-        this(data != null ? (List<T>) data : new ObservableArrayList<T>(), viewTypeCount);
-    }
-
-    protected CommonAdapter(@Nullable ObservableList<T> data) {
-        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()));
+        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()), viewTypeCount);
         data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
             @Override
             public void onChanged(ObservableList<T> sender) {
@@ -80,6 +71,15 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
                 notifyDataSetChanged();
             }
         });
+    }
+
+    protected CommonAdapter(@Nullable List<T> data, int viewTypeCount) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
+        mDataList = data;
+        mViewTypeCount = viewTypeCount;
+        util = new ItemTypeUtil();
     }
 
     @Override

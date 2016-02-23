@@ -20,9 +20,11 @@ import java.util.Queue;
  */
 public abstract class BasePagerAdapter<T> extends PagerAdapter {
 
-    private int mChildCount = 0;
-
+    private static final String TAG = "BasePagerAdapter";
+    
     protected T currentItem = null;
+    
+    private boolean isNotifying = false;
 
     /**
      * 这的cache的最大大小是：type * pageSize
@@ -43,7 +45,8 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
 
     @Override
     public T instantiateItem(ViewGroup container, int position) {
-        T item = mCache.getItem(getItemType(position)); // get item from type
+        Object type = getItemType(position);
+        T item = mCache.getItem(type); // get item from type
         if (item == null) {
             item = createItem((ViewPager) container, position);
         }
@@ -68,28 +71,27 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         T item = (T) object;
-        Object type = getItemType(position);
-
-        // 缓存的大小不够时，会移出最早的item。
         // 现在通过item拿到其中的view，然后remove掉
         container.removeView(getViewFromItem(item, position));
-        mCache.putItem(type, item);
+        if (!isNotifying) {
+            Object type = getItemType(position);
+            mCache.putItem(type, item);
+        }
     }
 
     @Override
     public int getItemPosition(Object object) {
-        // 开始逐个刷新item
-        if (mChildCount > 0) {
-            mChildCount--;
-            return POSITION_NONE;
-        }
-        return super.getItemPosition(object);
+        return POSITION_NONE;
     }
 
+    /**
+     * 调用后会{@link #destroyItem(ViewGroup, int, Object)}
+     */
     @Override
     public void notifyDataSetChanged() {
-        mChildCount = getCount();
+        isNotifying = true;
         super.notifyDataSetChanged();
+        isNotifying = false;
     }
 
     public Object getItemType(int position) {
@@ -103,10 +105,6 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
     protected PagerCache<T> getCache() {
         return mCache;
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // 交给子类的实现
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * 这里要实现一个从item拿到view的规则
@@ -143,12 +141,8 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
          * @return cache中的item，如果拿不到就返回null
          */
         public T getItem(Object type) {
-            Queue<T> queue;
-            if ((queue = mCacheMap.get(type)) != null) {
-                return queue.poll(); // 如果拿不到也会返回null
-            } else {
-                return null;
-            }
+            Queue<T> queue = mCacheMap.get(type);
+            return queue != null ? queue.poll() : null;
         }
 
         /**

@@ -28,13 +28,6 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     private ItemTypeUtil mUtil = new ItemTypeUtil();
 
-    protected CommonRcvAdapter(@Nullable List<T> data) {
-        if (data == null) {
-            data = new ArrayList<>();
-        }
-        mDataList = data;
-    }
-
     protected CommonRcvAdapter(@Nullable ObservableList<T> data) {
         this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()));
         data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
@@ -55,7 +48,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
             @Override
             public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-                // TODO: 2016/2/19 未支持一次性移动多个的情况 
+                // Note:不支持一次性移动"多个item"的情况！！！！
                 notifyItemMoved(fromPosition, toPosition);
             }
 
@@ -64,6 +57,13 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
                 notifyItemRangeRemoved(positionStart, itemCount);
             }
         });
+    }
+
+    protected CommonRcvAdapter(@Nullable List<T> data) {
+        if (data == null) {
+            data = new ArrayList<>();
+        }
+        mDataList = data;
     }
 
     @Override
@@ -125,13 +125,13 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     ///////////////////////////////////////////////////////////////////////////
     // 内部用到的viewHold
     ///////////////////////////////////////////////////////////////////////////
-    
+
     private static class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         protected AdapterItem item;
-        
+
         public boolean isNew = true; // debug中才用到
-        
+
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             this.item = item;
@@ -151,5 +151,5 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
             holder.isNew = false;
         }
     }
-    
+
 }

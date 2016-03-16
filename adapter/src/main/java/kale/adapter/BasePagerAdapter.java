@@ -20,12 +20,8 @@ import java.util.Queue;
  */
 public abstract class BasePagerAdapter<T> extends PagerAdapter {
 
-    private static final String TAG = "BasePagerAdapter";
-    
     protected T currentItem = null;
     
-    private boolean isNotifying = false;
-
     /**
      * 这的cache的最大大小是：type * pageSize
      */
@@ -52,6 +48,8 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         }
         // 通过item得到将要被add到viewpager中的view
         View view = getViewFromItem(item, position);
+        view.setTag(R.id.tag_item_type, type);
+        
         if (view.getParent() != null) {
             ((ViewGroup) view.getParent()).removeView(view);
         }
@@ -73,25 +71,13 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         T item = (T) object;
         // 现在通过item拿到其中的view，然后remove掉
         container.removeView(getViewFromItem(item, position));
-        if (!isNotifying) {
-            Object type = getItemType(position);
-            mCache.putItem(type, item);
-        }
+        Object type = getViewFromItem(item, position).getTag(R.id.tag_item_type);
+        mCache.putItem(type, item);
     }
 
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
-    }
-
-    /**
-     * 调用后会{@link #destroyItem(ViewGroup, int, Object)}
-     */
-    @Override
-    public void notifyDataSetChanged() {
-        isNotifying = true;
-        super.notifyDataSetChanged();
-        isNotifying = false;
     }
 
     public Object getItemType(int position) {

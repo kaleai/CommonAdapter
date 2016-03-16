@@ -9,7 +9,6 @@ import kale.commonadapter.R;
 import kale.commonadapter.databinding.DemoItemImageBinding;
 import kale.commonadapter.model.DemoModel;
 
-
 /**
  * @author Jack Tony
  * @date 2015/5/15
@@ -42,7 +41,6 @@ public class ImageItem implements AdapterItem<DemoModel> {
 
     @Override
     public void setViews() {
-        Log.d(ImageItem.class.getSimpleName(), "setViews--------->");
     }
 
     /**
@@ -55,8 +53,6 @@ public class ImageItem implements AdapterItem<DemoModel> {
     public void handleData(DemoModel model, int position) {
         int drawableId = Integer.valueOf(model.content);
         if (mOldImageUrl == 0 && mOldImageUrl != drawableId) {
-            Log.d(ImageItem.class.getSimpleName(), "update image--------->");
-
             b.imageView.setImageResource(drawableId); // load image
             mOldImageUrl = drawableId;
         }

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
-import kale.adapter.util.ItemTypeUtil;
 import kale.adapter.util.IAdapter;
+import kale.adapter.util.ItemTypeUtil;
 
 /**
  * @author Jack Tony
@@ -34,14 +34,6 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
     private LayoutInflater mInflater;
 
     private ItemTypeUtil util;
-
-    protected CommonAdapter(@Nullable List<T> data) {
-        this(data, 1);
-    }
-
-    protected CommonAdapter(@Nullable ObservableList<T> data) {
-        this(data, 1);
-    }
 
     protected CommonAdapter(@Nullable ObservableList<T> data, int viewTypeCount) {
         this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()), viewTypeCount);
@@ -132,7 +124,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
             mInflater = LayoutInflater.from(parent.getContext());
         }
         
-        AdapterItem item;
+        final AdapterItem item;
         if (convertView == null) {
             item = createItem(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);

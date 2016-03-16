@@ -3,8 +3,9 @@ package kale.commonadapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import kale.commonadapter.item.ImageItem2;
 import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.DemoModel;
 import kale.commonadapter.util.DataManager;
+import kale.commonadapter.util.Util;
 
 /**
  * @author Kale
@@ -28,38 +30,18 @@ import kale.commonadapter.util.DataManager;
  */
 public class ListViewTestActivity extends AppCompatActivity{
 
+    ListView listView;
+    List<DemoModel> data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ListView listView = new ListView(this);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        listView.setLayoutParams(params);
-        setContentView(listView);
+        listView = new ListView(this);
+        Util.setContentView(this, listView);
 
-
-        final List<DemoModel> data = DataManager.loadData(getBaseContext());
+        data = DataManager.loadData(getBaseContext());
         listView.setAdapter(test01(data));
-    }
-
-    /**
-     * CommonPagerAdapter的类型和item的类型是一致的
-     * 这里的都是{@link DemoModel}
-     *
-     * 一种类型的type
-     */
-    private CommonAdapter<DemoModel> test01(List<DemoModel> data) {
-        return new CommonAdapter<DemoModel>(data) {
-
-            @NonNull
-            @Override
-            public AdapterItem createItem(Object type) {
-                // 如果就一种，那么直接return一种类型的item即可。
-                return new TextItem();
-            }
-        };
     }
 
     /**
@@ -68,8 +50,8 @@ public class ListViewTestActivity extends AppCompatActivity{
      *
      * 多种类型的type
      */
-    private CommonAdapter<DemoModel> test02(List<DemoModel> data) {
-        return new CommonAdapter<DemoModel>(data) {
+    private CommonAdapter<DemoModel> test01(List<DemoModel> data) {
+        return new CommonAdapter<DemoModel>(data, 3) {
 
             @Override
             public Object getItemType(DemoModel demoModel) {
@@ -94,6 +76,24 @@ public class ListViewTestActivity extends AppCompatActivity{
     }
 
     /**
+     * CommonPagerAdapter的类型和item的类型是一致的
+     * 这里的都是{@link DemoModel}
+     *
+     * 一种类型的type
+     */
+    private CommonAdapter<DemoModel> test02(List<DemoModel> data) {
+        return new CommonAdapter<DemoModel>(data, 1) {
+
+            @NonNull
+            @Override
+            public AdapterItem createItem(Object type) {
+                // 如果就一种，那么直接return一种类型的item即可。
+                return new TextItem();
+            }
+        };
+    }
+
+    /**
      * CommonAdapter的类型和item的类型是不一致的
      * 这里的adapter的类型是{@link DemoModel}，但item的类型是Integer.
      * 所以需要调用{@link IAdapter#getConvertedData(Object, Object)}方法，来进行数据的转换
@@ -101,17 +101,31 @@ public class ListViewTestActivity extends AppCompatActivity{
      * 多种类型的type
      */
     private CommonAdapter<DemoModel> test03(List<DemoModel> data) {
-        return new CommonAdapter<DemoModel>(data) {
+        return new CommonAdapter<DemoModel>(data, 3) {
+
+            @Override
+            public Object getItemType(DemoModel demoModel) {
+                return demoModel.type;
+            }
 
             @NonNull
             @Override
             public AdapterItem createItem(Object type) {
-                return new ImageItem2(ListViewTestActivity.this, new ImageItem2.ImageItemCallback(){
-                    @Override
-                    public void onImageClick(View view) {
-                        Toast.makeText(ListViewTestActivity.this, "click", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                switch (((String) type)) {
+                    case "text":
+                        return new TextItem();
+                    case "button":
+                        return new ButtonItem();
+                    case "image":
+                        return new ImageItem2(ListViewTestActivity.this, new ImageItem2.ImageItemCallback() {
+                            @Override
+                            public void onImageClick(View view) {
+                                Toast.makeText(ListViewTestActivity.this, "click", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    default:
+                        throw new IllegalArgumentException("不合法的type");
+                }
             }
 
             /**
@@ -120,8 +134,37 @@ public class ListViewTestActivity extends AppCompatActivity{
             @NonNull
             @Override
             public Object getConvertedData(DemoModel data, Object type) {
-                return Integer.valueOf(data.content); // String -> Integer
+                if (type.equals("image")) {
+                    return Integer.valueOf(data.content); // String -> Integer
+                } else {
+                    return data;
+                }
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //添加菜单项
+        MenuItem oneType = menu.add(0, 0, 0, "three");
+        oneType.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        //添加菜单项
+        MenuItem threeType = menu.add(0, 1, 0, "one");
+        threeType.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == 0) {
+            listView.setAdapter(test01(data));
+            return true;
+        } else if (item.getItemId() == 1) {
+            listView.setAdapter(test02(data));
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

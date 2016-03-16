@@ -19,10 +19,22 @@
         android:id="@+id/rcv_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:text="RecyclerView"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/list_view_btn"
+        android:layout_centerHorizontal="true"
         />
+
+
+    <Button
+        android:id="@+id/rcv_btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RecyclerView2"
+        android:layout_below="@+id/rcv_btn"
+        android:layout_centerHorizontal="true"
+        />
+
 
     <Button
         android:id="@+id/viewpager_btn"

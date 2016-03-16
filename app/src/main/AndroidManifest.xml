@@ -19,6 +19,7 @@
         <activity android:name=".ViewPagerTestActivity"/>
         <activity android:name=".ListViewTestActivity" />
         <activity android:name=".RcvTestActivity" />
+        <activity android:name=".RcvHeaderTestActivity" />
     </application>
 
 </manifest>

@@ -39,7 +39,6 @@ public class ButtonItem implements AdapterItem<DemoModel> {
      */
     @Override
     public void setViews() {
-        Log.d(TAG, "setViews--------->");
         // 这个方法仅仅在item构建时才会触发，所以在这里也仅仅建立一次监听器，不会重复建立
         b.button.setOnClickListener(new View.OnClickListener() {
             @Override

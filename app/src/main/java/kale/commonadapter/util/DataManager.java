@@ -27,7 +27,6 @@ public class DataManager {
         List<DemoModel> list = new ArrayList<>();
         for (int i = 0; i < num; i++) {
             int type = (int) (Math.random() * 3);
-            //Log.d(TAG, "type = " + type);
             DemoModel model = new DemoModel();
             switch (type) {
                 case 0:

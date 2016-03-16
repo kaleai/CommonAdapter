@@ -102,7 +102,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     }
 
     private void initItem(int position, View view) {
-        AdapterItem item = (AdapterItem) view.getTag(R.id.tag_item);
+        final AdapterItem item = (AdapterItem) view.getTag(R.id.tag_item);
         item.handleData(getConvertedData(mDataList.get(position), getItemType(position)), position);
     }
 

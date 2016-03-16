@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
-import kale.adapter.util.ItemTypeUtil;
 import kale.adapter.util.IAdapter;
+import kale.adapter.util.ItemTypeUtil;
 
 /**
  * @author Jack Tony
@@ -22,9 +22,11 @@ import kale.adapter.util.IAdapter;
  */
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T> {
 
+    private static final String TAG = "CommonRcvAdapter";
+    
     private List<T> mDataList;
 
-    private Object mItemType;
+    private Object mType;
 
     private ItemTypeUtil mUtil = new ItemTypeUtil();
 
@@ -44,17 +46,20 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
             @Override
             public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
                 notifyItemRangeInserted(positionStart, itemCount);
-            }
-
-            @Override
-            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-                // Note:不支持一次性移动"多个item"的情况！！！！
-                notifyItemMoved(fromPosition, toPosition);
+                notifyItemRangeChanged(positionStart, itemCount);
             }
 
             @Override
             public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
                 notifyItemRangeRemoved(positionStart, itemCount);
+                notifyItemRangeChanged(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                // Note:不支持一次性移动"多个"item的情况！！！！
+                notifyItemMoved(fromPosition, toPosition);
+                notifyDataSetChanged();
             }
         });
     }
@@ -95,8 +100,8 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     @Deprecated
     @Override
     public int getItemViewType(int position) {
-        mItemType = getItemType(mDataList.get(position));
-        return mUtil.getIntType(mItemType);
+        mType = getItemType(mDataList.get(position));
+        return mUtil.getIntType(mType);
     }
 
     @Override
@@ -106,14 +111,13 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, createItem(mItemType));
+        return new RcvAdapterItem(parent.getContext(), parent, createItem(mType));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         debug((RcvAdapterItem) holder);
-        ((RcvAdapterItem) holder).item.handleData(getConvertedData(mDataList.get(position), mItemType), position);
+        ((RcvAdapterItem) holder).item.handleData(getConvertedData(mDataList.get(position), mType), position);
     }
 
     @NonNull

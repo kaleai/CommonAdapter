@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.list_view_btn).setOnClickListener(this);
         findViewById(R.id.rcv_btn).setOnClickListener(this);
+        findViewById(R.id.rcv_btn2).setOnClickListener(this);
         findViewById(R.id.viewpager_btn).setOnClickListener(this);
     }
 
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.rcv_btn:
                 clz = RcvTestActivity.class;
+                break;
+            case R.id.rcv_btn2:
+                clz = RcvHeaderTestActivity.class;
                 break;
             case R.id.viewpager_btn:
                 clz = ViewPagerTestActivity.class;

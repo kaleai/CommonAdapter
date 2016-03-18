@@ -3,7 +3,6 @@ package kale.adapter;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -44,7 +43,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         Object type = getItemType(position);
         T item = mCache.getItem(type); // get item from type
         if (item == null) {
-            item = createItem((ViewPager) container, position);
+            item = createItem(container, position);
         }
         // 通过item得到将要被add到viewpager中的view
         View view = getViewFromItem(item, position);
@@ -108,7 +107,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
      *
      * @return 需要放入容器的view
      */
-    protected abstract T createItem(ViewPager viewPager, int position);
+    protected abstract T createItem(ViewGroup viewPager, int position);
 
     ///////////////////////////////////////////////////////////////////////////
     // 缓存类

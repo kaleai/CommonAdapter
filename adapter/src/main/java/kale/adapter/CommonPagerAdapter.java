@@ -4,7 +4,6 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +106,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     }
 
     @Override
-    protected View createItem(ViewPager viewPager, int position) {
+    protected View createItem(ViewGroup viewPager, int position) {
         if (mInflater == null) {
             mInflater = LayoutInflater.from(viewPager.getContext());
         }

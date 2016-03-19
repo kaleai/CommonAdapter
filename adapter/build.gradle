@@ -13,7 +13,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     provided "com.android.databinding:library:1.0-rc3"
     provided 'com.android.support:recyclerview-v7:23.2.1'
 }

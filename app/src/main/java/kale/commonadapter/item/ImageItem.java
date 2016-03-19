@@ -1,12 +1,10 @@
 package kale.commonadapter.item;
 
-import android.databinding.DataBindingUtil;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import kale.adapter.item.AdapterItem;
 import kale.commonadapter.R;
-import kale.commonadapter.databinding.DemoItemImageBinding;
 import kale.commonadapter.model.DemoModel;
 
 /**
@@ -16,6 +14,8 @@ import kale.commonadapter.model.DemoModel;
 public class ImageItem implements AdapterItem<DemoModel> {
 
     private int mOldImageUrl = 0;
+    
+    private ImageView mIv;
 
     /**
      * @Tips item的layout命名，应该采用所处界面名+item+类型名
@@ -28,15 +28,13 @@ public class ImageItem implements AdapterItem<DemoModel> {
         return R.layout.demo_item_image;
     }
 
-    private DemoItemImageBinding b;
-
     /**
      * @Tips 这里的绑定如果觉得麻烦可以用dataBinding做处理，可以不用写findViewById
      * @param root 通过layout文件生成的根布局
      */
     @Override
     public void bindViews(View root) {
-        b = DataBindingUtil.bind(root);
+        mIv = (ImageView) root;
     }
 
     @Override
@@ -53,7 +51,7 @@ public class ImageItem implements AdapterItem<DemoModel> {
     public void handleData(DemoModel model, int position) {
         int drawableId = Integer.valueOf(model.content);
         if (mOldImageUrl == 0 && mOldImageUrl != drawableId) {
-            b.imageView.setImageResource(drawableId); // load image
+            mIv.setImageResource(drawableId); // load image
             mOldImageUrl = drawableId;
         }
     }

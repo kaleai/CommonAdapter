@@ -7,12 +7,10 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
-        versionCode 8
-        versionName "1.1.7"
     }
 }
 
 dependencies {
     provided "com.android.databinding:library:1.0-rc3"
-    provided 'com.android.support:recyclerview-v7:23.2.1'
+    provided 'com.android.support:recyclerview-v7:23.1.1'
 }

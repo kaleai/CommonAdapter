@@ -17,30 +17,25 @@ repositories {
 ```
 
 2.在用到的项目中添加依赖  
-
-```
-dependencies {
-	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.7'
-}    
-```
+>	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)'  
 
 ### 已解决的问题
 
 - [x] 提升item的独立性，完美支持item被多处复用
 - [x] item会根据type来做自动复用
 - [x] 支持多种类型的item
-- [x] 仅仅会在item创建完毕后调用一次配置item的操作，不会避免重复建立监听器
-- [x] 一个item仅会触发一次绑定视图的操作
+- [x] 一个item仅会调用一次setViews()，避免重复建立监听器
+- [x] 一个item仅会触发一次绑定视图的操作，提示效率
 - [x] ​支持dataBinding和其他第三方注入框架
-- [x] 提供了getView()方法来代替findViewById
+- [x] 提供了getView()方法来简化findViewById
 - [x] 支持通过item的构造方法来传入Activity对象
 - [x] 支持通过item的构造方法来传入item中事件的回调
 - [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
 - [x] 支持viewpager的正常加载模式和懒加载
 - [x] 支持快速将listview的适配器切换为recyclerView的适配器
-- [x] viewpager的notifyDataSetChanged可以正常更新所有数据了
+- [x] viewpager的notifyDataSetChanged可以正常更新界面
 - [x] 支持recyclerView的添加头部和底部
-- [x] 支持适配器的数据自动绑定，只用操作数据便可自动notify界面
+- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面
 
 ### 示例
 
@@ -112,8 +107,9 @@ public class TextItem implements AdapterItem<DemoModel> {
 ### 一、ListView+GridView的通用适配器——CommonAdapter
 
 只需继承`CommonAdapter`便可实现适配器：  
+
 ```java
-listView.setAdapter(new CommonAdapter<DemoModel>(data) {
+listView.setAdapter(new CommonAdapter<DemoModel>(data, 1) {
     public AdapterItem<DemoModel> createItem(Object type) {
         return new TextItem();
     }
@@ -121,6 +117,7 @@ listView.setAdapter(new CommonAdapter<DemoModel>(data) {
 ```
 
 ### 二、RecyclerView的通用适配器——CommonRcvAdapter
+
 通过继承`CommonRcvAdapter`来实现适配器：   
 
 ```java  	
@@ -132,7 +129,8 @@ mAdapter = new CommonRcvAdapter<DemoModel>(data) {
 ```
 
 ### 三、ViewPager的通用适配器——CommonPagerAdapter   
-通过继承`CommonPagerAdapter`来实现适配器：   
+
+通过继承`CommonPagerAdapter`来实现适配器：
 
 ```java
 viewPager.setAdapter(new CommonPagerAdapter<DemoModel>() {
@@ -146,15 +144,16 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>() {
 
 **1. Adapter**  
 
-因为adapter原始的代码很多，所以如果你把adapter作为activity的内部类的话很别扭，而且如果adapter中如果有多个类型的Item，你就必须在getView()中写很多if-else语句，而且里面都是一些设置view的方法，很乱。你要更换Item的话还需要去删减代码，而现在我让adapter的代码量减少到一个方法，如果你需要更新item或者添加一个新的item你直接在initItem中返回即可，实现了可插拔化。最关键的是item现在作为一个独立的对象，item内部的设置完全可以和adapter独立出来。  
+如果用adapter常规写法，你会发现代码量很大，可读性低。如果adapter中有多个类型的Item，我们还得在getView()中写很多if-else语句，很乱。
+而现在我让adapter的代码量减少到一个8行的内部类，如果你需要更换item只需要动一行代码，真正实现了可插拔化。最关键的是item现在作为了一个独立的对象，可以方便的进行复用。
 
 **2. AdapterItem**  
 
-和原来方式最为不同的就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView的ViewHolder的设计。把Item作为实体的好处有很多，比如复用啊，封装啊，其余的就不细说了。  
+和原来方式最为不同的一点就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView中ViewHolder的设计。把item作为实体的好处有很多，比如复用啊，封装啊，其余的就不细说了。  
 
 **3. 分层**  
 
-在使用过程中，我发现如果adapter放在view层，那就会影响view层的独立性。因为adapter中有很多数据处理，比如通过type选择item，数据的拆包、转换等操作。于是我还是推荐把adapter放在mvp的p层，或者是mvvm的vm层。通过在实际的项目中使用来看，放在vm或p层的效果较好，view的复用也比较好做。
+在使用过程中，我发现如果adapter放在view层，那就会影响到view层的独立性。此外adapter中经常有很多数据处理的操作，比如通过type选择item，数据的拆包、转换等操作。于是我还是推荐把adapter放在mvp的p层，或者是mvvm的m层。通过在实际的项目中使用来看，放在m或p层的效果较好，view的复用也比较好做。
 
 
 ## 开发者
@@ -167,8 +166,7 @@ Jack Tony: <developer_kale@foxmail.com>
 ## License
 
 ```  
-
-Copyright 2015 Jack Tony
+Copyright 2016 Jack Tony
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -20,7 +20,7 @@ import java.util.Queue;
 public abstract class BasePagerAdapter<T> extends PagerAdapter {
 
     protected T currentItem = null;
-    
+
     /**
      * 这的cache的最大大小是：type * pageSize
      */
@@ -48,7 +48,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         // 通过item得到将要被add到viewpager中的view
         View view = getViewFromItem(item, position);
         view.setTag(R.id.tag_item_type, type);
-        
+
         if (view.getParent() != null) {
             ((ViewGroup) view.getParent()).removeView(view);
         }

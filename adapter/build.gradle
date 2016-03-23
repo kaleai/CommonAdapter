@@ -8,12 +8,9 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
     }
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    provided 'com.android.databinding:baseLibrary:1.0'
+    provided 'com.android.support:recyclerview-v7:23.2.1'
 }

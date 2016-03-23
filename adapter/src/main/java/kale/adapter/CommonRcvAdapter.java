@@ -1,7 +1,6 @@
 package kale.adapter;
 
 import android.content.Context;
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,15 +22,15 @@ import kale.adapter.util.ItemTypeUtil;
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T> {
 
     private static final String TAG = "CommonRcvAdapter";
-    
+
     private List<T> mDataList;
 
     private Object mType;
 
     private ItemTypeUtil mUtil = new ItemTypeUtil();
 
-    protected CommonRcvAdapter(@Nullable ObservableList<T> data) {
-        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()));
+    protected CommonRcvAdapter(@NonNull ObservableList<T> data) {
+        this((List<T>) data);
         data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
             @Override
             public void onChanged(ObservableList<T> sender) {

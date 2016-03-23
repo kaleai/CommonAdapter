@@ -1,6 +1,5 @@
 package kale.adapter;
 
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,12 +29,12 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         this(data, false);
     }
 
-    protected CommonPagerAdapter(@Nullable ObservableList<T> data) {
+    protected CommonPagerAdapter(@NonNull ObservableList<T> data) {
         this(data, false);
     }
 
-    protected CommonPagerAdapter(@Nullable ObservableList<T> data, boolean isLazy) {
-        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()), isLazy);
+    protected CommonPagerAdapter(@NonNull ObservableList<T> data, boolean isLazy) {
+        this((List<T>) data, isLazy);
         data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
             @Override
             public void onChanged(ObservableList<T> sender) {

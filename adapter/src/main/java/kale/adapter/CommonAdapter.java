@@ -1,6 +1,5 @@
 package kale.adapter;
 
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,8 +34,8 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
 
     private ItemTypeUtil util;
 
-    protected CommonAdapter(@Nullable ObservableList<T> data, int viewTypeCount) {
-        this(data != null ? (List<T>) data : (data = new ObservableArrayList<>()), viewTypeCount);
+    protected CommonAdapter(@NonNull ObservableList<T> data, int viewTypeCount) {
+        this((List<T>) data, viewTypeCount);
         data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
             @Override
             public void onChanged(ObservableList<T> sender) {
@@ -97,7 +96,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
     /**
      * 通过数据得到obj的类型的type
      * 然后，通过{@link ItemTypeUtil}来转换位int类型的type
-     * 
+     *
      * instead by{@link #getItemType(Object)}
      */
     @Override
@@ -112,7 +111,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
     public Object getItemType(T t) {
         return -1; // default
     }
-    
+
     @Override
     public int getViewTypeCount() {
         return mViewTypeCount;
@@ -123,13 +122,13 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         if (mInflater == null) {
             mInflater = LayoutInflater.from(parent.getContext());
         }
-        
+
         final AdapterItem item;
         if (convertView == null) {
             item = createItem(mType);
             convertView = mInflater.inflate(item.getLayoutResId(), parent, false);
             convertView.setTag(R.id.tag_item, item); // get item
-            
+
             item.bindViews(convertView);
             item.setViews();
         } else {

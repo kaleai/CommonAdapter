@@ -52,9 +52,6 @@ public class ButtonItem implements AdapterItem<DemoModel> {
         mPosition = position;
 
         btn.setText(model.content);
-        
-        
-        //DFDFDFDFs
     }
 
 }

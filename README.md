@@ -4,29 +4,6 @@
 
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用、简易的Adapter对象。  
 
-### 添加依赖
-
-1.在项目外层的build.gradle中添加JitPack仓库
-
-```
-repositories {
-	maven {
-		url "https://jitpack.io"
-	}
-}
-```
-
-2.在用到的项目中添加依赖  
->	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)'  
-
-
-如果的的项目没有引入databinding这个库，那么就必须再添加一条依赖：  
-```
-dependencies {
-    compile 'com.github.tianzhijiexian:CommonAdapter-Fake-DataBinding:1.0.1'
-}
-```
-
 ### 已解决的问题
 
 - [x] 提升item的独立性，完美支持item被多处复用
@@ -48,6 +25,29 @@ dependencies {
 ### 示例
 
 ![](./demo/demo.png)
+
+### 添加依赖
+
+1.在项目外层的build.gradle中添加JitPack仓库
+
+```
+repositories {
+	maven {
+		url "https://jitpack.io"
+	}
+}
+```
+
+2.在用到的项目中添加依赖  
+>	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)'  
+
+
+如果的的项目没有引入databinding这个库，那么就必须再添加一条[依赖](https://github.com/tianzhijiexian/CommonAdapter-Fake-DataBinding)：  
+```
+dependencies {
+    compile 'com.github.tianzhijiexian:CommonAdapter-Fake-DataBinding:1.0.1'
+}
+```
 
 ----
 

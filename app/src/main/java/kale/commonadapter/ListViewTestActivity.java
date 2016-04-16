@@ -20,7 +20,7 @@ import kale.commonadapter.item.ImageItem2;
 import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.DemoModel;
 import kale.commonadapter.util.DataManager;
-import kale.commonadapter.util.Util;
+import kale.commonadapter.util.LayoutUtil;
 
 /**
  * @author Kale
@@ -38,7 +38,7 @@ public class ListViewTestActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         listView = new ListView(this);
-        Util.setContentView(this, listView);
+        LayoutUtil.setContentView(this, listView);
 
         data = DataManager.loadData(getBaseContext());
         listView.setAdapter(test01(data));

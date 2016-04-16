@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
+import kale.adapter.util.DataBindingJudgement;
 import kale.adapter.util.IAdapter;
 import kale.adapter.util.ItemTypeUtil;
 
@@ -25,49 +26,46 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
 
     private int mViewTypeCount = 1;
 
-    /**
-     * 每个item的类型，会根据每一条数据进行产生
-     */
     private Object mType;
 
     private LayoutInflater mInflater;
 
     private ItemTypeUtil util;
 
-    protected CommonAdapter(@NonNull ObservableList<T> data, int viewTypeCount) {
-        this((List<T>) data, viewTypeCount);
-        data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
-            @Override
-            public void onChanged(ObservableList<T> sender) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyDataSetChanged();
-            }
-        });
-    }
-
-    protected CommonAdapter(@Nullable List<T> data, int viewTypeCount) {
+    public CommonAdapter(@Nullable List<T> data, int viewTypeCount) {
         if (data == null) {
             data = new ArrayList<>();
         }
+
+        if (DataBindingJudgement.SUPPORT_DATABINDING && data instanceof ObservableList) {
+            ((ObservableList<T>) data).addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+                @Override
+                public void onChanged(ObservableList<T> sender) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+            });
+        }
+        
         mDataList = data;
         mViewTypeCount = viewTypeCount;
         util = new ItemTypeUtil();

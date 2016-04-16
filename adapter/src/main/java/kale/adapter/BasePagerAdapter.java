@@ -79,7 +79,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         return POSITION_NONE;
     }
 
-    public Object getItemType(int position) {
+    protected Object getItemType(int position) {
         return -1; // default
     }
 

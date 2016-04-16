@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
+import kale.adapter.util.DataBindingJudgement;
 import kale.adapter.util.IAdapter;
 
 /**
@@ -29,43 +30,38 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         this(data, false);
     }
 
-    protected CommonPagerAdapter(@NonNull ObservableList<T> data) {
-        this(data, false);
-    }
-
-    protected CommonPagerAdapter(@NonNull ObservableList<T> data, boolean isLazy) {
-        this((List<T>) data, isLazy);
-        data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
-            @Override
-            public void onChanged(ObservableList<T> sender) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyDataSetChanged();
-            }
-        });
-    }
-
     public CommonPagerAdapter(@Nullable List<T> data, boolean isLazy) {
         if (data == null) {
             data = new ArrayList<>();
+        }
+        
+        if (DataBindingJudgement.SUPPORT_DATABINDING && data instanceof ObservableList) {
+            ((ObservableList<T>) data).addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+                @Override
+                public void onChanged(ObservableList<T> sender) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+            });
         }
         mDataList = data;
         mIsLazy = isLazy;
@@ -128,9 +124,10 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     }
 
     /**
-     * 强烈建议返回string,int,bool类似的基础对象做type
+     * instead by {@link #getItemType(Object)}
      */
-    public Object getItemType(int position) {
+    @Deprecated
+    protected Object getItemType(int position) {
         if (position < mDataList.size()) {
             return getItemType(mDataList.get(position));
         } else {
@@ -138,6 +135,9 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         }
     }
 
+    /**
+     * 强烈建议返回string,int,bool类似的基础对象做type
+     */
     @Override
     public Object getItemType(T t) {
         return -1; // default

@@ -12,7 +12,7 @@ import kale.adapter.item.AdapterItem;
  * 通用的adapter必须实现的接口，作为方法名统一的一个规范
  */
 public interface IAdapter<T> {
-
+    
     /**
      * @param data 设置数据源
      */

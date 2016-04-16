@@ -8,7 +8,7 @@ import android.view.ViewGroup;
  * @author Kale
  * @date 2016/3/16
  */
-public class Util {
+public class LayoutUtil {
 
     public static void setContentView(Activity activity,View view) {
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(

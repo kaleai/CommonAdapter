@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
+import kale.adapter.util.DataBindingJudgement;
 import kale.adapter.util.IAdapter;
 import kale.adapter.util.ItemTypeUtil;
 
@@ -21,53 +22,51 @@ import kale.adapter.util.ItemTypeUtil;
  */
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T> {
 
-    private static final String TAG = "CommonRcvAdapter";
-
     private List<T> mDataList;
 
     private Object mType;
 
-    private ItemTypeUtil mUtil = new ItemTypeUtil();
+    private ItemTypeUtil mUtil;
 
-    protected CommonRcvAdapter(@NonNull ObservableList<T> data) {
-        this((List<T>) data);
-        data.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
-            @Override
-            public void onChanged(ObservableList<T> sender) {
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyItemRangeChanged(positionStart, itemCount);
-            }
-
-            @Override
-            public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyItemRangeInserted(positionStart, itemCount);
-                notifyItemRangeChanged(positionStart, itemCount);
-            }
-
-            @Override
-            public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
-                notifyItemRangeRemoved(positionStart, itemCount);
-                notifyItemRangeChanged(positionStart, itemCount);
-            }
-
-            @Override
-            public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-                // Note:不支持一次性移动"多个"item的情况！！！！
-                notifyItemMoved(fromPosition, toPosition);
-                notifyDataSetChanged();
-            }
-        });
-    }
-
-    protected CommonRcvAdapter(@Nullable List<T> data) {
+    public CommonRcvAdapter(@Nullable List<T> data) {
         if (data == null) {
             data = new ArrayList<>();
         }
+        
+        if (DataBindingJudgement.SUPPORT_DATABINDING && data instanceof ObservableList) {
+            ((ObservableList<T>) data).addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+                @Override
+                public void onChanged(ObservableList<T> sender) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyItemRangeChanged(positionStart, itemCount);
+                }
+
+                @Override
+                public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyItemRangeInserted(positionStart, itemCount);
+                    notifyItemRangeChanged(positionStart, itemCount);
+                }
+
+                @Override
+                public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+                    notifyItemRangeRemoved(positionStart, itemCount);
+                    notifyItemRangeChanged(positionStart, itemCount);
+                }
+
+                @Override
+                public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+                    // Note:不支持一次性移动"多个"item的情况！！！！
+                    notifyItemMoved(fromPosition, toPosition);
+                    notifyDataSetChanged();
+                }
+            });
+        }
         mDataList = data;
+        mUtil = new ItemTypeUtil();
     }
 
     @Override
@@ -133,7 +132,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
         protected AdapterItem item;
 
-        public boolean isNew = true; // debug中才用到
+        boolean isNew = true; // debug中才用到
 
         protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));

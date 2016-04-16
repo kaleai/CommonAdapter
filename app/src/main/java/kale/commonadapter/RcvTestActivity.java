@@ -20,7 +20,7 @@ import kale.commonadapter.item.ImageItem;
 import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.DemoModel;
 import kale.commonadapter.util.DataManager;
-import kale.commonadapter.util.Util;
+import kale.commonadapter.util.LayoutUtil;
 
 /**
  * @author Kale
@@ -41,7 +41,7 @@ public class RcvTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRecyclerView = new RecyclerView(this);
-        Util.setContentView(this, mRecyclerView);
+        LayoutUtil.setContentView(this, mRecyclerView);
         
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         layoutManager.setRecycleChildrenOnDetach(true);

@@ -1,4 +1,4 @@
-package kale.adapter.util.rcv;
+package kale.commonadapter.util;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

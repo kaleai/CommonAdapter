@@ -7,14 +7,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import kale.adapter.util.rcv.LayoutParamsSpan;
-import kale.adapter.util.rcv.RcvAdapterDataObserver;
-
 /**
  * @author Jack Tony
  * @date 2015/6/2
  */
-public class ExRcvAdapterWrapper<T extends RecyclerView.Adapter> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /**
      * view的基本类型，这里只有头/底部/普通，在子类中可以扩展
@@ -25,15 +22,41 @@ public class ExRcvAdapterWrapper<T extends RecyclerView.Adapter> extends Recycle
 
     private final RecyclerView.LayoutManager mLayoutManager;
 
-    private T mWrapped;
+    private RecyclerView.Adapter mWrapped;
 
     protected View mHeaderView = null;
 
     protected View mFooterView = null;
 
-    public ExRcvAdapterWrapper(@NonNull T adapter, @NonNull RecyclerView.LayoutManager layoutManager) {
+    public RcvAdapterWrapper(@NonNull RecyclerView.Adapter adapter, @NonNull RecyclerView.LayoutManager layoutManager) {
         mWrapped = adapter;
-        mWrapped.registerAdapterDataObserver(new RcvAdapterDataObserver(this));
+        mWrapped.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver(){
+            @Override
+            public void onChanged() {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                notifyItemRangeChanged(positionStart + getHeaderCount(), itemCount);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                notifyItemRangeInserted(positionStart + getHeaderCount(), itemCount);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                notifyItemRangeRemoved(positionStart + getHeaderCount(), itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                // TODO: 2015/11/23 还没支持"多个"item的转移的操作 
+                notifyItemMoved(fromPosition + getHeaderCount(), getHeaderCount() + toPosition);
+            }
+        });
         mLayoutManager = layoutManager;
 
         if (mLayoutManager instanceof GridLayoutManager) {
@@ -133,7 +156,7 @@ public class ExRcvAdapterWrapper<T extends RecyclerView.Adapter> extends Recycle
         notifyItemRemoved(footerPos);
     }
 
-    public T getWrappedAdapter() {
+    public RecyclerView.Adapter getWrappedAdapter() {
         return mWrapped;
     }
 
@@ -157,6 +180,39 @@ public class ExRcvAdapterWrapper<T extends RecyclerView.Adapter> extends Recycle
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             ));
+        }
+    }
+
+
+    /**
+     * @author Kale
+     * @date 2016/3/16
+     *
+     * 设置头和底部的跨列
+     */
+    public static class LayoutParamsSpan {
+
+        public static void setFulSpanLayoutParams(View view) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = new StaggeredGridLayoutManager.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.setFullSpan(true);
+            view.setLayoutParams(layoutParams);
+        }
+
+        public static void setSpanSizeLookup(final RcvAdapterWrapper adapter, final GridLayoutManager layoutManager) {
+            layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    final int type = adapter.getItemViewType(position);
+                    if (type == RcvAdapterWrapper.TYPE_HEADER || type == RcvAdapterWrapper.TYPE_FOOTER) {
+                        // 如果是头部和底部，那么就横跨
+                        return layoutManager.getSpanCount();
+                    } else {
+                        // 如果是普通的，那么就保持原样
+                        return layoutManager.getSpanSizeLookup().getSpanSize(position - adapter.getHeaderCount());
+                    }
+                }
+            });
         }
     }
 

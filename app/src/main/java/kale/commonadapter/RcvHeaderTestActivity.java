@@ -13,15 +13,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 
 import kale.adapter.CommonRcvAdapter;
-import kale.adapter.ExRcvAdapterWrapper;
+import kale.adapter.RcvAdapterWrapper;
 import kale.adapter.item.AdapterItem;
-import kale.adapter.util.rcv.RcvOnItemClickListener;
+import kale.commonadapter.util.RcvOnItemClickListener;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
 import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.DemoModel;
 import kale.commonadapter.util.DataManager;
-import kale.commonadapter.util.Util;
+import kale.commonadapter.util.LayoutUtil;
 
 /**
  * @author Kale
@@ -35,7 +35,7 @@ public class RcvHeaderTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RecyclerView recyclerView = new RecyclerView(this);
-        Util.setContentView(this, recyclerView);
+        LayoutUtil.setContentView(this, recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -63,7 +63,7 @@ public class RcvHeaderTestActivity extends AppCompatActivity {
             }
         };
 
-        final ExRcvAdapterWrapper<CommonRcvAdapter<DemoModel>> wrapper = new ExRcvAdapterWrapper<>(adapter, layoutManager);
+        final RcvAdapterWrapper<CommonRcvAdapter<DemoModel>> wrapper = new RcvAdapterWrapper<>(adapter, layoutManager);
         Button header = new Button(this);
         header.setText("Header");
         wrapper.setHeaderView(header);

@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import kale.adapter.item.BaseAdapterItem;
+import kale.commonadapter.util.BaseAdapterItem;
 import kale.commonadapter.R;
 
 /**

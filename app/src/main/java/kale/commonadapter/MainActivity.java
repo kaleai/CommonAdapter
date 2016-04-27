@@ -11,8 +11,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.demo_activity);
-
+        setContentView(R.layout.main_activity);
         findViewById(R.id.list_view_btn).setOnClickListener(this);
         findViewById(R.id.rcv_btn).setOnClickListener(this);
         findViewById(R.id.rcv_btn2).setOnClickListener(this);
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 clz = RcvTestActivity.class;
                 break;
             case R.id.rcv_btn2:
-                clz = RcvHeaderTestActivity.class;
+                clz = RcvHeaderFooterTestActivity.class;
                 break;
             case R.id.viewpager_btn:
                 clz = ViewPagerTestActivity.class;

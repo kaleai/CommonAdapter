@@ -4,6 +4,7 @@ import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -15,32 +16,33 @@ import android.widget.Button;
 import kale.adapter.CommonRcvAdapter;
 import kale.adapter.RcvAdapterWrapper;
 import kale.adapter.item.AdapterItem;
-import kale.commonadapter.util.RcvOnItemClickListener;
 import kale.commonadapter.item.ButtonItem;
 import kale.commonadapter.item.ImageItem;
 import kale.commonadapter.item.TextItem;
 import kale.commonadapter.model.DemoModel;
 import kale.commonadapter.util.DataManager;
 import kale.commonadapter.util.LayoutUtil;
+import kale.commonadapter.util.RcvOnItemClickListener;
 
 /**
  * @author Kale
  * @date 2016/3/16
  */
-public class RcvHeaderTestActivity extends AppCompatActivity {
+public class RcvHeaderFooterTestActivity extends AppCompatActivity {
 
     private ObservableArrayList<DemoModel> data = new ObservableArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RecyclerView recyclerView = new RecyclerView(this);
+        final RecyclerView recyclerView = new RecyclerView(this);
         LayoutUtil.setContentView(this, recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         data.addAll(DataManager.loadData(getBaseContext()));
+        
         CommonRcvAdapter<DemoModel> adapter = new CommonRcvAdapter<DemoModel>(data) {
             @Override
             public Object getItemType(DemoModel demoModel) {
@@ -63,10 +65,16 @@ public class RcvHeaderTestActivity extends AppCompatActivity {
             }
         };
 
-        final RcvAdapterWrapper<CommonRcvAdapter<DemoModel>> wrapper = new RcvAdapterWrapper<>(adapter, layoutManager);
+        final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, layoutManager);
+        
         Button header = new Button(this);
         header.setText("Header");
+        
+        Button footer = new Button(this);
+        footer.setText("footer");
+        
         wrapper.setHeaderView(header);
+        wrapper.setFooterView(footer);
         
         recyclerView.setAdapter(wrapper);
 
@@ -79,6 +87,14 @@ public class RcvHeaderTestActivity extends AppCompatActivity {
                 }
             }
         }));
+
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                data.clear();
+                data.addAll(DataManager.loadData(getBaseContext(),10));
+            }
+        }, 1000);
     }
 
     @Override

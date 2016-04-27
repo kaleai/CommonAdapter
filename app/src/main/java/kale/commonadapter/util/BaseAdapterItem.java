@@ -1,7 +1,9 @@
-package kale.adapter.item;
+package kale.commonadapter.util;
 
 import android.util.Log;
 import android.view.View;
+
+import kale.adapter.item.AdapterItem;
 
 /**
  * @author Kale

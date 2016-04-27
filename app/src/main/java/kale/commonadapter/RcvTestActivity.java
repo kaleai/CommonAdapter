@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ import kale.commonadapter.util.LayoutUtil;
 public class RcvTestActivity extends AppCompatActivity {
 
     private static final String TAG = "RcvTestActivity";
+
     private RecyclerView mRecyclerView;
 
     @Override
@@ -42,7 +44,7 @@ public class RcvTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mRecyclerView = new RecyclerView(this);
         LayoutUtil.setContentView(this, mRecyclerView);
-        
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         layoutManager.setRecycleChildrenOnDetach(true);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -50,10 +52,22 @@ public class RcvTestActivity extends AppCompatActivity {
         // 放一个默认数据
         mRecyclerView.setAdapter(getAdapter(null));
         // 现在得到数据
-        ((IAdapter) mRecyclerView.getAdapter()).setData(DataManager.loadData(getBaseContext())); // 设置新的数据
-        mRecyclerView.getAdapter().notifyDataSetChanged(); // 通知数据刷新
-    }
+        final List<DemoModel> data = DataManager.loadData(getBaseContext());
 
+        ((IAdapter<DemoModel>) mRecyclerView.getAdapter()).setData(data); // 设置新的数据
+        mRecyclerView.getAdapter().notifyDataSetChanged(); // 通知数据刷新
+
+        mRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                data.clear();
+                data.addAll(DataManager.loadData(getBaseContext()));
+                Toast.makeText(RcvTestActivity.this, "refresh", Toast.LENGTH_SHORT).show();
+                mRecyclerView.getAdapter().notifyDataSetChanged(); // 通知数据刷新
+            }
+        }, 1000);
+    }
+    
     /**
      * CommonAdapter的类型和item的类型是一致的
      * 这里的都是{@link DemoModel}

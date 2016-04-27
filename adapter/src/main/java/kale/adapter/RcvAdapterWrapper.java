@@ -30,7 +30,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public RcvAdapterWrapper(@NonNull RecyclerView.Adapter adapter, @NonNull RecyclerView.LayoutManager layoutManager) {
         mWrapped = adapter;
-        mWrapped.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver(){
+        mWrapped.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 notifyDataSetChanged();
@@ -183,12 +183,8 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-
     /**
-     * @author Kale
-     * @date 2016/3/16
-     *
-     * 设置头和底部的跨列
+     * 设置头和底部的跨列的工具类
      */
     public static class LayoutParamsSpan {
 

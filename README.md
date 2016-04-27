@@ -41,14 +41,6 @@ repositories {
 2.在用到的项目中添加依赖  
 >	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)'  
 
-
-如果的的项目没有引入databinding这个库，那么就必须再添加一条[依赖](https://github.com/tianzhijiexian/CommonAdapter-Fake-DataBinding)：  
-```
-dependencies {
-    compile 'com.github.tianzhijiexian:CommonAdapter-Fake-DataBinding:1.0.1'
-}
-```
-
 ----
 
 ### 零、重要接口

@@ -41,7 +41,6 @@ repositories {
 2.在用到的项目中添加依赖  
 >	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)'  
 
-----
 
 ### 零、重要接口
 

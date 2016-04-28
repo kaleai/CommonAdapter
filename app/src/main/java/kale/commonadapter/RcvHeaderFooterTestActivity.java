@@ -39,7 +39,8 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
         LayoutUtil.setContentView(this, recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        GridLayoutManager layoutManager1 = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager1);
 
         data.addAll(DataManager.loadData(getBaseContext()));
         
@@ -65,7 +66,7 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             }
         };
 
-        final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, layoutManager);
+        final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, layoutManager1);
         
         Button header = new Button(this);
         header.setText("Header");

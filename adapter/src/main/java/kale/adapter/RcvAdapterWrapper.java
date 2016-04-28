@@ -205,7 +205,8 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
                         return layoutManager.getSpanCount();
                     } else {
                         // 如果是普通的，那么就保持原样
-                        return layoutManager.getSpanSizeLookup().getSpanSize(position - adapter.getHeaderCount());
+                        //return layoutManager.getSpanSizeLookup().getSpanSize(position - adapter.getHeaderCount());
+                        return 1;
                     }
                 }
             });

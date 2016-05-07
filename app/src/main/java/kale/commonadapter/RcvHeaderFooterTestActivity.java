@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import kale.adapter.CommonRcvAdapter;
 import kale.adapter.RcvAdapterWrapper;
@@ -43,7 +45,7 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager1);
 
         data.addAll(DataManager.loadData(getBaseContext()));
-        
+
         CommonRcvAdapter<DemoModel> adapter = new CommonRcvAdapter<DemoModel>(data) {
             @Override
             public Object getItemType(DemoModel demoModel) {
@@ -67,23 +69,27 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
         };
 
         final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, layoutManager1);
-        
+
         Button header = new Button(this);
         header.setText("Header");
-        
+        header.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300));
+
         Button footer = new Button(this);
         footer.setText("footer");
-        
+
         wrapper.setHeaderView(header);
         wrapper.setFooterView(footer);
-        
+
         recyclerView.setAdapter(wrapper);
 
+        // 建议把点击事件写入item里面，在外面写会有各种各样的不可控的问题。这里仅仅是给出一个实现方案，但是不推荐使用
         recyclerView.addOnItemTouchListener(new RcvOnItemClickListener(this, new AdapterView.OnItemClickListener() {
+            @Deprecated
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                position = position - wrapper.getHeaderCount();
+                position = position - wrapper.getHeaderCount(); // 写在外面就得判断是否有头部和底部，还不能集中控制事件
                 if (position >= 0) {
+                    Toast.makeText(RcvHeaderFooterTestActivity.this, "pos = " + position, Toast.LENGTH_SHORT).show();
                     data.remove(position);
                 }
             }
@@ -116,6 +122,6 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             return true;
         } else {
             return super.onOptionsItemSelected(item);
-        } 
+        }
     }
 }

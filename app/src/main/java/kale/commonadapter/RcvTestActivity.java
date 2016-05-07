@@ -103,10 +103,10 @@ public class RcvTestActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //添加菜单项
-        MenuItem add = menu.add(0, 0, 0, "change");
-        add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItem change = menu.add(0, 0, 0, "change");
+        change.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
-    }
+    }   
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

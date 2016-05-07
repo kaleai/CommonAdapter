@@ -49,6 +49,11 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
             @Override
             public void onItemRangeRemoved(int positionStart, int itemCount) {
                 notifyItemRangeRemoved(positionStart + getHeaderCount(), itemCount);
+                if (getFooterCount() != 0) {
+                    if (positionStart + getFooterCount() + 1 == getItemCount()) { // last one
+                        notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
@@ -176,9 +181,12 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
+            final int itemHeight = itemView.getLayoutParams() != null ?
+                    itemView.getLayoutParams().height : ViewGroup.LayoutParams.WRAP_CONTENT;
+
             itemView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    itemHeight
             ));
         }
     }

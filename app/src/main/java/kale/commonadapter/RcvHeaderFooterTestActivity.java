@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,7 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         GridLayoutManager layoutManager1 = new GridLayoutManager(this, 2);
+        StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager1);
 
         data.addAll(DataManager.loadData(getBaseContext()));
@@ -68,7 +70,7 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             }
         };
 
-        final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, layoutManager1);
+        final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, recyclerView.getLayoutManager());
 
         Button header = new Button(this);
         header.setText("Header");
@@ -99,7 +101,7 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             @Override
             public void run() {
                 data.clear();
-                data.addAll(DataManager.loadData(getBaseContext(),10));
+                data.addAll(DataManager.loadData(getBaseContext(), 10));
             }
         }, 1000);
     }

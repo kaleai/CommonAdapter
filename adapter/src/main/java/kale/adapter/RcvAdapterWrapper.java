@@ -7,6 +7,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import lombok.Getter;
+
 /**
  * @author Jack Tony
  * @date 2015/6/2
@@ -20,13 +22,16 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public static final int TYPE_FOOTER = 99931;
 
-    private final RecyclerView.LayoutManager mLayoutManager;
+    @Getter
+    private final RecyclerView.LayoutManager layoutManager;
 
     private RecyclerView.Adapter mWrapped;
 
-    protected View mHeaderView = null;
+    @Getter
+    private View headerView = null;
 
-    protected View mFooterView = null;
+    @Getter
+    private View footerView = null;
 
     public RcvAdapterWrapper(@NonNull RecyclerView.Adapter adapter, @NonNull RecyclerView.LayoutManager layoutManager) {
         mWrapped = adapter;
@@ -62,20 +67,23 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
                 notifyItemMoved(fromPosition + getHeaderCount(), getHeaderCount() + toPosition);
             }
         });
-        mLayoutManager = layoutManager;
+        this.layoutManager = layoutManager;
 
-        if (mLayoutManager instanceof GridLayoutManager) {
-            LayoutParamsSpan.setSpanSizeLookup(this, (GridLayoutManager) mLayoutManager); // 设置头部和尾部都是跨列的
+        if (this.layoutManager instanceof GridLayoutManager) {
+            setSpanSizeLookup(this, (GridLayoutManager) this.layoutManager); // 设置头部和尾部都是跨列的
         }
     }
 
+    /**
+     * @return The total number of items in this adapter.
+     */
     @Override
     public int getItemCount() {
         int offset = 0;
-        if (mHeaderView != null) {
+        if (headerView != null) {
             offset++;
         }
-        if (mFooterView != null) {
+        if (footerView != null) {
             offset++;
         }
         return offset + mWrapped.getItemCount();
@@ -83,9 +91,9 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        if (mHeaderView != null && position == 0) {
+        if (headerView != null && position == 0) {
             return TYPE_HEADER;
-        } else if (mFooterView != null && position == getItemCount() - 1) {
+        } else if (footerView != null && position == getItemCount() - 1) {
             return TYPE_FOOTER;
         } else {
             return mWrapped.getItemViewType(position - getHeaderCount());
@@ -95,9 +103,9 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-            return new SimpleViewHolder(mHeaderView);
+            return new SimpleViewHolder(headerView);
         } else if (viewType == TYPE_FOOTER) {
-            return new SimpleViewHolder(mFooterView);
+            return new SimpleViewHolder(footerView);
         } else {
             return mWrapped.onCreateViewHolder(parent, viewType);
         }
@@ -120,26 +128,28 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     ///////////////////////////////////////////////////////////////////////////
 
     public void setHeaderView(@NonNull View headerView) {
-        mHeaderView = headerView;
-        setSpanView(mHeaderView);
+        this.headerView = headerView;
+        setFullSpan(headerView, layoutManager);
     }
 
     public void setFooterView(@NonNull View footerView) {
-        mFooterView = footerView;
-        setSpanView(mFooterView);
+        this.footerView = footerView;
+        setFullSpan(footerView, layoutManager);
     }
 
-    public View getHeaderView() {
-        return mHeaderView;
-    }
+    private void setFullSpan(View view, RecyclerView.LayoutManager layoutManager) {
+        final int itemHeight = view.getLayoutParams() != null ?
+                view.getLayoutParams().height : ViewGroup.LayoutParams.WRAP_CONTENT;
 
-    public View getFooterView() {
-        return mFooterView;
-    }
+        if (layoutManager instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = new StaggeredGridLayoutManager.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
+            layoutParams.setFullSpan(true);
+            view.setLayoutParams(layoutParams);
+        } else if (layoutManager instanceof GridLayoutManager) {
+            view.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, itemHeight));
 
-    private void setSpanView(View footerView) {
-        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-            LayoutParamsSpan.setFulSpanLayoutParams(footerView);
         }
         notifyDataSetChanged();
     }
@@ -148,7 +158,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
      * notifyItemRemoved(0);如果这里需要做头部的删除动画，
      */
     public void removeHeaderView() {
-        mHeaderView = null;
+        headerView = null;
         notifyDataSetChanged();
     }
 
@@ -156,7 +166,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
      * 这里因为删除尾部不会影响到前面的pos的改变，所以不用刷新
      */
     public void removeFooterView() {
-        mFooterView = null;
+        footerView = null;
         int footerPos = getItemCount();
         notifyItemRemoved(footerPos);
     }
@@ -166,58 +176,40 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public int getHeaderCount() {
-        return mHeaderView != null ? 1 : 0;
+        return headerView != null ? 1 : 0;
     }
 
     public int getFooterCount() {
-        return mFooterView != null ? 1 : 0;
+        return footerView != null ? 1 : 0;
     }
 
-    public RecyclerView.LayoutManager getLayoutManager() {
-        return mLayoutManager;
+    /**
+     * 设置头和底部的跨列
+     */
+    static void setSpanSizeLookup(final RecyclerView.Adapter adapter, final GridLayoutManager layoutManager) {
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                final int type = adapter.getItemViewType(position);
+                if (type == RcvAdapterWrapper.TYPE_HEADER || type == RcvAdapterWrapper.TYPE_FOOTER) {
+                    // 如果是头部和底部，那么就横跨
+                    return layoutManager.getSpanCount();
+                } else {
+                    // 如果是普通的，那么就保持原样
+                    //return layoutManager.getSpanSizeLookup().getSpanSize(position - adapter.getHeaderCount());
+                    return 1;
+                }
+            }
+        });
     }
 
+    /**
+     * Keep it simple!
+     */
     private static class SimpleViewHolder extends RecyclerView.ViewHolder {
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
-            final int itemHeight = itemView.getLayoutParams() != null ?
-                    itemView.getLayoutParams().height : ViewGroup.LayoutParams.WRAP_CONTENT;
-
-            itemView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    itemHeight
-            ));
-        }
-    }
-
-    /**
-     * 设置头和底部的跨列的工具类
-     */
-    public static class LayoutParamsSpan {
-
-        public static void setFulSpanLayoutParams(View view) {
-            StaggeredGridLayoutManager.LayoutParams layoutParams = new StaggeredGridLayoutManager.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layoutParams.setFullSpan(true);
-            view.setLayoutParams(layoutParams);
-        }
-
-        public static void setSpanSizeLookup(final RcvAdapterWrapper adapter, final GridLayoutManager layoutManager) {
-            layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    final int type = adapter.getItemViewType(position);
-                    if (type == RcvAdapterWrapper.TYPE_HEADER || type == RcvAdapterWrapper.TYPE_FOOTER) {
-                        // 如果是头部和底部，那么就横跨
-                        return layoutManager.getSpanCount();
-                    } else {
-                        // 如果是普通的，那么就保持原样
-                        //return layoutManager.getSpanSizeLookup().getSpanSize(position - adapter.getHeaderCount());
-                        return 1;
-                    }
-                }
-            });
         }
     }
 

@@ -34,16 +34,20 @@ import kale.commonadapter.util.RcvOnItemClickListener;
 public class RcvHeaderFooterTestActivity extends AppCompatActivity {
 
     private ObservableArrayList<DemoModel> data = new ObservableArrayList<>();
+    private RcvAdapterWrapper wrapper;
+    private GridLayoutManager layoutManager1;
+    private StaggeredGridLayoutManager layoutManager2;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final RecyclerView recyclerView = new RecyclerView(this);
+        recyclerView = new RecyclerView(this);
         LayoutUtil.setContentView(this, recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        GridLayoutManager layoutManager1 = new GridLayoutManager(this, 2);
-        StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager1 = new GridLayoutManager(this, 2);
+        layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager1);
 
         data.addAll(DataManager.loadData(getBaseContext()));
@@ -70,7 +74,7 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             }
         };
 
-        final RcvAdapterWrapper wrapper = new RcvAdapterWrapper(adapter, recyclerView.getLayoutManager());
+        wrapper = new RcvAdapterWrapper(adapter, recyclerView.getLayoutManager());
 
         Button header = new Button(this);
         header.setText("Header");
@@ -111,6 +115,9 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
         //添加菜单项
         MenuItem add = menu.add(0, 0, 0, "add");
         add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        
+        MenuItem change = menu.add(1, 1, 0, "change");
+        change.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
@@ -121,6 +128,15 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             model.type = "text";
             model.content = "kale";
             data.add(0, model);
+            return true;
+        } else if (item.getItemId() == 1) {
+            if (wrapper.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+                recyclerView.setLayoutManager(layoutManager1);
+                wrapper.setLayoutManager(layoutManager1);
+            } else {
+                recyclerView.setLayoutManager(layoutManager2);
+                wrapper.setLayoutManager(layoutManager2);
+            }
             return true;
         } else {
             return super.onOptionsItemSelected(item);

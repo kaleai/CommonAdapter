@@ -23,7 +23,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static final int TYPE_FOOTER = 99931;
 
     @Getter
-    private final RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
 
     private RecyclerView.Adapter mWrapped;
 
@@ -120,6 +120,16 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
         final int type = getItemViewType(position);
         if (type != TYPE_HEADER && type != TYPE_FOOTER) {
             mWrapped.onBindViewHolder(viewHolder, position - getHeaderCount());
+        }
+    }
+
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
+        if (headerView != null) {
+            setFullSpan(headerView, layoutManager);
+        }
+        if (footerView != null) {
+            setFullSpan(footerView, layoutManager);
         }
     }
 

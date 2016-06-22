@@ -1,5 +1,6 @@
 package kale.adapter.util;
 
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public interface IAdapter<T> {
      * @param type 通过{@link #getItemType(Object)}得到的type
      * @return 任意类型的 AdapterItem
      */
+    @Keep
     @NonNull
     AdapterItem createItem(Object type);
 
@@ -42,6 +44,7 @@ public interface IAdapter<T> {
      * @param type item的类型
      * @return 放入adapterItem的最终数据
      */
+    @Keep
     @NonNull
     Object getConvertedData(T data, Object type);
 

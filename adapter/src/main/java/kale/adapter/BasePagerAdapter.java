@@ -47,7 +47,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         }
         // 通过item得到将要被add到viewpager中的view
         View view = getViewFromItem(item, position);
-        view.setTag(R.id.tag_item_type, type);
+        view.setTag(R.id.item_type, type);
 
         if (view.getParent() != null) {
             ((ViewGroup) view.getParent()).removeView(view);
@@ -70,7 +70,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         T item = (T) object;
         // 现在通过item拿到其中的view，然后remove掉
         container.removeView(getViewFromItem(item, position));
-        Object type = getViewFromItem(item, position).getTag(R.id.tag_item_type);
+        Object type = getViewFromItem(item, position).getTag(R.id.item_type);
         mCache.putItem(type, item);
     }
 

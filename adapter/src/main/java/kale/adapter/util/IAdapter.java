@@ -13,7 +13,7 @@ import kale.adapter.item.AdapterItem;
  * 通用的adapter必须实现的接口，作为方法名统一的一个规范
  */
 public interface IAdapter<T> {
-    
+
     /**
      * @param data 设置数据源
      */
@@ -52,4 +52,9 @@ public interface IAdapter<T> {
      * 通知adapter更新当前页面的所有数据
      */
     void notifyDataSetChanged();
+
+    /**
+     * 得到当前要渲染的最后一个item的position
+     */
+    int getCurrentPosition();
 }

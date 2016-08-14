@@ -26,6 +26,8 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
 
     private boolean mIsLazy = false;
 
+    private int currentPos;
+    
     public CommonPagerAdapter(@Nullable List<T> data) {
         this(data, false);
     }
@@ -128,6 +130,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
      */
     @Deprecated
     protected Object getItemType(int position) {
+        currentPos = position;
         if (position < mDataList.size()) {
             return getItemType(mDataList.get(position));
         } else {
@@ -151,5 +154,10 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     @Override
     public List<T> getData() {
         return mDataList;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return currentPos;
     }
 }

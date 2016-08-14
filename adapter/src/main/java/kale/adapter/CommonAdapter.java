@@ -32,6 +32,8 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
 
     private ItemTypeUtil util;
 
+    private int currentPos;
+
     public CommonAdapter(@Nullable List<T> data, int viewTypeCount) {
         if (data == null) {
             data = new ArrayList<>();
@@ -100,6 +102,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
     @Override
     @Deprecated
     public int getItemViewType(int position) {
+        currentPos = position;
         mType = getItemType(mDataList.get(position));
         // 如果不写这个方法，会让listView更换dataList后无法刷新数据
         return util.getIntType(mType);
@@ -147,4 +150,9 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         return mDataList.get(position);
     }
 
+    @Override
+    public int getCurrentPosition() {
+        return currentPos;
+    }
+    
 }

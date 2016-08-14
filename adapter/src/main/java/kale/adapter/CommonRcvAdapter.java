@@ -28,6 +28,8 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     private ItemTypeUtil mUtil;
 
+    private int currentPos;
+
     public CommonRcvAdapter(@Nullable List<T> data) {
         if (data == null) {
             data = new ArrayList<>();
@@ -98,6 +100,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     @Deprecated
     @Override
     public int getItemViewType(int position) {
+        this.currentPos = position;
         mType = getItemType(mDataList.get(position));
         return mUtil.getIntType(mType);
     }
@@ -122,6 +125,11 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     @Override
     public Object getConvertedData(T data, Object type) {
         return data;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return currentPos;
     }
 
     ///////////////////////////////////////////////////////////////////////////

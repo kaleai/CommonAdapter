@@ -1,6 +1,6 @@
 # CommonAdapter
-
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CommonAdapter-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1861)  
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CommonAdapter-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1861)
+[![](https://jitpack.io/v/tianzhijiexian/CommonAdapter.svg)](https://jitpack.io/#tianzhijiexian/CommonAdapter)
 
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用、简易的Adapter对象。  
 
@@ -10,21 +10,25 @@
 - [x] item会根据type来做自动复用
 - [x] 支持多种类型的item
 - [x] 一个item仅会调用一次setViews()，避免重复建立监听器
-- [x] 一个item仅会触发一次绑定视图的操作，提示效率
+- [x] 一个item仅会触发一次绑定视图的操作，提升效率
 - [x] ​支持dataBinding和其他第三方注入框架
-- [x] 提供了getView()方法来简化findViewById
 - [x] 支持通过item的构造方法来传入Activity对象
 - [x] 支持通过item的构造方法来传入item中事件的回调
 - [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
-- [x] 支持viewpager的正常加载模式和懒加载
-- [x] 支持快速将listview的适配器切换为recyclerView的适配器
-- [x] viewpager的notifyDataSetChanged可以正常更新界面
-- [x] 支持recyclerView的添加头部和底部
-- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面
+- [x] 支持viewpager的正常加载模式和懒加载模式
+- [x] 支持快速将ListView的适配器切换为recyclerView的适配器
+- [x] 允许用viewpager的notifyDataSetChanged()来正常更新界面
+- [x] 可以给recyclerView的添加头部和底部（利用了`RcvAdapterWrapper`）
+- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面（需要配合databinding中的`ObservableList`）
+- [x] 提供了getCurrentPosition()来支持根据不同的位置选择不同item的功能
 
 ### 示例
 
-![](./demo/demo.png)
+![](./demo/ios_demo.png)
+
+**上图是在作者的授权下引用了设计师“流浪汉国宝（QQ:515288905）”在UI中国上的作品：http://www.ui.cn/detail/149952.html**
+
+我觉得这个设计很简洁清爽，未来可能会出这个设计的android实现。
 
 ### 添加依赖
 
@@ -39,8 +43,12 @@ repositories {
 ```
 
 2.在用到的项目中添加依赖  
->	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)'  
+>	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)(<-click it)'  
 
+**举例：**
+```
+compile 'com.github.tianzhijiexian:CommonAdapter:1.0.0'
+```
 
 ### 零、重要接口
 
@@ -108,7 +116,7 @@ public class TextItem implements AdapterItem<DemoModel> {
 只需继承`CommonAdapter`便可实现适配器：  
 
 ```java
-listView.setAdapter(new CommonAdapter<DemoModel>(data, 1) {
+listView.setAdapter(new CommonAdapter<DemoModel>(list, 1) {
     public AdapterItem<DemoModel> createItem(Object type) {
         return new TextItem();
     }
@@ -120,7 +128,7 @@ listView.setAdapter(new CommonAdapter<DemoModel>(data, 1) {
 通过继承`CommonRcvAdapter`来实现适配器：   
 
 ```java  	
-mAdapter = new CommonRcvAdapter<DemoModel>(data) {
+mAdapter = new CommonRcvAdapter<DemoModel>(list) {
  public AdapterItem createItem(Object type) {
         return new TextItem();
   }
@@ -132,7 +140,7 @@ mAdapter = new CommonRcvAdapter<DemoModel>(data) {
 通过继承`CommonPagerAdapter`来实现适配器：
 
 ```java
-viewPager.setAdapter(new CommonPagerAdapter<DemoModel>() {
+viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 	public AdapterItem createItem(Object type) {
 	    return new TextItem();
 	}
@@ -165,7 +173,7 @@ Jack Tony: <developer_kale@foxmail.com>
 ## License
 
 ```  
-Copyright 2016 Jack Tony
+Copyright 2016-2019 Jack Tony
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

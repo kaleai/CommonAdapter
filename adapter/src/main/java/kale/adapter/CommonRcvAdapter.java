@@ -73,7 +73,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     @Override

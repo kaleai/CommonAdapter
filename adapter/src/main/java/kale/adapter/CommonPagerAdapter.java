@@ -71,7 +71,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
 
     @Override
     public int getCount() {
-        return mDataList.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     @NonNull

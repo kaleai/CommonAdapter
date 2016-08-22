@@ -75,7 +75,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
 
     @Override
     public int getCount() {
-        return mDataList.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     @Override

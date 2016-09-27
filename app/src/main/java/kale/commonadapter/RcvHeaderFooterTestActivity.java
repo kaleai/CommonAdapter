@@ -80,11 +80,10 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
         header.setText("Header");
         header.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300));
 
-        Button footer = new Button(this);
+        final Button footer = new Button(this);
         footer.setText("footer");
 
         wrapper.setHeaderView(header);
-        wrapper.setFooterView(footer);
 
         recyclerView.setAdapter(wrapper);
 
@@ -106,6 +105,8 @@ public class RcvHeaderFooterTestActivity extends AppCompatActivity {
             public void run() {
                 data.clear();
                 data.addAll(DataManager.loadData(getBaseContext(), 10));
+//                View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.list_footer, null);
+                wrapper.setFooterView(footer);
             }
         }, 1000);
     }

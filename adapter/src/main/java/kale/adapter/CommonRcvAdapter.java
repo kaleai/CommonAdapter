@@ -20,7 +20,7 @@ import kale.adapter.util.ItemTypeUtil;
  * @author Jack Tony
  * @date 2015/5/17
  */
-public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implements IAdapter<T> {
+public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcvAdapter.RcvAdapterItem> implements IAdapter<T> {
 
     private List<T> mDataList;
 
@@ -34,7 +34,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
         if (data == null) {
             data = new ArrayList<>();
         }
-        
+
         if (DataBindingJudgement.SUPPORT_DATABINDING && data instanceof ObservableList) {
             ((ObservableList<T>) data).addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<T>>() {
                 @Override
@@ -50,21 +50,24 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
                 @Override
                 public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
                     notifyItemRangeInserted(positionStart, itemCount);
-                    notifyItemRangeChanged(positionStart, itemCount);
+                    notifyChange(sender, positionStart);
                 }
 
                 @Override
                 public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
                     notifyItemRangeRemoved(positionStart, itemCount);
-                    notifyItemRangeChanged(positionStart, itemCount);
+                    notifyChange(sender, positionStart);
                 }
 
                 @Override
                 public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-                    // Note:不支持一次性移动"多个"item的情况！！！！
-                    notifyItemMoved(fromPosition, toPosition);
-                    notifyDataSetChanged();
+                    notifyChange(sender, Math.min(fromPosition, toPosition));
                 }
+
+                private void notifyChange(ObservableList<T> sender, int start) {
+                    onItemRangeChanged(sender, start, getItemCount() - start);
+                }
+
             });
         }
         mDataList = data;
@@ -111,14 +114,14 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RcvAdapterItem onCreateViewHolder(ViewGroup parent, int viewType) {
         return new RcvAdapterItem(parent.getContext(), parent, createItem(mType));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        debug((RcvAdapterItem) holder);
-        ((RcvAdapterItem) holder).item.handleData(getConvertedData(mDataList.get(position), mType), position);
+    public void onBindViewHolder(RcvAdapterItem holder, int position) {
+        debug(holder);
+        holder.item.handleData(getConvertedData(mDataList.get(position), mType), position);
     }
 
     @NonNull
@@ -136,13 +139,13 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter implement
     // 内部用到的viewHold
     ///////////////////////////////////////////////////////////////////////////
 
-    private static class RcvAdapterItem extends RecyclerView.ViewHolder {
+    static class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         protected AdapterItem item;
 
         boolean isNew = true; // debug中才用到
 
-        protected RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
+        RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
             super(LayoutInflater.from(context).inflate(item.getLayoutResId(), parent, false));
             this.item = item;
             this.item.bindViews(itemView);

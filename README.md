@@ -6,27 +6,26 @@
 
 ### 已解决的问题
 
-- [x] 提升item的独立性，完美支持item被多处复用
-- [x] item会根据type来做自动复用
 - [x] 支持多种类型的item
-- [x] 一个item仅会调用一次setViews()，避免重复建立监听器
-- [x] 一个item仅会触发一次绑定视图的操作，提升效率
+- [x] item会根据type来做自动复用
 - [x] ​支持dataBinding和其他第三方注入框架
-- [x] 支持通过item的构造方法来传入Activity对象
-- [x] 支持通过item的构造方法来传入item中事件的回调
-- [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
-- [x] 支持viewpager的正常加载模式和懒加载模式
+- [x] 支持ViewPager的正常加载模式和懒加载模式
+- [x] 提升item的独立性，完美支持item被多处复用
+- [x] 一个item仅会触发一次绑定视图的操作，提升效率
+- [x] 一个item仅会调用一次setViews()，避免重复建立监听器
 - [x] 支持快速将ListView的适配器切换为recyclerView的适配器
 - [x] 允许用viewpager的notifyDataSetChanged()来正常更新界面
-- [x] 可以给recyclerView的添加头部和底部（利用了`RcvAdapterWrapper`）
-- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面（需要配合databinding中的`ObservableList`）
+- [x] 可以给recyclerView的添加空状态（利用`RcvAdapterWrapper`）
+- [x] 可以给recyclerView的添加头部和底部（利用`RcvAdapterWrapper`）
 - [x] 提供了getCurrentPosition()来支持根据不同的位置选择不同item的功能
+- [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
+- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面（需要配合databinding中的`ObservableList`）
 
 ### 示例
 
 ![](./demo/ios_demo.png)
 
-**上图是在作者的授权下引用了设计师“流浪汉国宝（QQ:515288905）”在UI中国上的作品：http://www.ui.cn/detail/149952.html**
+**上图是在作者的授权下引用了设计师“流浪汉国宝（QQ:515288905）”在UI中国上的[作品](http://www.ui.cn/detail/149952.html)**
 
 我觉得这个设计很简洁清爽，未来可能会出这个设计的android实现。
 

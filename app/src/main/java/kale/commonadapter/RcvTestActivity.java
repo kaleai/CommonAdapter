@@ -5,10 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.List;
@@ -57,6 +54,10 @@ public class RcvTestActivity extends AppCompatActivity {
         ((IAdapter<DemoModel>) mRecyclerView.getAdapter()).setData(data); // 设置新的数据
         mRecyclerView.getAdapter().notifyDataSetChanged(); // 通知数据刷新
 
+        loadNewData(data);
+    }
+
+    private void loadNewData(final List<DemoModel> data) {
         mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -67,7 +68,7 @@ public class RcvTestActivity extends AppCompatActivity {
             }
         }, 1000);
     }
-    
+
     /**
      * CommonAdapter的类型和item的类型是一致的
      * 这里的都是{@link DemoModel}
@@ -98,24 +99,6 @@ public class RcvTestActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //添加菜单项
-        MenuItem change = menu.add(0, 0, 0, "change");
-        change.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        return true;
-    }   
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 0) {
-            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
     }
 
 }

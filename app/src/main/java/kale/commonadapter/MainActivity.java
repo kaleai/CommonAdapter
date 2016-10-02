@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 clz = RcvTestActivity.class;
                 break;
             case R.id.rcv_btn2:
-                clz = RcvHeaderFooterTestActivity.class;
+                clz = HeaderFooterTestActivity.class;
                 break;
             case R.id.viewpager_btn:
                 clz = ViewPagerTestActivity.class;

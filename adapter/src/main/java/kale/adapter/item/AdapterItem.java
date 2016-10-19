@@ -1,12 +1,15 @@
-package kale.adapter;
+package kale.adapter.item;
 
 import android.support.annotation.LayoutRes;
 import android.view.View;
 
 /**
- * adapter的所有item必须实现此接口.
- * 通过返回layoutResId来自动初始化view，之后在initView中就可以初始化item的内部视图了。<br>
- *
+ * Adapter的所有item必须实现的接口.<br>
+ * 
+ * 通过{@link #getLayoutResId()}初始化view;<br>
+ * 在{@link #bindViews(View)}中就初始化item的内部视图<br>
+ * 在{@link #handleData(Object, int)}中处理每一行的数据<p>
+ * 
  * @author Jack Tony
  * @date 2015/5/15
  */
@@ -31,9 +34,9 @@ public interface AdapterItem<T> {
     /**
      * 根据数据来设置item的内部views
      *
-     * @param model    数据list内部的model
+     * @param t    数据list内部的model
      * @param position 当前adapter调用item的位置
      */
-    void updateViews(T model, int position);
+    void handleData(T t, int position);
 
 }  

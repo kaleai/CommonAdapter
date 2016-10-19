@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    >
+
+    <Button
+        android:id="@+id/list_view_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="104dp"
+        android:text="ListView"
+        />
+
+    <Button
+        android:id="@+id/rcv_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_view_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="RecyclerView"
+        />
+
+
+    <Button
+        android:id="@+id/rcv_btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rcv_btn"
+        android:layout_centerHorizontal="true"
+        android:text="RecyclerView2"
+        />
+
+
+    <Button
+        android:id="@+id/viewpager_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/list_view_btn"
+        android:layout_alignStart="@+id/list_view_btn"
+        android:layout_below="@+id/rcv_btn"
+        android:layout_marginTop="71dp"
+        android:text="viewpager"
+        />
+
+</RelativeLayout>

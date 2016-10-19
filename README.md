@@ -1,200 +1,188 @@
 # CommonAdapter
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CommonAdapter-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1861)
+[![](https://jitpack.io/v/tianzhijiexian/CommonAdapter.svg)](https://jitpack.io/#tianzhijiexian/CommonAdapter)
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CommonAdapter-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1861)  
+通过封装BaseAdapter和RecyclerView.Adapter得到的通用、简易的Adapter对象。  
 
-通过封装BaseAdapter和RecyclerView.Adapter得到的通用的，简易的Adapter对象。  
+### 已解决的问题
 
+- [x] 支持多种类型的item
+- [x] item会根据type来做自动复用
+- [x] ​支持dataBinding和其他第三方注入框架
+- [x] 支持ViewPager的正常加载模式和懒加载模式
+- [x] 提升item的独立性，完美支持item被多处复用
+- [x] 一个item仅会触发一次绑定视图的操作，提升效率
+- [x] 一个item仅会调用一次setViews()，避免重复建立监听器
+- [x] 支持快速将ListView的适配器切换为recyclerView的适配器
+- [x] 允许用viewpager的notifyDataSetChanged()来正常更新界面
+- [x] 可以给recyclerView的添加空状态（利用`RcvAdapterWrapper`）
+- [x] 可以给recyclerView的添加头部和底部（利用`RcvAdapterWrapper`）
+- [x] 提供了getCurrentPosition()来支持根据不同的位置选择不同item的功能
+- [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
+- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面（需要配合databinding中的`ObservableList`）
 
+### 示例
 
-## 使用方式  
-  
-1.添加JitPack仓库
-  
-```  
+![](./demo/ios_demo.png)
+
+**上图是在作者的授权下引用了设计师“流浪汉国宝（QQ:515288905）”在UI中国上的[作品](http://www.ui.cn/detail/149952.html)**
+
+我觉得这个设计很简洁清爽，未来可能会出这个设计的android实现。
+
+### 添加依赖
+
+1.在项目外层的build.gradle中添加JitPack仓库
+
+```
 repositories {
 	maven {
 		url "https://jitpack.io"
 	}
 }
-```   
-
-2.添加依赖  
-```  
-dependencies {
-	compile 'com.github.tianzhijiexian:CommonAdapter:1.1.3'
-}    
 ```
 
-## Demo:  
-Model类：  
-![image](./demoPic/demo0.png)  
-Adapter中的Item：    
-![image](./demoPic/demo01.png)  
-给ListView/GridView设置简单的适配器：     
-![image](./demoPic/demo02.png)     
+2.在用到的项目中添加依赖  
+>	compile 'com.github.tianzhijiexian:CommonAdapter:[Latest release](https://github.com/tianzhijiexian/CommonAdapter/releases)(<-click it)'  
 
+**举例：**
+```
+compile 'com.github.tianzhijiexian:CommonAdapter:1.0.0'
+```
 
-## ListView+GridView的通用适配器——CommonAdapter   
-### 使用步骤  
-### 1. 让你的List中的model实现`AdapterModel`这个接口  
-接口的源码如下：  
-```java 
-public interface AdapterModel {
+### 零、重要接口
 
-    /**
-     * 得到数据的类型数
-     * @return 有多少种数据的类型（item的类型）
-     */
-    public int getDataTypeCount();
+adapter的item必须实现此接口，接口源码如下：   
+
+```java
+public interface AdapterItem<T> {
 
     /**
-     * 返回每种数据类型的标识.<br>
-     */
-    public Object getDataType();
-}  
-```  
-例子：  
-```JAVA
-public class TestModel implements AdapterModel {
-
-	public String content;
-
-    public String type;
-
-    /**
-     * 返回数据的类型数
-     */
-    @Override
-    public int getDataTypeCount() {
-        return 3;
-    }
-
-    /**
-     * 这个model中决定数据类型的字段
-     */
-    @Override
-    public Object getDataType() {
-        return type;
-    }
-}
-
-```  
-  
-### 2. Adapter中的每个Item需要实现`AdapterItem`这个接口  
-接口的源码如下：  
-```JAVA  
-/**
- * adapter的所有item必须实现此接口.
- * 通过返回layoutResId来自动初始化view，之后在initView中就可以初始化item的内部视图了。<br>
- * @author Jack Tony
- * @date 2015/5/15
- */
-public interface AdapterItem<T extends AdapterModel> {
-
-    /**
-     * 返回item的布局文件id
-     *
-     * @return layout的id
+     * @return item布局文件的layoutId
      */
     @LayoutRes
-    public int getLayoutResId();
+    int getLayoutResId();
 
     /**
-     * 根据数据来初始化item的内部view
+     * 初始化views
+     */
+    void bindViews(final View root);
+
+    /**
+     * 设置view的参数
+     */
+    void setViews();
+
+    /**
+     * 根据数据来设置item的内部views
      *
-     * @param vh       view holder
      * @param model    数据list内部的model
      * @param position 当前adapter调用item的位置
      */
-    public void initViews(ViewHolder vh, T model, int position);
+    void handleData(T model, int position);
 
 }  
-```  
-例子：
-```java
-public class TextItem implements AdapterItem<TestModel> {
+```
 
-     @Override
+例子：  
+
+```java
+public class TextItem implements AdapterItem<DemoModel> {
+
+    @Override
     public int getLayoutResId() {
-        return R.layout.text_adapter_item;
+        return R.layout.demo_item_text;
+    }
+
+    TextView textView;
+
+    @Override
+    public void bindViews(View root) {
+        textView = (TextView) root.findViewById(R.id.textView);
     }
 
     @Override
-    public void initViews(ViewHolder vh, TestModel model, int position) {
-        TextView textView = vh.getView(R.id.textView);
+    public void setViews() { }
+
+    @Override
+    public void handleData(DemoModel model, int position) {
         textView.setText(model.content);
     }
-
 }
-
-```  
-
-### 3. 通过继承`CommonAdapter`来实现适配器  
-现在所需要做的只剩下继承CommonAdapter实现自己的适配器了，下面是一个简单的例子：  
-```java
-		ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new CommonAdapter<TestModel>(data) {
-
-            @NonNull
-            @Override
-            protected AdapterItem<TestModel> getItemView(Object type) {
-                 switch ((String)type) {
-            	case "text":
-                	return new TextItem();
-            	case "button":
-                	return new ButtonItem();
-            	case "image":
-                	return new ImageItem();
-            	default:
-                	return new TextItem();
-        		}
-            }
-        });
 ```
 
-## RecyclerView的通用适配器——CommonRcvAdapter 
-### 使用步骤：  
-### 1. 让你的List中的model实现`AdapterModel`这个接口（同上）
-### 2. Adapter中的每个Item需要实现`AdapterItem`这个接口（同上）  
-### 3. 通过继承`CommonRcvAdapter`来实现适配器  
+### 一、ListView+GridView的通用适配器——CommonAdapter
 
-  
-## 设计思路  
-其实现在的效果和原本的adapter差不多，只是做了点小的重构，这种重构最终保持了和原本一样的可扩展性。下面我来分析下具体的细节：  
+只需继承`CommonAdapter`便可实现适配器：  
 
-1. **Model**  
-现在我强制你的model实现了`AdapterModel`这个接口，你可能会说这样会改变model的纯粹性，添加了两个get的方法，让model和业务又了关系。但是，你原本的model不也是用了很多set和get方法么？这些set和get方法在本质上也都是让业务进行调用的，而现在添加的`getDataTypeCount()`和`getDataType()`也和原来一样，就是一个get方法，get的数据也是model中有的，不是因为业务需要而凭空捏造的。我们当然可以把这两个方法放到适配器的初始化中进行设置，但初始化的时候你不还是要看看model有什么类型，然后再进行设置类型总数和类型标识么？而类型这个东西和model中的数据是密切相关的，所以`getDataTypeCount()`和`getDataType()`和model是最有关系的，而且这种用接口的做法没有改变model的其他熟悉，最关键的是可以大大节约adapter的代码量。
+```java
+listView.setAdapter(new CommonAdapter<DemoModel>(list, 1) {
+    public AdapterItem<DemoModel> createItem(Object type) {
+        return new TextItem();
+    }
+});
+```
 
-2. **Adapter**  
-因为adapter原始的代码很多，所以如果你把adapter作为activity的内部类的话很别扭，而且如果adapter中如果有多个类型的Item，你就必须在getView()中写很多if-else语句，而且里面都是一些设置view的方法，很乱，你要更换Item的话还需要去删减代码，而现在我让adapter的代码量减少到一个方法，如果你需要更新item或者添加一个新的item你直接在initItem中返回即可，实现了可插拔化。最关键的是item现在作为一个独立的对象，内部view的设置完全可以和adapter独立出来。  
+### 二、RecyclerView的通用适配器——CommonRcvAdapter
 
-3. **AdapterItem**  
-和原来方式最为不同的就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView的ViewHolder的设计。把Item作为实体的好处有很多，就不细说了，最关键的是用这种方式我可以让RecyclerView的建立viewHolder和绑定ViewHolder的工作合二为一，还是减少了重复代码。
+通过继承`CommonRcvAdapter`来实现适配器：   
 
-4. **One more thing**  
-如果你是一个倾向于MVP的开发者，你完全可以把原本项目中独立的adapter变成activity的内部类，这样做增加了adapter和activity的聚合性，同时减少了项目中的众多adapter类。这样的坏处是什么呢？activity现在和adapter的聚合度高了，而现在adapter中仅仅有view，这样activity和view的聚合度也会很高。如果你认为activity是一个controler，那么请千万不要用我的做法，因为这样会让你的项目层次出现混乱。但如果你认为activity就是一个view管理对象，逻辑是写在presenter中的，那么你可以放心的用这种方式。欢迎大家来继续讨论。
+```java  	
+mAdapter = new CommonRcvAdapter<DemoModel>(list) {
+ public AdapterItem createItem(Object type) {
+        return new TextItem();
+  }
+};    
+```
+
+### 三、ViewPager的通用适配器——CommonPagerAdapter   
+
+通过继承`CommonPagerAdapter`来实现适配器：
+
+```java
+viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
+	public AdapterItem createItem(Object type) {
+	    return new TextItem();
+	}
+});
+```  
+
+### 设计思路
+
+**1. Adapter**  
+
+如果用adapter常规写法，你会发现代码量很大，可读性低。如果adapter中有多个类型的Item，我们还得在getView()中写很多if-else语句，很乱。
+而现在我让adapter的代码量减少到一个8行的内部类，如果你需要更换item只需要动一行代码，真正实现了可插拔化。最关键的是item现在作为了一个独立的对象，可以方便的进行复用。
+
+**2. AdapterItem**  
+
+和原来方式最为不同的一点就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView中ViewHolder的设计。把item作为实体的好处有很多，比如复用啊，封装啊，其余的就不细说了。  
+
+**3. 分层**  
+
+在使用过程中，我发现如果adapter放在view层，那就会影响到view层的独立性。此外adapter中经常有很多数据处理的操作，比如通过type选择item，数据的拆包、转换等操作。于是我还是推荐把adapter放在mvp的p层，或者是mvvm的m层。通过在实际的项目中使用来看，放在m或p层的效果较好，view的复用也比较好做。
 
 
 ## 开发者
+
 ![](https://avatars3.githubusercontent.com/u/9552155?v=3&s=460)
 
-Jack Tony: <developer_kale@.com>  
+Jack Tony: <developer_kale@foxmail.com>  
 
 
 ## License
 
-    Copyright 2015 Jack Tony
+```  
+Copyright 2016-2019 Jack Tony
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
- 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

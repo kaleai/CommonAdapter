@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
@@ -74,6 +75,12 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
         mUtil = new ItemTypeUtil();
     }
 
+
+    @Override
+    public void setTypePool(HashMap<Object, Integer> typePool) {
+        mUtil.setTypePool(typePool);
+    }
+
     @Override
     public int getItemCount() {
         return mDataList == null ? 0 : mDataList.size();
@@ -96,7 +103,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
 
     /**
      * instead by{@link #getItemType(Object)}
-     *
+     * <p>
      * 通过数据得到obj的类型的type
      * 然后，通过{@link ItemTypeUtil}来转换位int类型的type
      */

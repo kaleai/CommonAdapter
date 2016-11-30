@@ -3,6 +3,7 @@ package kale.adapter.util;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;
@@ -57,4 +58,10 @@ public interface IAdapter<T> {
      * 得到当前要渲染的最后一个item的position
      */
     int getCurrentPosition();
+
+    /**
+     * 配合RecyclerView的pool来设置TypePool
+     * @param typePool
+     */
+    void setTypePool(HashMap<Object,Integer> typePool);
 }

@@ -3,6 +3,7 @@ package kale.adapter.util;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kale.adapter.item.AdapterItem;

@@ -58,10 +58,4 @@ public interface IAdapter<T> {
      * 得到当前要渲染的最后一个item的position
      */
     int getCurrentPosition();
-
-    /**
-     * 配合RecyclerView的pool来设置TypePool
-     * @param typePool
-     */
-    void setTypePool(HashMap<Object,Integer> typePool);
 }

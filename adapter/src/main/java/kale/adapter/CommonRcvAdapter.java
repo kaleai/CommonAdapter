@@ -76,7 +76,10 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
     }
 
 
-    @Override
+    /**
+     * 配合RecyclerView的pool来设置TypePool
+     * @param typePool
+     */
     public void setTypePool(HashMap<Object, Integer> typePool) {
         mUtil.setTypePool(typePool);
     }

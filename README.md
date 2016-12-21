@@ -152,10 +152,11 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 
 ```java
     RecycledViewPool pool = new RecycledViewPool();
-    ...
+    
+    // ...
 
     recyclerView.setRecycledViewPool(pool);
-    adapter.setTypePool(viewPool.getTypePool());
+    adapter.setTypePool(pool.getTypePool());
 ```
 
 ### 设计思路

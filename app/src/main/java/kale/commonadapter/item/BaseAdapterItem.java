@@ -1,4 +1,4 @@
-package kale.commonadapter.util;
+package kale.commonadapter.item;
 
 import android.util.Log;
 import android.view.View;

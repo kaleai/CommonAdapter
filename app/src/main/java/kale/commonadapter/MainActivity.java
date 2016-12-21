@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
         findViewById(R.id.list_view_btn).setOnClickListener(this);
         findViewById(R.id.rcv_btn).setOnClickListener(this);
         findViewById(R.id.rcv_btn2).setOnClickListener(this);
@@ -23,16 +24,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Class clz = null;
         switch (v.getId()) {
             case R.id.list_view_btn:
-                clz = ListViewTestActivity.class;
+                clz = ListViewActivity.class;
                 break;
             case R.id.rcv_btn:
-                clz = RcvTestActivity.class;
+                clz = RecyclerViewActivity.class;
                 break;
             case R.id.rcv_btn2:
-                clz = HeaderFooterTestActivity.class;
+                clz = HeaderFooterActivity.class;
                 break;
             case R.id.viewpager_btn:
-                clz = ViewPagerTestActivity.class;
+                clz = ViewPagerActivity.class;
                 break;
         }
         startActivity(new Intent(this, clz));

@@ -1,8 +1,8 @@
-package kale.adapter.component;
-
-import android.support.v7.widget.RecyclerView;
+package kale.adapter;
 
 import java.util.HashMap;
+
+import android.support.v7.widget.RecyclerView;
 
 /**
  * Author:    valuesfeng
@@ -13,16 +13,16 @@ import java.util.HashMap;
  * Date         	Author        		Version        	Description
  * -----------------------------------------------------------------------------------
  * 16/11/30          valuesfeng              1.0                    1.0
- * Why & What is modified:
  */
 public class RecycledViewPool extends RecyclerView.RecycledViewPool {
-    private HashMap<Object,Integer> typePool;
+
+    private HashMap<Object, Integer> typePool;
 
     public RecycledViewPool() {
         typePool = new HashMap<>();
     }
 
-    public HashMap<Object,Integer> getTypePool() {
+    public HashMap<Object, Integer> getTypePool() {
         return typePool;
     }
 }

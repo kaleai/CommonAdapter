@@ -11,13 +11,13 @@ import android.widget.AdapterView;
  * @author Kale
  * @date 2016/3/16
  */
-public class RcvOnItemClickListener extends RecyclerView.SimpleOnItemTouchListener {
+public class OnItemClickListener extends RecyclerView.SimpleOnItemTouchListener {
 
     private AdapterView.OnItemClickListener mListener;
 
     private GestureDetector mGestureDetector;
 
-    public RcvOnItemClickListener(Context context, AdapterView.OnItemClickListener listener) {
+    public OnItemClickListener(Context context, AdapterView.OnItemClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override

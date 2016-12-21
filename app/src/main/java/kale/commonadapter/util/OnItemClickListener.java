@@ -33,7 +33,7 @@ public class OnItemClickListener extends RecyclerView.SimpleOnItemTouchListener 
         if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
             int position = view.getChildAdapterPosition(childView);
             mListener.onItemClick(null, childView, position, position);
-            return true;
+            return false; // 如果是false，那么item和外面的recycleView都能捕获点击事件
         }
         return false;
     }

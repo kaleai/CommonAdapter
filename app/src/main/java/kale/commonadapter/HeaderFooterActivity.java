@@ -91,7 +91,8 @@ public class HeaderFooterActivity extends AppCompatActivity {
     }
 
     private void handItemClick() {
-        // 建议把点击事件写入item里面，在外面写会有各种各样的不可控的问题。这里仅仅是给出一个实现方案，但是不推荐使用
+        // 建议把点击事件写入item里面，在外面写会有各种各样的不可控的问题，需要谨慎。
+        // 这里给出的监听器不会影响item自身的点击事件，可以保证外面和内部的监听事件同时被响应
         recyclerView.addOnItemTouchListener(new OnItemClickListener(this,
                 new AdapterView.OnItemClickListener() {
                     @Deprecated

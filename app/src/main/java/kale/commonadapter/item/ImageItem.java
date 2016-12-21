@@ -2,6 +2,7 @@ package kale.commonadapter.item;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import kale.adapter.item.AdapterItem;
 import kale.commonadapter.R;
@@ -45,6 +46,7 @@ public class ImageItem implements AdapterItem<DemoModel> {
         mIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(view.getContext(), "is clicked", Toast.LENGTH_SHORT).show();
                 if (mCallback != null) {
                     mCallback.onImageClick(view);
                 }

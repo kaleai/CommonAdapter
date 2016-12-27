@@ -146,9 +146,10 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 });
 ```  
 
-### 四、RecyclerView共享Pool时要注意：
+### 四、设置RecyclerView的pool
 
-通过自定义的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/adapter/src/main/java/kale/adapter/RecycledViewPool.java) 来设置pool
+需要通过自定义的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/adapter/src/main/java/kale/adapter/RecycledViewPool.java) 
+来设置pool。
 
 ```java
     RecycledViewPool pool = new RecycledViewPool();
@@ -179,7 +180,7 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 
 ![](https://avatars3.githubusercontent.com/u/9552155?v=3&s=460)
 
-Jack Tony: <developer_kale@foxmail.com>  
+Jack Tony: <developer-kale@foxmail.com>  
 
 
 ## License

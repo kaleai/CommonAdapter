@@ -8,7 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 /**
  * @author Jack Tony
- * recyle view 滚动监听器
+ *         recyle view 滚动监听器
  * @date 2015/4/6
  */
 public class OnRcvScrollListener extends RecyclerView.OnScrollListener {
@@ -53,12 +53,11 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener {
      * X轴移动的实际距离（最左侧为0）
      */
     private int mScrolledXDistance = 0;
-    
+
     private int mOffset = 0;
 
     /**
-     * 
-     * @param offset 设置：倒数几个才判定为到底，默认是0。
+     * @param offset 设置：倒数几个才判定为到底，默认是0
      */
     public OnRcvScrollListener(int offset) {
         mOffset = offset;
@@ -69,7 +68,7 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener {
         super.onScrolled(recyclerView, dx, dy);
         int firstVisibleItemPosition = 0;
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        // 判断layout manageer的类型
+        // 判断layout manager的类型
         int type = judgeLayoutManager(layoutManager);
         // 根据类型来计算出第一个可见的item的位置，由此判断是否触发到底部的监听器
         firstVisibleItemPosition = calculateFirstVisibleItemPos(type, layoutManager, firstVisibleItemPosition);
@@ -85,7 +84,7 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener {
 
 
     /**
-     * 判断layoutmanager的类型
+     * 判断layoutManager的类型
      */
     private int judgeLayoutManager(RecyclerView.LayoutManager layoutManager) {
         if (layoutManager instanceof GridLayoutManager) {
@@ -158,30 +157,30 @@ public class OnRcvScrollListener extends RecyclerView.OnScrollListener {
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         int visibleItemCount = layoutManager.getChildCount();
         int totalItemCount = layoutManager.getItemCount();
-        
+
         int bottomCount = totalItemCount - 1 - mOffset;
         if (bottomCount < 0) {
             bottomCount = totalItemCount - 1;
         }
-        
+
         if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE
                 && mLastVisibleItemPosition >= bottomCount && !mIsScrollDown) {
             onBottom();
-        } 
+        }
     }
 
-    public void onScrollUp() {
-        
+    protected void onScrollUp() {
+
     }
 
-    public void onScrollDown() {
-        
+    protected void onScrollDown() {
+
     }
 
-    public void onBottom() {
+    protected void onBottom() {
     }
 
-    public void onScrolled(int distanceX, int distanceY) {
+    protected void onScrolled(int distanceX, int distanceY) {
     }
 
     private int findMax(int[] lastPositions) {

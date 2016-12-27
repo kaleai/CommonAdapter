@@ -1,10 +1,9 @@
 package kale.adapter.util;
 
+import java.util.List;
+
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
-
-import java.util.HashMap;
-import java.util.List;
 
 import kale.adapter.item.AdapterItem;
 
@@ -24,7 +23,7 @@ public interface IAdapter<T> {
 
     /**
      * @param t list中的一条数据
-     * @return 强烈建议返回string, int, bool类似的基础对象做type
+     * @return 强烈建议返回string, int, bool类似的基础对象做type，不要返回data中的某个对象
      */
     Object getItemType(T t);
 

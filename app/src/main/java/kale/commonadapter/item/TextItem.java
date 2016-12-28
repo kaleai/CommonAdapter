@@ -38,5 +38,15 @@ public class TextItem implements AdapterItem<DemoModel> {
         textView.setText(model.content + " pos=" + position);
     }
 
+    @Override
+    public void onViewAttachedToWindow(DemoModel demoModel, int position) {
+
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(DemoModel demoModel, int position) {
+
+    }
+
 }
 

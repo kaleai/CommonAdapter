@@ -54,4 +54,14 @@ public class ButtonItem implements AdapterItem<DemoModel> {
         btn.setText(model.content);
     }
 
+    @Override
+    public void onViewAttachedToWindow(DemoModel demoModel, int position) {
+
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(DemoModel demoModel, int position) {
+
+    }
+
 }

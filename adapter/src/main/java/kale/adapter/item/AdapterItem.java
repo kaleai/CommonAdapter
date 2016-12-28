@@ -33,4 +33,17 @@ public interface AdapterItem<T> {
      */
     void handleData(T t, int position);
 
-}  
+    /**
+     * item 添加到了window，离开屏幕，可以设置监听，注册观察者
+     * @param t
+     * @param position
+     */
+    void onViewAttachedToWindow(T t, int position);
+
+    /**
+     * item 从离开屏幕，可以回收监听，取消观察者
+     * @param t
+     * @param position
+     */
+    void onViewDetachedFromWindow(T t, int position);
+}

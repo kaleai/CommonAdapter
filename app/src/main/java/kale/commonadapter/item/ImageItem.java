@@ -64,6 +64,16 @@ public class ImageItem implements AdapterItem<DemoModel> {
         }
     }
 
+    @Override
+    public void onViewAttachedToWindow(DemoModel demoModel, int position) {
+
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(DemoModel demoModel, int position) {
+
+    }
+
     /**
      * 作为item的回调可以放一个内部类在这里，然后从外部传入callback的实现。
      *

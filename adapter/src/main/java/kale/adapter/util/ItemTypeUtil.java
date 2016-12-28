@@ -1,34 +1,34 @@
 package kale.adapter.util;
 
-import android.util.SparseArray;
+import java.util.HashMap;
+
+import android.support.annotation.VisibleForTesting;
 
 /**
  * @author Jack Tony
  * @date 2015/8/29
  */
-/*package*/public class ItemTypeUtil {
+@VisibleForTesting
+/*package*/ public class ItemTypeUtil {
+
+    private HashMap<Object, Integer> typePool;
+
+    public void setTypePool(HashMap<Object, Integer> typePool) {
+        this.typePool = typePool;
+    }
 
     /**
-     * [int,obj]
-     * 
-     * int : 最终的type
-     * obj : 传入的type
-     */
-    private SparseArray<Object> typeSArr = new SparseArray<>();
-    
-    /**
      * @param type item的类型
-     *
      * @return 通过object类型的type来得到int类型的type
      */
     public int getIntType(Object type) {
-        int index = typeSArr.indexOfValue(type); 
-        if (index == -1) {
-            index = typeSArr.size();
-            // 如果没用这个type，就存入这个type
-            typeSArr.put(index, type);
+        if (typePool == null) {
+            typePool = new HashMap<>();
         }
-        return index;
+        
+        if (!typePool.containsKey(type)) {
+            typePool.put(type, typePool.size());
+        }
+        return typePool.get(type);
     }
-
 }

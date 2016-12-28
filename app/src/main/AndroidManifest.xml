@@ -16,10 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewPagerTestActivity"/>
-        <activity android:name=".ListViewTestActivity" />
-        <activity android:name=".RcvTestActivity" />
-        <activity android:name=".HeaderFooterTestActivity" />
+        <activity android:name=".ViewPagerActivity"/>
+        <activity android:name=".ListViewActivity" />
+        <activity android:name=".RecyclerViewActivity" />
+        <activity android:name=".HeaderFooterActivity" />
     </application>
 
 </manifest>

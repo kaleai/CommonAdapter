@@ -1,10 +1,11 @@
 package kale.commonadapter.util;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import android.content.Context;
+import android.util.Log;
 
 import kale.commonadapter.R;
 import kale.commonadapter.model.DemoModel;
@@ -44,6 +45,10 @@ public class DataManager {
                 default:
             }
             list.add(model);
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            Log.d("DataManager", "[" + i + "]" + list.get(i).content);
         }
         return list;
     }

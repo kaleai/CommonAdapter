@@ -4,22 +4,22 @@
 
 通过封装BaseAdapter和RecyclerView.Adapter得到的通用、简易的Adapter对象。  
 
-### 已解决的问题
+### 功能
 
 - [x] 支持多种类型的item
 - [x] item会根据type来做自动复用
-- [x] ​支持dataBinding和其他第三方注入框架
-- [x] 支持ViewPager的正常加载模式和懒加载模式
+- [x] ​支持dataBinding和其他注入框架
+- [x] 支持ViewPager的懒加载模式
 - [x] 提升item的独立性，完美支持item被多处复用
 - [x] 一个item仅会触发一次绑定视图的操作，提升效率
-- [x] 一个item仅会调用一次setViews()，避免重复建立监听器
-- [x] 支持快速将ListView的适配器切换为recyclerView的适配器
-- [x] 允许用viewpager的notifyDataSetChanged()来正常更新界面
+- [x] 一个item仅会调用一次setViews()，避免重复建立listener
+- [x] 支持快速将ListView的adapter切换为recyclerView的adapter
+- [x] 允许用viewpager的notifyDataSetChanged()来更新界面
 - [x] 可以给recyclerView的添加空状态（利用`RcvAdapterWrapper`）
-- [x] 可以给recyclerView的添加头部和底部（利用`RcvAdapterWrapper`）
+- [x] 可以给recyclerView的添加头、底（利用`RcvAdapterWrapper`）
 - [x] 提供了getCurrentPosition()来支持根据不同的位置选择不同item的功能
-- [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，方便拆包和提升item的复用性
-- [x] 支持适配器的数据自动绑定，只用操作数据便可，adapter会自动notify界面（需要配合databinding中的`ObservableList`）
+- [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，拆包
+- [x] 支持适配器的数据自动绑定，即：数据更改后adapter会自动notify界面（需配合databinding中的`ObservableList`）
 
 ### 示例
 
@@ -146,6 +146,20 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 });
 ```  
 
+### 四、设置RecyclerView的pool
+
+需要通过自定义的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/adapter/src/main/java/kale/adapter/RecycledViewPool.java) 
+来设置pool。
+
+```java
+    RecycledViewPool pool = new RecycledViewPool();
+    
+    // ...
+
+    recyclerView.setRecycledViewPool(pool);
+    adapter.setTypePool(pool.getTypePool());
+```
+
 ### 设计思路
 
 **1. Adapter**  
@@ -166,7 +180,7 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 
 ![](https://avatars3.githubusercontent.com/u/9552155?v=3&s=460)
 
-Jack Tony: <developer_kale@foxmail.com>  
+Jack Tony: <developer-kale@foxmail.com>  
 
 
 ## License

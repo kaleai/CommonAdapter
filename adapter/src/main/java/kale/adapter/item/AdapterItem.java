@@ -4,12 +4,6 @@ import android.support.annotation.LayoutRes;
 import android.view.View;
 
 /**
- * Adapter的所有item必须实现的接口.<br>
- * 
- * 通过{@link #getLayoutResId()}初始化view;<br>
- * 在{@link #bindViews(View)}中就初始化item的内部视图<br>
- * 在{@link #handleData(Object, int)}中处理每一行的数据<p>
- * 
  * @author Jack Tony
  * @date 2015/5/15
  */

@@ -5,6 +5,7 @@ import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -22,10 +23,9 @@ import kale.adapter.util.ItemTypeUtil;
  * @date 2015/5/17
  */
 public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcvAdapter.RcvAdapterItem> implements IAdapter<T> {
-
+    private static final String TAG = "CommonRcvAdapter";
     private List<T> mDataList;
 
-    private Object mType;
 
     private ItemTypeUtil mUtil;
 
@@ -114,7 +114,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
     @Override
     public int getItemViewType(int position) {
         this.currentPos = position;
-        mType = getItemType(mDataList.get(position));
+        Object mType = getItemType(mDataList.get(position));
         return mUtil.getIntType(mType);
     }
 
@@ -125,13 +125,33 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
 
     @Override
     public RcvAdapterItem onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RcvAdapterItem(parent.getContext(), parent, createItem(mType));
+        Object type = mUtil.getKeyByInt(viewType);
+        return new RcvAdapterItem(parent.getContext(), parent, createItem(type));
     }
 
     @Override
     public void onBindViewHolder(RcvAdapterItem holder, int position) {
         debug(holder);
-        holder.item.handleData(getConvertedData(mDataList.get(position), mType), position);
+        Log.d(TAG, "onBindViewHolder() called with: position = [" + position + "]");
+        holder.setItemPosition(position);
+        holder.item.handleData(getConvertedData(mDataList.get(position), getItemViewType(position)), position);
+
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RcvAdapterItem holder) {
+        super.onViewAttachedToWindow(holder);
+        int position = holder.getItemPosition();
+        Log.d(TAG, "onViewAttachedToWindow() called with: position = [" + position + "]");
+        holder.item.onViewAttachedToWindow(getConvertedData(mDataList.get(position), getItemViewType(position)), position);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RcvAdapterItem holder) {
+        int position = holder.getItemPosition();
+        Log.d(TAG, "onViewDetachedFromWindow() called with: position = [" + position + "]");
+        holder.item.onViewDetachedFromWindow(getConvertedData(mDataList.get(position), getItemViewType(position)), position);
+        super.onViewDetachedFromWindow(holder);
     }
 
     @NonNull
@@ -150,9 +170,8 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
     ///////////////////////////////////////////////////////////////////////////
 
     static class RcvAdapterItem extends RecyclerView.ViewHolder {
-
+        protected int itemPosition;
         protected AdapterItem item;
-
         boolean isNew = true; // debug中才用到
 
         RcvAdapterItem(Context context, ViewGroup parent, AdapterItem item) {
@@ -160,6 +179,14 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
             this.item = item;
             this.item.bindViews(itemView);
             this.item.setViews();
+        }
+
+        public int getItemPosition() {
+            return itemPosition;
+        }
+
+        public void setItemPosition(int itemPosition) {
+            this.itemPosition = itemPosition;
         }
     }
 

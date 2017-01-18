@@ -1,5 +1,9 @@
 package kale.adapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.content.Context;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
@@ -7,10 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.DataBindingJudgement;
@@ -149,7 +149,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
     // 内部用到的viewHold
     ///////////////////////////////////////////////////////////////////////////
 
-    static class RcvAdapterItem extends RecyclerView.ViewHolder {
+    public static class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         protected AdapterItem item;
 

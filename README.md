@@ -19,6 +19,9 @@
 - [x] 可以给recyclerView的添加头、底（利用`RcvAdapterWrapper`）
 - [x] 提供了getCurrentPosition()来支持根据不同的位置选择不同item的功能
 - [x] 提供了getConvertedData(data, type)方法来对item传入的数据做转换，拆包
+- [x] 支持在item中获得Activity对象，用来跳转
+- [x] 支持RecycleView层面得到item被点击的事件，内外事件会同时触发
+- [x] 允许Adapter的数据范形和item中的不同，增加灵活性
 - [x] 支持适配器的数据自动绑定，即：数据更改后adapter会自动notify界面（需配合databinding中的`ObservableList`）
 
 ### 示例
@@ -148,12 +151,12 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 
 ### 四、设置RecyclerView的pool
 
-需要通过自定义的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/adapter/src/main/java/kale/adapter/RecycledViewPool.java) 
+需要通过自定义的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/adapter/src/main/java/kale/adapter/RecycledViewPool.java)
 来设置pool。
 
 ```java
     RecycledViewPool pool = new RecycledViewPool();
-    
+
     // ...
 
     recyclerView.setRecycledViewPool(pool);

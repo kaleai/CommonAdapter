@@ -149,7 +149,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
     // 内部用到的viewHold
     ///////////////////////////////////////////////////////////////////////////
 
-    public static class RcvAdapterItem extends RecyclerView.ViewHolder {
+    static class RcvAdapterItem extends RecyclerView.ViewHolder {
 
         protected AdapterItem item;
 

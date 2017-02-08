@@ -10,7 +10,7 @@
         android:id="@+id/list_view_btn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:text="ListView"
         />
 
@@ -37,6 +37,14 @@
         android:layout_height="60dp"
         android:layout_marginTop="26dp"
         android:text="viewpager"
+        />
+
+    <Button
+        android:id="@+id/diff_btn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="26dp"
+        android:text="diffUtil"
         />
 
 </LinearLayout>

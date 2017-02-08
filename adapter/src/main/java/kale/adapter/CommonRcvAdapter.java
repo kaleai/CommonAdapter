@@ -161,6 +161,7 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
             this.item.bindViews(itemView);
             this.item.setViews();
         }
+        
     }
 
     ///////////////////////////////////////////////////////////////////////////

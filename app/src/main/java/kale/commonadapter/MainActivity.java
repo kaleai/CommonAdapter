@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.rcv_btn).setOnClickListener(this);
         findViewById(R.id.rcv_btn2).setOnClickListener(this);
         findViewById(R.id.viewpager_btn).setOnClickListener(this);
+        findViewById(R.id.diff_btn).setOnClickListener(this);
     }
 
     @Override
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.viewpager_btn:
                 clz = ViewPagerActivity.class;
+                break;
+            case R.id.diff_btn:
+                clz = DiffRcvActivity.class;
                 break;
         }
         startActivity(new Intent(this, clz));

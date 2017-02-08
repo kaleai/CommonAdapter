@@ -20,6 +20,7 @@
         <activity android:name=".ListViewActivity" />
         <activity android:name=".RecyclerViewActivity" />
         <activity android:name=".HeaderFooterActivity" />
+        <activity android:name=".DiffRcvActivity" />
     </application>
 
 </manifest>

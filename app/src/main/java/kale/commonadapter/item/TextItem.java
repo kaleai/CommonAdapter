@@ -14,8 +14,6 @@ import kale.commonadapter.model.DemoModel;
  */
 public class TextItem implements AdapterItem<DemoModel> {
 
-    private static final String TAG = "TextItem";
-    
     @Override
     public int getLayoutResId() {
         return R.layout.demo_item_text;

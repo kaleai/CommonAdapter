@@ -242,19 +242,28 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private void setFullSpan(@Nullable View view, RecyclerView.LayoutManager layoutManager) {
         if (view != null) {
-            final int itemHeight = view.getLayoutParams() != null ?
-                    view.getLayoutParams().height : RecyclerView.LayoutParams.WRAP_CONTENT;
+            int itemWidth = view.getLayoutParams() != null ?
+                view.getLayoutParams().height : RecyclerView.LayoutParams.WRAP_CONTENT;
+            int itemHeight = view.getLayoutParams() != null ?
+                view.getLayoutParams().height : RecyclerView.LayoutParams.WRAP_CONTENT;
 
             if (layoutManager instanceof StaggeredGridLayoutManager) {
+                if (((StaggeredGridLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.VERTICAL) {
+                    itemWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+                } else {
+                    itemHeight = ViewGroup.LayoutParams.MATCH_PARENT;
+                }
                 StaggeredGridLayoutManager.LayoutParams layoutParams =
-                        new StaggeredGridLayoutManager.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
+                    new StaggeredGridLayoutManager.LayoutParams(itemWidth, itemHeight);
                 layoutParams.setFullSpan(true);
                 view.setLayoutParams(layoutParams);
-            } else if (layoutManager instanceof GridLayoutManager
-                    || layoutManager instanceof LinearLayoutManager) {
-                view.setLayoutParams(new RecyclerView.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, itemHeight));
+            } else if (layoutManager instanceof LinearLayoutManager) {
+                if (((LinearLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.VERTICAL) {
+                    itemWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+                } else {
+                    itemHeight = ViewGroup.LayoutParams.MATCH_PARENT;
+                }
+                view.setLayoutParams(new RecyclerView.LayoutParams(itemWidth, itemHeight));
             }
             notifyDataSetChanged();
         }

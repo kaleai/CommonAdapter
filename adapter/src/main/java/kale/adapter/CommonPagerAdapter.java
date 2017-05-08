@@ -107,7 +107,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         if (mInflater == null) {
             mInflater = LayoutInflater.from(viewPager.getContext());
         }
-        AdapterItem item = createItem(getItemType(position));
+        AdapterItem item = onCreateItem(getItemType(position));
         View view = mInflater.inflate(item.getLayoutResId(), null);
         view.setTag(R.id.tag_item, item);
         item.bindViews(view);

@@ -69,7 +69,6 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         mIsLazy = isLazy;
     }
 
-    @Override
     public int getCount() {
         return mDataList == null ? 0 : mDataList.size();
     }
@@ -82,7 +81,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
 
     @NonNull
     @Override
-    public View instantiateItem(ViewGroup container, int position) {
+    public View instantiateItem(@NonNull ViewGroup container, int position) {
         View view = super.instantiateItem(container, position);
         if (!mIsLazy) {
             initItem(position, view);

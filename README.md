@@ -52,41 +52,9 @@ repositories {
 compile 'com.github.tianzhijiexian:CommonAdapter:1.0.0'
 ```
 
-### 零、重要接口
+### 零、建立Item
 
-adapter的item必须实现此接口，接口源码如下：   
-
-```java
-public interface AdapterItem<T> {
-
-    /**
-     * @return item布局文件的layoutId
-     */
-    @LayoutRes
-    int getLayoutResId();
-
-    /**
-     * 初始化views
-     */
-    void bindViews(final View root);
-
-    /**
-     * 设置view的参数
-     */
-    void setViews();
-
-    /**
-     * 根据数据来设置item的内部views
-     *
-     * @param model    数据list内部的model
-     * @param position 当前adapter调用item的位置
-     */
-    void handleData(T model, int position);
-
-}  
-```
-
-例子：  
+Adapter的item须实现AdapterItem接口也可继承AbsAdapterItem，例子：
 
 ```java
 public class TextItem implements AdapterItem<DemoModel> {
@@ -102,9 +70,6 @@ public class TextItem implements AdapterItem<DemoModel> {
     public void bindViews(View root) {
         textView = (TextView) root.findViewById(R.id.textView);
     }
-
-    @Override
-    public void setViews() { }
 
     @Override
     public void handleData(DemoModel model, int position) {
@@ -149,34 +114,23 @@ viewPager.setAdapter(new CommonPagerAdapter<DemoModel>(list) {
 });
 ```  
 
-### 四、设置RecyclerView的pool
+### 四、如果需要RecyclerView的pool
 
-需要通过自定义的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/adapter/src/main/java/kale/adapter/RecycledViewPool.java)
+需要通过库提供的[RecycledViewPool](https://github.com/tianzhijiexian/CommonAdapter/blob/master/lib/src/main/java/kale/adapter/RecycledViewPool.java)
 来设置pool。
 
 ```java
-    RecycledViewPool pool = new RecycledViewPool();
+RecycledViewPool pool = new RecycledViewPool();
 
-    // ...
+// ...
 
-    recyclerView.setRecycledViewPool(pool);
-    adapter.setTypePool(pool.getTypePool());
+recyclerView.setRecycledViewPool(pool);
+adapter.setTypePool(pool.getTypePool());
 ```
 
-### 设计思路
+### 设计思路 
 
-**1. Adapter**  
-
-如果用adapter常规写法，你会发现代码量很大，可读性低。如果adapter中有多个类型的Item，我们还得在getView()中写很多if-else语句，很乱。
-而现在我让adapter的代码量减少到一个8行的内部类，如果你需要更换item只需要动一行代码，真正实现了可插拔化。最关键的是item现在作为了一个独立的对象，可以方便的进行复用。
-
-**2. AdapterItem**  
-
-和原来方式最为不同的一点就是我把adapter的item作为了一个实体，这种方式借鉴了RecyclerView中ViewHolder的设计。把item作为实体的好处有很多，比如复用啊，封装啊，其余的就不细说了。  
-
-**3. 分层**  
-
-在使用过程中，我发现如果adapter放在view层，那就会影响到view层的独立性。此外adapter中经常有很多数据处理的操作，比如通过type选择item，数据的拆包、转换等操作。于是我还是推荐把adapter放在mvp的p层，或者是mvvm的m层。通过在实际的项目中使用来看，放在m或p层的效果较好，view的复用也比较好做。
+在使用过程中，我发现如果adapter放在view层，那就会影响到view层的独立性，adapter中经常有很多数据处理的操作，不是单纯的展示。我推荐把adapter放在mvp的p层，或者是mvvm的m层，view的复用也比较好做。
 
 
 ## 开发者

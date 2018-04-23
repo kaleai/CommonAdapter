@@ -9,8 +9,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import lombok.Getter;
-
 /**
  * @author Jack Tony
  * @date 2015/6/2
@@ -26,7 +24,6 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public static final int TYPE_EMPTY = 99932;
 
-    @Getter
     private RecyclerView.LayoutManager layoutManager;
 
     private RecyclerView.Adapter mWrapped;
@@ -36,17 +33,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     private RecyclerView emptyViewParent;
 
     @Nullable
-    @Getter
-    private View headerView = null;
-
-    @Nullable
-    @Getter
-    private View footerView = null;
-
-    @Nullable
-    @Getter
-    private View emptyView = null;
-
+    private View headerView = null,footerView = null, emptyView = null;
 
     public RcvAdapterWrapper(@NonNull RecyclerView.Adapter adapter, @NonNull RecyclerView.LayoutManager layoutManager) {
         mWrapped = adapter;
@@ -130,8 +117,9 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_HEADER:
                 return new SimpleViewHolder(headerView);
@@ -149,7 +137,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int position) {
         final int type = getItemViewType(position);
         if (type != TYPE_HEADER && type != TYPE_FOOTER && type != TYPE_EMPTY) {
             mWrapped.onBindViewHolder(viewHolder, position - getHeaderCount());
@@ -289,7 +277,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         if (!(holder instanceof SimpleViewHolder)) {
             mWrapped.onViewAttachedToWindow(holder);
@@ -297,7 +285,7 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         if (!(holder instanceof SimpleViewHolder)) {
             mWrapped.onViewDetachedFromWindow(holder);
@@ -305,23 +293,42 @@ public class RcvAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mWrapped.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         mWrapped.onDetachedFromRecyclerView(recyclerView);
     }
 
     @Override
-    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewRecycled(holder);
         if (!(holder instanceof SimpleViewHolder)) {
             mWrapped.onViewRecycled(holder);
         }
+    }
+
+    @Nullable
+    public View getEmptyView() {
+        return emptyView;
+    }
+
+    @Nullable
+    public View getHeaderView() {
+        return headerView;
+    }
+
+    @Nullable
+    public View getFooterView() {
+        return footerView;
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return layoutManager;
     }
 
     /**

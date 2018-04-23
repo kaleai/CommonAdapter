@@ -1,5 +1,6 @@
 package kale.commonadapter.item;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,7 @@ public class ButtonItem implements AdapterItem<DemoModel> {
     }
 
     @Override
-    public void bindViews(final View root) {
+    public void bindViews(@NonNull final View root) {
         btn = (Button) root;
     }
 

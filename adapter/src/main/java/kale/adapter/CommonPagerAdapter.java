@@ -1,14 +1,14 @@
 package kale.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.DataBindingJudgement;
@@ -80,6 +80,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
         return item;
     }
 
+    @NonNull
     @Override
     public View instantiateItem(ViewGroup container, int position) {
         View view = super.instantiateItem(container, position);
@@ -90,7 +91,7 @@ public abstract class CommonPagerAdapter<T> extends BasePagerAdapter<View> imple
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, @NonNull Object object) {
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         if (mIsLazy && object != currentItem) {
             initItem(position, ((View) object));
         }

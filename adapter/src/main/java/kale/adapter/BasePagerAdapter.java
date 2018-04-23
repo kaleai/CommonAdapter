@@ -1,14 +1,14 @@
 package kale.adapter;
 
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
 
 /**
  * @author Jack Tony
@@ -34,12 +34,13 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
      * 注意：这里必须是view和view的比较
      */
     @Override
-    public boolean isViewFromObject(View view, Object obj) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object obj) {
         return view == getViewFromItem((T) obj, 0);
     }
 
+    @NonNull
     @Override
-    public T instantiateItem(ViewGroup container, int position) {
+    public T instantiateItem(@NonNull ViewGroup container, int position) {
         Object type = getItemType(position);
         T item = mCache.getItem(type); // get item from type
         if (item == null) {
@@ -57,7 +58,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.setPrimaryItem(container, position, object);
         if (object != currentItem) {
             // 可能是currentItem不等于null，可能是二者不同
@@ -66,7 +67,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         T item = (T) object;
         // 现在通过item拿到其中的view，然后remove掉
         container.removeView(getViewFromItem(item, position));
@@ -75,7 +76,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object) {
+    public int getItemPosition(@NonNull Object object) {
         return POSITION_NONE;
     }
 
@@ -117,7 +118,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
 
         private Map<Object, Queue<T>> mCacheMap;
 
-        public PagerCache() {
+        PagerCache() {
             mCacheMap = new ArrayMap<>();
         }
 
@@ -125,7 +126,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
          * @param type item type
          * @return cache中的item，如果拿不到就返回null
          */
-        public T getItem(Object type) {
+        T getItem(Object type) {
             Queue<T> queue = mCacheMap.get(type);
             return queue != null ? queue.poll() : null;
         }
@@ -133,7 +134,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter {
         /**
          * @param type item's type
          */
-        public void putItem(Object type, T item) {
+        void putItem(Object type, T item) {
             Queue<T> queue;
             if ((queue = mCacheMap.get(type)) == null) {
                 queue = new LinkedList<>();

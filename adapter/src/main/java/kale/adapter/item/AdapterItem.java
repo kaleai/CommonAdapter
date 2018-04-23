@@ -1,6 +1,7 @@
 package kale.adapter.item;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -18,7 +19,7 @@ public interface AdapterItem<T> {
     /**
      * 初始化views
      */
-    void bindViews(final View root);
+    void bindViews(@NonNull final View root);
 
     /**
      * 设置view的参数

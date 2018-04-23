@@ -1,6 +1,7 @@
 package kale.commonadapter.item;
 
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ public class TextItem implements AdapterItem<DemoModel> {
     TextView textView;
 
     @Override
-    public void bindViews(View root) {
+    public void bindViews(@NonNull View root) {
         textView = (TextView) root.findViewById(R.id.textView);
     }
 

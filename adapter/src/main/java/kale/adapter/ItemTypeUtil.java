@@ -1,19 +1,16 @@
-package kale.adapter.util;
+package kale.adapter;
 
 import java.util.HashMap;
-
-import android.support.annotation.VisibleForTesting;
 
 /**
  * @author Jack Tony
  * @date 2015/8/29
  */
-@VisibleForTesting
-/*package*/ public class ItemTypeUtil {
+class ItemTypeUtil {
 
     private HashMap<Object, Integer> typePool;
 
-    public void setTypePool(HashMap<Object, Integer> typePool) {
+    void setTypePool(HashMap<Object, Integer> typePool) {
         this.typePool = typePool;
     }
 
@@ -21,7 +18,7 @@ import android.support.annotation.VisibleForTesting;
      * @param type item的类型
      * @return 通过object类型的type来得到int类型的type
      */
-    public int getIntType(Object type) {
+    int getIntType(Object type) {
         if (typePool == null) {
             typePool = new HashMap<>();
         }

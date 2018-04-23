@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.DataBindingJudgement;
 import kale.adapter.util.IAdapter;
-import kale.adapter.util.ItemTypeUtil;
 
 /**
  * @author Jack Tony
@@ -123,13 +122,14 @@ public abstract class CommonRcvAdapter<T> extends RecyclerView.Adapter<CommonRcv
         return -1; // default
     }
 
+    @NonNull
     @Override
-    public RcvAdapterItem onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RcvAdapterItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new RcvAdapterItem(parent.getContext(), parent, createItem(mType));
     }
 
     @Override
-    public void onBindViewHolder(RcvAdapterItem holder, int position) {
+    public void onBindViewHolder(@NonNull RcvAdapterItem holder, int position) {
         debug(holder);
         holder.item.handleData(getConvertedData(mDataList.get(position), mType), position);
     }

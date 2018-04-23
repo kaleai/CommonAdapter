@@ -1,5 +1,6 @@
 package kale.commonadapter.item;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class ImageItem implements AdapterItem<DemoModel> {
     }
 
     @Override
-    public void bindViews(View root) {
+    public void bindViews(@NonNull View root) {
         mIv = (ImageView) root;
     }
 

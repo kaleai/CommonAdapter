@@ -1,5 +1,8 @@
 package kale.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,13 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import kale.adapter.item.AdapterItem;
 import kale.adapter.util.DataBindingJudgement;
 import kale.adapter.util.IAdapter;
-import kale.adapter.util.ItemTypeUtil;
 
 /**
  * @author Jack Tony
@@ -137,6 +136,16 @@ public abstract class CommonAdapter<T> extends BaseAdapter implements IAdapter<T
         }
         item.handleData(getConvertedData(mDataList.get(position), mType), position);
         return convertView;
+    }
+
+    @Override
+    public void notifyDataSetInvalidated() {
+        super.notifyDataSetInvalidated();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 
     @NonNull
